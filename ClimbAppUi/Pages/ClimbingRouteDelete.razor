@@ -1,0 +1,57 @@
+﻿@page "/climbingRouteDelete/{id:int}"
+@using BlazorCLIMB.Data.Dapper.Repositories;
+@using BlazorCLIMB.UI.Services;
+@using Model
+@using Interfaces
+@inject IClimbingRouteService ClimbingRouteService
+@inject NavigationManager NavigationManager
+
+<h1>Delete Climbing Route</h1>
+
+<p style="color:red; text-align:center">Seguro que quieres borrar el climbingRoute?</p>
+
+<EditForm Model="@climbingRoute">
+    <table class="table">
+        <tr>
+            <td>Name:</td>
+            <td><input type="text" @bind="climbingRoute.Name" /></td>
+        </tr>
+        <tr>
+            <td>Grado:</td>
+            <td><input type="text" @bind="climbingRoute.Grade" /></td>
+        </tr>
+        <tr>
+            <td>ClimbingSchool:</td>
+            <td><input type="datetime" @bind="climbingRoute.ClimbingSchoolId" /></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center">
+                <input type="submit" value="Delete" @onclick="DeleteClimbingRoute" />
+                <input type="button" value="Cancel" @onclick="CancelClimbingRoute" />
+            </td>
+        </tr>
+    </table>
+</EditForm>
+
+@code {
+    ClimbingRoute climbingRoute = new ClimbingRoute();
+
+    [Parameter]
+    public int id { get; set; }
+
+    protected async Task DeleteClimbingRoute()
+    {
+        await ClimbingRouteService.DeleteClimbingRoute(id);
+        NavigationManager.NavigateTo("/climbingRouteList");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        climbingRoute = await ClimbingRouteService.GetClimbingRouteDetails(id);
+    }
+
+    protected void CancelClimbingRoute()
+    {
+        NavigationManager.NavigateTo("/climbingRouteList");
+    }
+}

@@ -1,0 +1,72 @@
+﻿@page "/climbingRouteList"
+@using BlazorCLIMB.Data.Dapper.Repositories
+@using Model
+@using Interfaces
+@inject IClimbingRouteService ClimbingRouteService
+@inject NavigationManager NavigationManager
+
+<h1 class="title is-3 has-text-white">Listado de Vías Escaladas</h1>
+<p class="subtitle has-text-grey-lighter">
+    Esta página muestra un listado de todas las vías escaladas.
+</p>
+
+@if (climbingRoutes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (loadingError != null)
+{
+    <p><em>@loadingError</em></p>
+}
+else
+{
+    <!-- El resto del código HTML para mostrar las rutas -->
+
+    <div class="columns is-multiline">
+        @foreach (var route in climbingRoutes)
+        {
+            <div class="column is-one-quarter">
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-4by3">
+                            <img src="@route.ImageUrl" alt="Imagen de la ruta">
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <h5 class="title is-5">@route.Name</h5>
+                        <p class="subtitle is-6">Sector: @route.ClimbingSectorId</p>
+                        <p class="subtitle is-6">Escuela: @route.ClimbingSchoolId</p>
+                        <div class="content">
+                            @route.Description
+                            <br>
+                            <strong>Valoración:</strong> ⭐⭐⭐⭐☆
+                            <br>
+                            <strong>Comentarios:</strong> "Esta ruta es increíble, ¡me encantó!"
+                        </div>
+                        <footer class="card-footer">
+                            <a href="/climbingRouteEdit/@route.Id" class="card-footer-item">Editar</a>
+                            <a href="/climbingRouteDelete/@route.Id" class="card-footer-item has-text-danger">Eliminar</a>
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private IEnumerable<ClimbingRoute> climbingRoutes;
+    private string loadingError;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            climbingRoutes = await ClimbingRouteService.GetAllClimbingRoutes();
+        }
+        catch (Exception ex)
+        {
+            loadingError = "An error occurred while loading the routes: " + ex.Message;
+        }
+    }
+}

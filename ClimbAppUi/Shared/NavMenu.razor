@@ -1,0 +1,48 @@
+﻿<style>
+    .nav-scrollable {
+        background: linear-gradient(to bottom, #888888, #555555, #000000);
+        color: white;
+        
+    }
+</style>
+
+
+
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/home">
+                <span class="oi oi-home" aria-hidden="true"></span> Escalada Deportiva
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="filmlist">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Lista de Vías realizadas
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="filmdetails">
+                <span class="oi oi-plus" aria-hidden="true"></span> Añadir una vía
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="/">
+                <span class="oi oi-account-logout" aria-hidden="true"></span> Salir
+            </NavLink>
+        </div>
+
+    </nav>
+</div>
+
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

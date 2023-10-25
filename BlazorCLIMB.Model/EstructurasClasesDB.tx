@@ -1,0 +1,82 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BlazorCRUD.Model
+{
+    public class ClimbingRoute
+    {
+        public int Id { get; set; } // Identificador único de la ruta
+        public string Name { get; set; } // Nombre de la ruta
+        public string Grade { get; set; } // Grado de dificultad
+        public string Description { get; set; }
+        public int ClimbingSectorId { get; set; } // Clave foránea para el sector
+
+
+        public int ClimbingSchoolId { get; set; } // Clave foránea para la escuela
+    }
+
+    public class ClimbingSector
+    {
+        public int Id { get; set; } // Identificador único del sector
+        public string Name { get; set; } // Nombre del sector
+        public int ClimbingSchoolId { get; set; } // Clave foránea para la escuela
+        public string Description { get; set; } // Descripción del sector
+    }
+
+    public class ClimbingSchool
+    {
+    
+
+   
+public int Id { get; set; } // Identificador único de la escuela
+        public string Name { get; set; } // Nombre de la escuela
+        public string Location { get; set; } // Ubicación de la escuela
+    }
+
+}
+
+
+
+
+
+
+
+
+Funcionalidades:
+Navegación jerárquica: Permite a los usuarios navegar desde una escuela de escalada a sus respectivos sectores y luego a las rutas específicas dentro de esos sectores.
+
+Búsqueda avanzada: Los usuarios podrían buscar rutas de escalada basadas en múltiples criterios: por nombre, grado de dificultad, sector, escuela, etc.
+
+Filtrado por escuela o sector: Al seleccionar una escuela de escalada, la aplicación podría mostrar solo los sectores y rutas asociadas con esa escuela.
+
+Gestión de imágenes: Los usuarios pueden añadir o actualizar imágenes para las escuelas, sectores o rutas, permitiendo visualizar mejor cada lugar o ruta.
+
+Recomendaciones personalizadas: Basándose en las rutas que un usuario ha escalado, la aplicación podría sugerir otras rutas de similar grado de dificultad o en la misma escuela/sector.
+
+Evaluaciones y comentarios: Podrías agregar una funcionalidad para que los usuarios evalúen y comenten sobre las rutas, sectores o escuelas.
+
+Ideas de negocio:
+Publicidad y patrocinios: Podrías colaborar con tiendas de equipo de escalada, gimnasios o escuelas de escalada para mostrar publicidad o contenido patrocinado.
+
+Clases y cursos: Integra ofertas de clases de escalada o cursos de seguridad en colaboración con escuelas de escalada.
+
+Eventos y competencias: Informa sobre eventos o competencias de escalada próximas en las escuelas registradas en tu aplicación.
+
+Integración con servicios de reserva: Permite a los usuarios reservar clases, cursos o incluso alojamiento cerca de las escuelas de escalada.
+
+Marketplace de equipo: Una sección donde los usuarios pueden comprar o vender equipo de escalada, ya sea nuevo o de segunda mano.
+
+Gamificación: Introduce un sistema de logros o recompensas para incentivar a los usuarios a escalar más rutas o a explorar nuevas escuelas y sectores.
+
+Red social y comunidad: Fomenta una comunidad permitiendo a los usuarios seguirse entre sí, compartir sus logros, fotos y consejos sobre rutas.
+
+Modelo premium: Una versión premium de la aplicación con características adicionales, como análisis detallados de progresión, acceso a guías exclusivas o descuentos en tiendas asociadas.
+
+Asociaciones con influencers o escaladores profesionales: Podrían ofrecer consejos, guías o clases exclusivas a través de la plataforma.
+
+Integración con otras aplicaciones: Como apps de fitness para rastrear el progreso físico o apps de turismo para explorar áreas alrededor de las escuelas de escalada.
+
+Recordatorio: Cualquiera que sea la funcionalidad o idea de negocio que elijas, asegúrate de realizar un estudio de mercado y testear con usuarios potenciales para validar la demanda y asegurarte de que realmente aporta valor a tu público objetivo.

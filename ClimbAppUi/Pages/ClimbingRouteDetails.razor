@@ -1,0 +1,75 @@
+﻿@page "/climbingRouteDetails/{Id:int?}"
+@using BlazorCLIMB.Data.Dapper.Repositories
+@using Model
+@using Interfaces
+@inject IClimbingRouteService ClimbingRouteService
+@inject NavigationManager NavigationManager
+
+    <div class="container mt-5">
+        <div class="columns is-centered">
+            <div class="column is-half">
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-4by3">
+                            <img src="@climbingRoute.ImageUrl" alt="Imagen de la ruta de escalada">
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <EditForm Model="@climbingRoute" class="my-form">
+                            <div class="field">
+                                <label class="label">Nombre de la vía:</label>
+                                <input type="text" class="input" @bind="climbingRoute.Name" />
+                            </div>
+                            <div class="field">
+                                <label class="label">Grado:</label>
+                                <input type="text" class="input" @bind="climbingRoute.Grade" />
+                            </div>
+                            <div class="field">
+                                <label class="label">Descripción:</label>
+                                <textarea class="textarea" @bind="climbingRoute.Description"></textarea>
+                            </div>
+                            <div class="field">
+                                <label class="label">URL de la Imagen:</label>
+                                <input type="text" class="input" @bind="climbingRoute.ImageUrl" />
+                            </div>
+                            <div class="field is-grouped is-grouped-centered mt-5">
+                                <p class="control">
+                                    <button type="submit" class="button is-primary" @onclick="SaveClimbingRoute">Guardar</button>
+                                </p>
+                                <p class="control">
+                                    <button type="button" class="button is-light" @onclick="CancelClimbingRoute">Cancelar</button>
+                                </p>
+                            </div>
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+
+    ClimbingRoute climbingRoute = new ClimbingRoute();
+
+    protected void CancelClimbingRoute()
+    {
+        NavigationManager.NavigateTo("/climbingRouteList");
+    }
+
+    protected async void SaveClimbingRoute()
+    {
+        await ClimbingRouteService.InsertClimbingRoute(climbingRoute);
+        NavigationManager.NavigateTo("/climbingRouteList");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (id != 0)
+        {
+            climbingRoute = await ClimbingRouteService.GetClimbingRouteDetails(id);
+        }
+    }
+}

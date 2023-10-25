@@ -1,0 +1,81 @@
+﻿@page "/"
+@using BlazorCLIMB.UI.Interfaces
+@using Blazorise
+@using System.ComponentModel.DataAnnotations;
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
+<Blazorise.Card>
+    <Blazorise.CardHeader>
+        <Blazorise.CardTitle>@(showLogin ? "Login" : "Register")</Blazorise.CardTitle>
+    </Blazorise.CardHeader>
+    <Blazorise.CardBody>
+       <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="text" class="form-control" @bind="model.Email" placeholder="Email">
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" class="form-control" @bind="model.Password" placeholder="Password">
+    </div>
+
+    @if (!showLogin)
+    {
+        <div class="form-group">
+            <label for="role">Role</label>
+            <select id="role" class="form-control" @bind="model.Role">
+                <option value="User">User</option>
+                <option value="Admin">Admin</option>
+            </select>
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">@(showLogin ? "Login" : "Register")</button>
+</EditForm>
+
+        <Blazorise.Button Color="Color.Secondary" @onclick="@ToggleForm">SUSTOS @(showLogin ? "Register" : "Login")</Blazorise.Button>
+    </Blazorise.CardBody>
+</Blazorise.Card>
+
+@code {
+    private AuthModel model = new AuthModel();
+    private bool showLogin = true;
+    private string message = "Se ha llegado a este punto"; // Mensaje para depuración
+
+    private async Task HandleValidSubmit()
+    {
+        if (showLogin)
+        {
+            bool isAuthenticated = await AuthService.VerifyPassword(model.Email, model.Password);
+            message = isAuthenticated ? "Authenticated" : "Failed to authenticate";
+        }
+        else
+        {
+            bool isCreated = await AuthService.CreateUser(model.Email, model.Password);
+            message = isCreated ? "User Created" : "Failed to create user";
+        }
+    }
+
+    private void ToggleForm()
+    {
+        showLogin = !showLogin;
+        message = "Form toggled";
+    }
+
+    public class AuthModel
+    {
+        [Required(ErrorMessage = "Email is required")]
+        public string Email { get; set; }
+
+        [Required (ErrorMessage = "Password is required")]
+        public string Password { get; set; }
+
+        public string Role { get; set; }
+    }
+
+}
