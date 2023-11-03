@@ -8,10 +8,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BlazorCRUD.UI</title>
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/material-base.css">
+
 
     <environment include="Development">
         <link rel="stylesheet" href="~/Identity/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/Identity/css/site.css" />
+        <link rel="stylesheet" href="~/Identity/css/login.css" />
+
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
@@ -88,6 +92,7 @@
         </script>
         <script src="~/Identity/js/site.js" asp-append-version="true"></script>
     </environment>
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

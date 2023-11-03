@@ -1,0 +1,126 @@
+﻿.container{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+body {
+    background-image: url('/images/169781.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100%;
+    width: 100%;
+    backdrop-filter: blur(5px);
+}
+
+.card {
+    width: 420px;
+    margin: 0 auto;
+    background: linear-gradient(0deg, rgba(128, 128, 128, 0.3), rgba(0, 0, 0, 0.8));
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.card-title {
+    text-align: center;
+    font-size: 24px;
+    color: #FFF;
+}
+
+.form-control {
+    background-color: transparent;
+    color: black;
+    margin: 10px;
+    border: 2px solid #817B77;
+    border-radius: 10px;
+    padding-left: 30px;
+}
+
+.input-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.card-body h4 {
+    text-align: center;
+    font-size: 24px;
+    color: #FFF;
+}
+
+.card-body h6 {
+    text-align: center;
+    font-size: 16px;
+    color: #FFF;
+}
+
+.login-button {
+    width: 80%;
+    margin: 20px auto;
+    display: block;
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente blanco */
+    border-radius: 10px;
+    color: #000; /* Color de texto negro */
+}
+
+.google-button {
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente blanco */
+    color: #000; /* Color de texto negro */
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    border-radius: 10px;
+}
+
+    .google-button i {
+        margin-right: 10px;
+    }
+
+.register-link {
+    text-align: center;
+    font-size: 12px;
+    color: #FFF;
+    margin-top: 10px;
+}
+
+    .register-link a {
+        color: #FFF;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+.radzen-stack-centered {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 100%; /* Puede que necesites ajustar esto dependiendo del tamaño de tu div */
+}
+
+
+
+
+.google-icon {
+    background-image: url('images/google.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px; /* margen para separar el icono del texto */
+    border-radius: 50%;
+    vertical-align: middle; /* para centrarlo verticalmente con el texto */
+}
+
+.radzen-button {
+    background-color: transparent; /* fondo transparente */
+}
+
+

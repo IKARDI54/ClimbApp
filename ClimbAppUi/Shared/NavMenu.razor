@@ -1,48 +1,81 @@
-﻿<style>
-    .nav-scrollable {
-        background: linear-gradient(to bottom, #888888, #555555, #000000);
-        color: white;
-        
+﻿@using Radzen
+<style>
+    .custom-menu {
+        background-color: black; /* Color de fondo negro */
+        border: 1px solid gray; /* Borde gris de 1 píxel */
+        border-radius: 10px; /* Bordes redondeados */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra suave */
+        padding: 10px; /* Espaciado interior */
+        display: flex; /* Utilizar flexbox para alinear elementos horizontalmente */
+        align-items: center; /* Alinear elementos verticalmente en el centro */
+        justify-content: space-between; /* Espacio entre el logo y el menú */
     }
+
+        .custom-menu img {
+            margin-right: 10px; /* Espacio a la derecha del logo */
+            transition: transform 0.3s ease; /* Agregar una transición suave */
+        }
+
+        .custom-menu:hover img {
+            transform: translateY(10px); /* Mover el logo hacia abajo en el hover */
+        }
+
+    .rz-menu:not(.rz-profile-menu) {
+        background-color: black;
+        display: flex;
+        justify-content: flex-end; /* Alinear elementos a la derecha */
+        gap: 10px; /* Espacio entre elementos del menú */
+    }
+
+        .rz-menu:not(.rz-profile-menu) .rz-menu-item {
+            color: white; /* Color del texto del menú */
+        }
+
 </style>
 
-
-
-
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/home">
-                <span class="oi oi-home" aria-hidden="true"></span> Escalada Deportiva
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="filmlist">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Lista de Vías realizadas
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="filmdetails">
-                <span class="oi oi-plus" aria-hidden="true"></span> Añadir una vía
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="/">
-                <span class="oi oi-account-logout" aria-hidden="true"></span> Salir
-            </NavLink>
-        </div>
-
-    </nav>
+<div class="custom-menu">
+    <img src="/images/logoClimb.png" alt="Logo Climb" width="70" height="70" /> 
+    <h3 style="color:white; margin-top:10px" >ClimbAPP</h3>
+    <RadzenMenu Click="OnParentClicked">
+        <RadzenMenuItem Text="Ascensiones" Icon="mountain">
+            <RadzenMenuItem Text="Por Vía" Path="ascensiones/via" Icon="add_circle"></RadzenMenuItem>
+            <RadzenMenuItem Text="Por Escuela" Path="ascensiones/escuela" Icon="school"></RadzenMenuItem>
+        </RadzenMenuItem>
+        <RadzenMenuItem Text="Noticias" Icon="book">
+            <RadzenMenuItem Text="España" Path="noticias/espana" Icon="flag"></RadzenMenuItem>
+            <RadzenMenuItem Text="Internacional" Path="noticias/internacional" Icon="public"></RadzenMenuItem>
+        </RadzenMenuItem>
+        <RadzenMenuItem Text="Galería" Path="galeria" Icon="photo"></RadzenMenuItem>
+        <RadzenMenuItem Text="Videos" Path="videos" Icon="videocam"></RadzenMenuItem>
+        <RadzenMenuItem Text="Foro" Path="foro" Icon="forum"></RadzenMenuItem>
+        <RadzenMenuItem Text="Login" Path="/Login" Icon="login"></RadzenMenuItem>
+    </RadzenMenu>
 </div>
 
+<EventConsole/>
 
 @code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    EventConsole console = new EventConsole();
+    void OnParentClicked(MenuItemEventArgs args)
     {
-        collapseNavMenu = !collapseNavMenu;
+        console.Log($"{args.Text} clicked from parent");
+    }
+
+    public class EventConsole
+    {
+        private List<string> logMessages = new List<string>();
+
+        public void Log(string message)
+        {
+            logMessages.Add(message);
+        }
+
+        public IEnumerable<string> GetLog()
+        {
+            return logMessages;
+        }
     }
 }
+
+
+

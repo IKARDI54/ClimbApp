@@ -1,54 +1,46 @@
 ﻿using BlazorCLIMB.Data.Dapper.Repositories;
 using BlazorCLIMB.Model;
 using BlazorCLIMB.UI.Data;
-using System.Data.SqlClient;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
+public class ClimbingRouteService : IClimbingRouteService
+{
+    private readonly IClimbingRouteRepository _climbingRouteRepository;
 
-
-
-    public class ClimbingRouteService : IClimbingRouteService
+    public ClimbingRouteService(IClimbingRouteRepository climbingRouteRepository)
     {
-        private readonly SqlConfiguration _configuration;
-        private IClimbingRouteRepository _climbingRouteRepository;
-
-        public ClimbingRouteService(SqlConfiguration configuration)
-        {
-            _configuration = configuration;
-            _climbingRouteRepository = new ClimbingRouteRepository(configuration.ConnectionString);
-        }
-
-        public Task<bool> DeleteClimbingRoute(int id)
-        {
-            return _climbingRouteRepository.DeleteClimbingRoute(id);
-        }
-
-        public Task<IEnumerable<ClimbingRoute>> GetAllClimbingRoutes()
-        {
-            return _climbingRouteRepository.GetAllClimbingRoutes();
-        }
-
-        public Task<ClimbingRoute> GetClimbingRouteDetails(int id)
-        {
-            return _climbingRouteRepository.GetClimbingRouteDetails(id);
-        }
-
-
-        public Task<double> CalculateAverageRating(int climbingRouteId)
-        {
-            return _climbingRouteRepository.CalculateAverageRating(climbingRouteId);
-        }
-
-        public Task<bool> InsertClimbingRoute(ClimbingRoute climbingRoute)
-        {
-            if (climbingRoute.Id == 0)
-                return _climbingRouteRepository.InsertClimbingRoute(climbingRoute);
-            else
-                return _climbingRouteRepository.UpdateClimbingRoute(climbingRoute);
-        }
-
-        public Task<bool> UpdateClimbingRoute(ClimbingRoute climbingRoute)
-        {
-            return _climbingRouteRepository.UpdateClimbingRoute(climbingRoute);
-        }
+        _climbingRouteRepository = climbingRouteRepository;
     }
+
+    public async Task<IEnumerable<ClimbingRoute>> GetAllClimbingRoutes()
+    {
+        return await _climbingRouteRepository.GetAllClimbingRoutes();
+    }
+
+    public async Task<ClimbingRoute> GetClimbingRouteDetails(int id)
+    {
+        return await _climbingRouteRepository.GetClimbingRouteDetails(id);
+    }
+
+    public async Task<bool> InsertClimbingRoute(ClimbingRoute climbingRoute)
+    {
+        return await _climbingRouteRepository.InsertClimbingRoute(climbingRoute);
+    }
+
+    public async Task<bool> UpdateClimbingRoute(ClimbingRoute climbingRoute)
+    {
+        return await _climbingRouteRepository.UpdateClimbingRoute(climbingRoute);
+    }
+
+    public async Task<bool> DeleteClimbingRoute(int id)
+    {
+        return await _climbingRouteRepository.DeleteClimbingRoute(id);
+    }
+
+    public async Task<double> CalculateAverageRating(int climbingRouteId)
+    {
+        return await _climbingRouteRepository.CalculateAverageRating(climbingRouteId);
+    }
+}
 

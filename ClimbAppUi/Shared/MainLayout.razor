@@ -1,5 +1,12 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager NavManager
+@inject HttpClient Http
+@using BlazorCLIMB.UI.Shared
+@using BlazorCLIMB.UI.Services
+@inject IJSRuntime JS
+@using System.Text.Json;
+
+
 
 <PageTitle>BlazorCRUD.UI</PageTitle>
 
@@ -8,16 +15,41 @@
     {
         <div class="sidebar">
             <NavMenu />
+            
+            <CustomLayout />
         </div>
     }
 
     <main>
         <article class="content px-4">
+
             @Body
         </article>
     </main>
 </div>
 
+<style>
+    .central-column {
+        background-color: black;
+        /* Agregar más estilos si es necesario */
+    }
+</style>
+
 @code {
-    bool IsLoginPage => NavManager.Uri.EndsWith("/");
+    private List<RouteInfo> Routes { get; set; } = new List<RouteInfo>();
+
+    private bool IsLoginPage => NavManager.Uri.EndsWith("/Login", StringComparison.OrdinalIgnoreCase)
+                                || NavManager.Uri.EndsWith("/register", StringComparison.OrdinalIgnoreCase);
+
+
+
+    private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= HandleLocationChanged;
+    }
 }

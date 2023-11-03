@@ -1,0 +1,99 @@
+﻿@using BlazorCLIMB.UI.Shared
+<style>
+    .escalador-image {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        display: block;
+        margin-left: 0; /* Margen izquierdo establecido a 0 */
+        margin-right: auto;
+    }
+
+    
+
+    .rzi.rz-grid-filter-icon {
+        display: none;
+    }
+
+    div[tabindex="-1"] {
+        /* Tus estilos aquí */
+        text-align: left;
+        font-size: 0.8em;
+        background-color:black;
+        
+    }
+
+    .rz-cell-data, .rz-column-title-content {
+        color: white;
+        font-size:large;
+    }
+
+    .youtube-card {
+        width: 80%; /* Ajusta este valor según tus necesidades */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .embed-responsive-16by9 {
+        padding-bottom: 56.25%;
+        margin-top: 20px; /* Espacio en la parte superior */
+        margin-bottom: 20px; /* Espacio en la parte inferior */
+    }
+
+    
+</style>
+
+
+<RadzenRow class="rz-text-align-center" Gap="1rem">
+
+
+
+    <RadzenColumn Size="3" Order="3" class=" rz-p-5">
+        <div class="card youtube-card">
+            <div class="card-body">
+                <h5 class="card-title">EDITORIAL</h5>
+                <p class="card-text">by Jens Larssen, Editor-in-Chief</p>
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/FOQ4CxiN2Z4" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+
+    </RadzenColumn>
+
+
+
+
+    <RadzenColumn Size="3" OrderLG="1" style="background-color: black;" class=" rz-p-5">
+        @if (userId != null && userId != 0)
+        {
+         <BlazorCLIMB.UI.Pages.Index/>   
+        }
+        <RecentRockstarRoutes />
+    </RadzenColumn>
+
+
+
+
+    <RadzenColumn Size="6" OrderLG="2" class="rz-p-5">
+        <div class="news-section">
+            <h2>LATEST NEWS</h2>
+            <img src="images/new.jpg" alt="Imagen de la noticia" style="width:100%;">
+            <h3>Noé Looser, 16, does Nobody is Perfect (8c)</h3>
+            <p>Noé Looser, who last month won the Lead Euro Youth Championships, has sent Nobody is perfect (8c) at Voralberg. In 2020, at 13 she sent her first 8c, Siesta.</p>
+        </div>
+    </RadzenColumn>
+</RadzenRow>
+
+
+
+@code {
+    private int? userId;
+
+    protected override void OnInitialized()
+    {
+        userId = UserSession.UserId;  // Acceso directo a la propiedad estática
+    }
+}

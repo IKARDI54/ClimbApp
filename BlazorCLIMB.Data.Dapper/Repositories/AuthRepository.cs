@@ -1,9 +1,13 @@
-﻿using BlazorCLIMB.Model.BlazorCRUD.Model;
+﻿using BlazorCLIMB.Data.Dapper.DTOs;
+using BlazorCLIMB.Model;
+using BlazorCLIMB.Model.BlazorCRUD.Model;
 using Dapper;
 using System.Data;
 using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System.Text;
+using System.Xml.Linq;
+
 
 
 namespace BlazorCLIMB.Data.Dapper.Repositories
@@ -11,7 +15,7 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
     public class AuthRepository : IAuthRepository
     {
         private readonly IDbConnection _dbConnection;
-        public const string DefaultUserRole = "User";
+        
 
 
         public AuthRepository(IDbConnection dbConnection)
@@ -19,23 +23,22 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
             _dbConnection = dbConnection;
         }
 
-        public async Task<bool> CreateUser(string email, string password)
+        public async Task<bool> CreateUser(UserDto userDto)
         {
-            try
+            var hashedPassword = HashPassword(userDto.PasswordHash);
+            var sql = @"INSERT INTO Users (Email, PasswordHash, Role, Name, Img) 
+                VALUES (@Email, @PasswordHash, @Role, @Name, @Img)";
+            var result = await _dbConnection.ExecuteAsync(sql, new
             {
-
-
-
-                var hashedPassword = HashPassword(password);
-                var sql = "INSERT INTO Users (Email, PasswordHash, Role) VALUES (@Email, @PasswordHash, @Role)";
-                var result = await _dbConnection.ExecuteAsync(sql, new { Email = email, PasswordHash = hashedPassword, Role = DefaultUserRole });
-                return result > 0;
-            }
-            catch
-            {
-                return false;
-            }
+                Email = userDto.Email,
+                PasswordHash = hashedPassword,
+                Role = userDto.Role,
+                Name = userDto.Name,
+                Img = userDto.Img
+            });
+            return result > 0;
         }
+
 
 
 
@@ -52,15 +55,22 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
         }
 
 
-        public async Task<bool> VerifyPassword(string email, string password)
+        public async Task<AuthenticationResult> VerifyPassword(string email, string password)
         {
             var user = await GetUserByEmail(email);
             if (user != null)
             {
-                return VerifyHashedPassword(user.PasswordHash, password);
+                bool isVerified = VerifyHashedPassword(user.PasswordHash, password);
+                if (isVerified)
+                {
+                    // Aquí generas el token para el usuario, podría ser con JWT o como lo manejes
+                    string token = GenerateTokenForUser(user);
+                    return new AuthenticationResult { IsSuccess = true, Token = token };
+                }
             }
-            return false;
+            return new AuthenticationResult { IsSuccess = false };
         }
+
 
         public async Task<bool> AssignRoleToUser(string email, string role)
         {
@@ -76,16 +86,27 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
 
 
         // Método para hashing de contraseñas
+
+
         private string HashPassword(string password)
         {
-            return password;
+            return password; // Simplemente devolvemos la contraseña como su "hash"
         }
 
-        // Sin hashing, simplemente comparamos directamente las contraseñas
         private bool VerifyHashedPassword(string storedPassword, string passwordToVerify)
         {
-            return storedPassword == passwordToVerify;
+            return storedPassword == passwordToVerify; // Comparación directa
         }
+
+
+        private string GenerateTokenForUser(User user)
+        {
+            // Aquí va tu lógica para generar un token
+            // Podría ser con JWT u otro método que elijas
+            return $"{user.Id}_{DateTime.UtcNow.Ticks}";
+        }
+
+       
     }
 }
 

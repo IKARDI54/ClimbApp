@@ -1,0 +1,36 @@
+{
+  "ranking": [
+    {
+      "name": "Dani Andrada",
+      "description": "En 2007, Dani Andrada lanz� su propuesta de 9b para Ali Hulk extension sit start, en la cueva de Al� Bab� de Rodellar. Posteriormente, encaden� Delincuente natural extension en 2008 y Chilam Balam 9a+/b en 2015.",
+      "climbs": [
+        "Ali Hulk extension sit start (9b) - Rodellar",
+        "Delincuente natural extension (9b) - Rodellar",
+        "Chilam Balam 9a+/b - Villanueva del Rosario"
+      ]
+    },
+    {
+      "name": "Iker Pou",
+      "description": "A finales de 2018, Iker Pou realiz� la primera ascensi�n de Artaburu en Margalef, la cual es considerada por muchos como de grado 9b.",
+      "climbs": [ "Artaburu (9b) - Margalef" ]
+    },
+    {
+      "name": "Jorge D�az-Rullo",
+      "description": "Jorge ha encadenado La planta de Shiva 9b en 2019 y Ali Hulk extension total sit start en Rodellar. Tambi�n ha propuesto grados para varias otras rutas en Rodellar.",
+      "climbs": [
+        "La planta de Shiva (9b) - Villanueva del Rosario",
+        "Ali Hulk extension total sit start (9b) - Rodellar"
+      ]
+    },
+    {
+      "name": "Jonatan Flor",
+      "description": "Jonatan Flor alcanz� su m�ximo nivel con la primera ascensi�n de Ali Hulk extension total sit start en 2019. Tambi�n ha propuesto y repetido varios novenos en Rodellar.",
+      "climbs": [ "Ali Hulk extension total sit start (9b) - Rodellar" ]
+    },
+    {
+      "name": "Dani Fuertes",
+      "description": "Dani Fuertes ha realizado la repetici�n de Ali Hulk extension total sit start, confirmando su grado de 9b.",
+      "climbs": [ "Ali Hulk extension total sit start (9b) - Rodellar" ]
+    }
+  ]
+}

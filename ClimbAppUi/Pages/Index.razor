@@ -1,33 +1,36 @@
-﻿
-
-<head>
-    <link href="/css/styles.css" rel="stylesheet" />
-</head>
-
-
-@page "/home"
+﻿@page "/"
 @inject NavigationManager NavigationManager
+@using Radzen
+@using Radzen.Blazor
 
 <PageTitle>Página de Inicio</PageTitle>
 
-<div class="home-container">
-    <div class="background-image" style="background-image: url('/images/tu_imagen_de_fondo.jpg');">
-        <div class="overlay"></div>
-    </div>
-    <div class="content">
-        <h1>Bienvenidos a Patones - Escalada Deportiva</h1>
-        <p>Descubre la emoción y el desafío de la escalada en Patones, un lugar único para escaladores.</p>
-
-        <div class="interactive-element">
-            <button class="btn btn-primary" @onclick="RedirigirAFilmList">Lista de Vias emblemáticas visitadas</button>
-            <!-- Agrega aquí otros elementos interactivos si es necesario -->
+@if (userId != 0)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Bienvenido Usuario con ID: @userId</h5>
+            <p class="card-text">¡Feliz escalada!</p>
+            <button @onclick="GoToCreateRoute" class="btn btn-primary">Registrar una vía</button>
         </div>
     </div>
-</div>
+}
+else
+{
+    <p>Por favor, inicie sesión.</p>
+}
 
 @code {
-    private void RedirigirAFilmList()
+    private int userId;
+
+    protected override void OnInitialized()
     {
-        NavigationManager.NavigateTo("/filmlist");
+        userId = UserSession.UserId; // Asumiendo que UserSession es tu clase para manejar la sesión
+    }
+
+    private void GoToCreateRoute()
+    {
+        // Navegar a la página para registrar una nueva vía de escalada
+        NavigationManager.NavigateTo("/create-route");
     }
 }

@@ -1,0 +1,44 @@
+﻿@page "/vias-escaladas"
+@namespace BlazorCLIMB.UI.Shared
+
+
+
+
+<h3 style="color: white;">Vías más difíciles escaladas</h3>
+
+<RadzenDataGrid Data="@viasEscaladas" TItem="ViaEscalada" AllowFiltering="true">
+    <Columns>
+        <!-- Columna para las imágenes de los escaladores -->
+        <RadzenDataGridColumn TItem="ViaEscalada" Context="viaEscalada" Title="Escalador" Width="33%">
+            <Template Context="viaEscalada">
+                <img class="escalador-image" src="images/@viaEscalada.Escalador" alt="Imagen del escalador" />
+            </Template>
+        </RadzenDataGridColumn>
+
+        <!-- Columna para los nombres de los escaladores -->
+        <RadzenDataGridColumn TItem="ViaEscalada" Property="Nombre" Title="Nombre" Width="33%"/>
+
+        <!-- Columna para los grados de escalada -->
+        <RadzenDataGridColumn TItem="ViaEscalada" Property="Grado" Title="Grado" Width="33%" />
+    </Columns>
+</RadzenDataGrid>
+
+
+
+@code {
+    private List<ViaEscalada> viasEscaladas = new List<ViaEscalada>
+   {
+    new ViaEscalada {Nombre="Jakob Schubert", Escalador = "schu.jpg", Grado = "9c" }, // Suponiendo que schu.jpg está en el directorio 'images/'
+    new ViaEscalada { Nombre="Seb Bouin ",Escalador = "seb.jpg", Grado = "9c"},    // Usando la ruta relativa proporcionada
+    new ViaEscalada {Nombre="Adam Ondra", Escalador = "ondra.jpg", Grado = "9c"},  // Suponiendo que ondra.jpg está en el directorio 'images/'
+};
+
+    public class ViaEscalada
+    {
+        public string Escalador { get; set; }
+        public string Nombre { get; set; }
+        public string Grado { get; set; }
+       
+    }
+}
+

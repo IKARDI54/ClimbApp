@@ -1,0 +1,197 @@
+﻿@page "/register"
+@using Microsoft.AspNetCore.Components.Forms
+@using BlazorCLIMB.UI.Interfaces
+@using System.ComponentModel.DataAnnotations
+@using BlazorCLIMB.UI.Services;
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+@using BlazorInputFile;
+
+
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+
+    body {
+        background-image: url('/images/169781.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        height: 100%;
+        width: 100%;
+        backdrop-filter: blur(5px);
+    }
+
+    .card {
+        width: 420px;
+        margin: 0 auto;
+        background: linear-gradient(0deg, rgba(128, 128, 128, 0.3), rgba(0, 0, 0, 0.8));
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .card-title {
+        text-align: center;
+        font-size: 24px;
+        color: #FFF;
+    }
+
+    .form-control {
+        background-color: transparent;
+        color: black;
+        margin: 10px;
+        border: 2px solid #817B77;
+        border-radius: 10px;
+        padding-left: 30px;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .card-body h4 {
+        text-align: center;
+        font-size: 24px;
+        color: #FFF;
+    }
+
+    .card-body h6 {
+        text-align: center;
+        font-size: 16px;
+        color: #FFF;
+    }
+
+    .login-button {
+        width: 80%;
+        margin: 20px auto;
+        display: block;
+        background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente blanco */
+        border-radius: 10px;
+        color: #000; /* Color de texto negro */
+    }
+
+    .google-button {
+        background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente blanco */
+        color: #000; /* Color de texto negro */
+        width: 80%;
+        margin: 0 auto;
+        display: block;
+        border-radius: 10px;
+    }
+
+        .google-button i {
+            margin-right: 10px;
+        }
+
+    .register-link {
+        text-align: center;
+        font-size: 12px;
+        color: #FFF;
+        margin-top: 10px;
+    }
+
+        .register-link a {
+            color: #FFF;
+            font-weight: bold;
+            text-decoration: none;
+        }
+</style>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Register</h3>
+        </div>
+        <div class="card-body">
+            <h4>Please enter your information</h4>
+            <form @onsubmit="@HandleValidSubmit">
+                <div class="form-group">
+                    <span class="input-icon"></span>
+                    <input type="text" class="form-control" placeholder="Name" @bind="model.Name" required />
+                </div>
+                <div class="form-group">
+                    <span class="input-icon"></span>
+                    <input type="text" class="form-control" placeholder="Email" @bind="model.Email" required />
+                </div>
+                <div class="form-group">
+                    <span class="input-icon"></span>
+                    <input type="password" class="form-control" placeholder="Password" @bind="model.Password" required />
+                </div>
+                <div class="form-group">
+                    <span class="input-icon"></span>
+                    <input type="password" class="form-control" placeholder="Confirm Password" @bind="confirmPassword" required />
+                </div>
+                <div class="form-group">
+                    <span class="input-icon"></span>
+                    <RadzenFileInput @bind-Value="files" TValue="IEnumerable<IFileListEntry>" class="w-100" />
+                </div>
+                <button type="submit" class="btn btn-secondary login-button">Register</button>
+            </form>
+            <p style="color:white">@message</p> <!-- Mensaje de registro -->
+        </div>
+    </div>
+</div>
+
+@code {
+    private AuthModel model = new AuthModel();
+    private IEnumerable<IFileListEntry> files = null;
+    private string confirmPassword = "";
+    private string message = "";
+    private string role = "User";
+
+    private async Task HandleValidSubmit()
+    {
+        if (model.Password != confirmPassword)
+        {
+            message = "Passwords do not match. Please try again.";
+        }
+        else
+        {
+            if (files != null && files.Any())
+            {
+                var file = files.First(); // Obtén el primer archivo seleccionado
+                using (var memoryStream = new MemoryStream())
+                {
+                    await file.Data.CopyToAsync(memoryStream);
+                    model.Img = memoryStream.ToArray();
+                }
+            }
+
+            bool isCreated = await AuthService.CreateUser(model);
+            message = isCreated ? "User Created" : "Failed to create user";
+            StateHasChanged();
+            await Task.Delay(3000);
+            NavigationManager.NavigateTo("/Login");
+        }
+    }
+
+    public class AuthModel
+    {
+        [Required(ErrorMessage = "Name is required")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Email is required")]
+        public string Email { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; set; }
+
+        public byte[] Img { get; set; }
+    }
+}
+
+
+
+
+
+}

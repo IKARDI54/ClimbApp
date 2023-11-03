@@ -1,9 +1,11 @@
-﻿using BlazorCLIMB.Data.Dapper.Repositories;
+﻿using BlazorCLIMB.Data.Dapper.DTOs;
+using BlazorCLIMB.Data.Dapper.Repositories;
 using BlazorCLIMB.Model;
 using BlazorCLIMB.Model.BlazorCRUD.Model;
 using BlazorCLIMB.UI.Data;
 using BlazorCLIMB.UI.Interfaces;
 using System.Threading.Tasks;
+using static BlazorCLIMB.UI.Pages.RegisterCustom;
 
 namespace BlazorCLIMB.UI.Services
 {
@@ -21,10 +23,19 @@ namespace BlazorCLIMB.UI.Services
             return await _authRepository.AssignRoleToUser(email, role);
         }
 
-        public async Task<bool> CreateUser(string email, string password)
+        public async Task<bool> CreateUser(AuthModel model)
         {
-            return await _authRepository.CreateUser(email, password);
+            UserDto userDto = new UserDto
+            {
+                Name = model.Name,
+                Email = model.Email,
+                PasswordHash = model.Password,
+                Role = "User",  // Puedes cambiar esto según tus necesidades
+                Img = model.Img
+            };
+            return await _authRepository.CreateUser(userDto);
         }
+
 
         public async Task<string> GetRolesForUser(string email)
         {
@@ -36,7 +47,7 @@ namespace BlazorCLIMB.UI.Services
             return await _authRepository.GetUserByEmail(email);
         }
 
-        public async Task<bool> VerifyPassword(string email, string password)
+        public async Task<AuthenticationResult> VerifyPassword(string email, string password)
         {
             return await _authRepository.VerifyPassword(email, password);
         }

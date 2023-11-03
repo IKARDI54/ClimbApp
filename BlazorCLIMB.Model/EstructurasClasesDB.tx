@@ -1,82 +1,30 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+1. Gestión de Usuarios:
 
-namespace BlazorCRUD.Model
-{
-    public class ClimbingRoute
-    {
-        public int Id { get; set; } // Identificador único de la ruta
-        public string Name { get; set; } // Nombre de la ruta
-        public string Grade { get; set; } // Grado de dificultad
-        public string Description { get; set; }
-        public int ClimbingSectorId { get; set; } // Clave foránea para el sector
+Dado que ya tienes funciones para autenticación y creación de usuarios, puedes extender IAuthRepository para incluir:
+Un servicio para obtener el perfil completo de un usuario (no solo por email).
+Un servicio para modificar el perfil del usuario (por ejemplo, cambiar la foto de perfil, actualizar el nombre, etc.).
+2. Gestión de Seguidores y Seguidos:
 
+Crea un nuevo repositorio, por ejemplo IFollowersRepository, con servicios como:
+FollowUser: Para que un usuario siga a otro.
+UnfollowUser: Para que un usuario deje de seguir a otro.
+GetFollowers: Para obtener una lista de seguidores de un usuario.
+GetFollowing: Para obtener una lista de usuarios que un usuario está siguiendo.
+3. Gestión de Comentarios:
 
-        public int ClimbingSchoolId { get; set; } // Clave foránea para la escuela
-    }
+Puedes crear ICommentsRepository con funciones como:
+AddComment: Para agregar un comentario a una ruta.
+GetCommentsByRoute: Para obtener todos los comentarios de una ruta específica.
+DeleteComment: Para eliminar un comentario.
+EditComment: Para editar un comentario.
+4. Gestión de Notificaciones:
 
-    public class ClimbingSector
-    {
-        public int Id { get; set; } // Identificador único del sector
-        public string Name { get; set; } // Nombre del sector
-        public int ClimbingSchoolId { get; set; } // Clave foránea para la escuela
-        public string Description { get; set; } // Descripción del sector
-    }
+Considera la creación de INotificationsRepository que incluya:
+CreateNotification: Para crear una notificación para un usuario.
+GetUserNotifications: Para obtener las notificaciones de un usuario.
+MarkAsRead: Para marcar una notificación como leída.
+5. Front-end:
 
-    public class ClimbingSchool
-    {
-    
-
-   
-public int Id { get; set; } // Identificador único de la escuela
-        public string Name { get; set; } // Nombre de la escuela
-        public string Location { get; set; } // Ubicación de la escuela
-    }
-
-}
-
-
-
-
-
-
-
-
-Funcionalidades:
-Navegación jerárquica: Permite a los usuarios navegar desde una escuela de escalada a sus respectivos sectores y luego a las rutas específicas dentro de esos sectores.
-
-Búsqueda avanzada: Los usuarios podrían buscar rutas de escalada basadas en múltiples criterios: por nombre, grado de dificultad, sector, escuela, etc.
-
-Filtrado por escuela o sector: Al seleccionar una escuela de escalada, la aplicación podría mostrar solo los sectores y rutas asociadas con esa escuela.
-
-Gestión de imágenes: Los usuarios pueden añadir o actualizar imágenes para las escuelas, sectores o rutas, permitiendo visualizar mejor cada lugar o ruta.
-
-Recomendaciones personalizadas: Basándose en las rutas que un usuario ha escalado, la aplicación podría sugerir otras rutas de similar grado de dificultad o en la misma escuela/sector.
-
-Evaluaciones y comentarios: Podrías agregar una funcionalidad para que los usuarios evalúen y comenten sobre las rutas, sectores o escuelas.
-
-Ideas de negocio:
-Publicidad y patrocinios: Podrías colaborar con tiendas de equipo de escalada, gimnasios o escuelas de escalada para mostrar publicidad o contenido patrocinado.
-
-Clases y cursos: Integra ofertas de clases de escalada o cursos de seguridad en colaboración con escuelas de escalada.
-
-Eventos y competencias: Informa sobre eventos o competencias de escalada próximas en las escuelas registradas en tu aplicación.
-
-Integración con servicios de reserva: Permite a los usuarios reservar clases, cursos o incluso alojamiento cerca de las escuelas de escalada.
-
-Marketplace de equipo: Una sección donde los usuarios pueden comprar o vender equipo de escalada, ya sea nuevo o de segunda mano.
-
-Gamificación: Introduce un sistema de logros o recompensas para incentivar a los usuarios a escalar más rutas o a explorar nuevas escuelas y sectores.
-
-Red social y comunidad: Fomenta una comunidad permitiendo a los usuarios seguirse entre sí, compartir sus logros, fotos y consejos sobre rutas.
-
-Modelo premium: Una versión premium de la aplicación con características adicionales, como análisis detallados de progresión, acceso a guías exclusivas o descuentos en tiendas asociadas.
-
-Asociaciones con influencers o escaladores profesionales: Podrían ofrecer consejos, guías o clases exclusivas a través de la plataforma.
-
-Integración con otras aplicaciones: Como apps de fitness para rastrear el progreso físico o apps de turismo para explorar áreas alrededor de las escuelas de escalada.
-
-Recordatorio: Cualquiera que sea la funcionalidad o idea de negocio que elijas, asegúrate de realizar un estudio de mercado y testear con usuarios potenciales para validar la demanda y asegurarte de que realmente aporta valor a tu público objetivo.
+Página principal/Home: Aquí puedes mostrar una lista de las rutas de escalada más populares o más recientes. Utiliza GetAllClimbingRoutes para obtener estas rutas y mostrarlas en una lista o en tarjetas. También puedes agregar filtros para que los usuarios puedan buscar rutas por nombre, dificultad o ubicación.
+Perfil de Usuario: Una página donde los usuarios pueden ver su información, las rutas que han añadido, y la lista de seguidores y seguidos.
+Detalles de la Ruta de Escalada: Una página donde los usuarios pueden ver los detalles de una ruta específica, los comentarios relacionados y agregar sus propios comentarios.

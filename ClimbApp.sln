@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorCLIMB.UI", "ClimbAppUi\BlazorCLIMB.UI.csproj", "{D96B1089-A32F-43A3-A981-7BD59626FE2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorCLIMB.UI", "ClimbAppUi\BlazorCLIMB.UI.csproj", "{D96B1089-A32F-43A3-A981-7BD59626FE2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorCLIMB.Model", "BlazorCLIMB.Model\BlazorCLIMB.Model.csproj", "{91701CC4-3AA9-401A-A54B-4C2B8722768B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorCLIMB.Model", "BlazorCLIMB.Model\BlazorCLIMB.Model.csproj", "{91701CC4-3AA9-401A-A54B-4C2B8722768B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorCLIMB.Data.Dapper", "BlazorCLIMB.Data.Dapper\BlazorCLIMB.Data.Dapper.csproj", "{3CF0B7F9-73A6-4D1E-9FB0-A88D160B714A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorCLIMB.Data.Dapper", "BlazorCLIMB.Data.Dapper\BlazorCLIMB.Data.Dapper.csproj", "{3CF0B7F9-73A6-4D1E-9FB0-A88D160B714A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,70 +1,194 @@
-﻿@page "/"
+﻿@page "/Login"
 @using BlazorCLIMB.UI.Interfaces
-@using Blazorise
-@using System.ComponentModel.DataAnnotations;
+@using System.ComponentModel.DataAnnotations
+@using Radzen
+
 @inject IAuthService AuthService
 @inject NavigationManager NavigationManager
 
-<Blazorise.Card>
-    <Blazorise.CardHeader>
-        <Blazorise.CardTitle>@(showLogin ? "Login" : "Register")</Blazorise.CardTitle>
-    </Blazorise.CardHeader>
-    <Blazorise.CardBody>
-       <EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    
+<style>
+.container{
 
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="text" class="form-control" @bind="model.Email" placeholder="Email">
-    </div>
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
 
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input id="password" type="password" class="form-control" @bind="model.Password" placeholder="Password">
-    </div>
+body {
+    background-image: url('/images/169781.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100%;
+    width: 100%;
+    backdrop-filter: blur(5px);
+}
 
-    @if (!showLogin)
-    {
-        <div class="form-group">
-            <label for="role">Role</label>
-            <select id="role" class="form-control" @bind="model.Role">
-                <option value="User">User</option>
-                <option value="Admin">Admin</option>
-            </select>
-        </div>
+.card {
+    width: 420px;
+    margin: 0 auto;
+    background: linear-gradient(0deg, rgba(128, 128, 128, 0.3), rgba(0, 0, 0, 0.8));
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.card-title {
+    text-align: center;
+    font-size: 24px;
+    color: #FFF;
+}
+
+.form-control {
+    background-color: transparent;
+    color: black;
+    margin: 10px;
+    border: 2px solid #817B77;
+    border-radius: 10px;
+    padding-left: 30px;
+}
+
+.input-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.card-body h4 {
+    text-align: center;
+    font-size: 24px;
+    color: #FFF;
+}
+
+.card-body h6 {
+    text-align: center;
+    font-size: 16px;
+    color: #FFF;
+}
+
+.login-button {
+    width: 80%;
+    margin: 20px auto;
+    display: block;
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente blanco */
+    border-radius: 10px;
+    color: #000; /* Color de texto negro */
+}
+
+.google-button {
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente blanco */
+    color: #000; /* Color de texto negro */
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    border-radius: 10px;
+}
+
+    .google-button i {
+        margin-right: 10px;
     }
 
-    <button type="submit" class="btn btn-primary">@(showLogin ? "Login" : "Register")</button>
-</EditForm>
+.register-link {
+    text-align: center;
+    font-size: 12px;
+    color: #FFF;
+    margin-top: 10px;
+}
 
-        <Blazorise.Button Color="Color.Secondary" @onclick="@ToggleForm">SUSTOS @(showLogin ? "Register" : "Login")</Blazorise.Button>
-    </Blazorise.CardBody>
-</Blazorise.Card>
+    .register-link a {
+        color: #FFF;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+.radzen-stack-centered {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 100%; /* Puede que necesites ajustar esto dependiendo del tamaño de tu div */
+}
+
+
+
+
+.google-icon {
+    background-image: url('images/google.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px; /* margen para separar el icono del texto */
+    border-radius: 50%;
+    vertical-align: middle; /* para centrarlo verticalmente con el texto */
+}
+
+.radzen-button {
+    background-color: transparent; /* fondo transparente */
+}
+
+</style>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Login</h3>
+        </div>
+        <div class="card-body">
+            <h4>Please enter your email and password</h4>
+            <form @onsubmit="@HandleValidSubmit">
+                <div class="form-group">
+                    <span class="input-icon"></span>
+                    <input type="text" class="form-control" placeholder="Email" @bind="model.Email" required />
+                </div>
+                <div class="form-group">
+                    <span class="input-icon"></span>
+                    <input type="password" class="form-control" placeholder="Password" @bind="model.Password" required />
+                </div>
+                <button type="submit" class="btn btn-secondary login-button">Login</button>
+                <!-- Enlace para registro -->
+                <div class="mt-2" style="margin-left: 40px;">
+                    <p style="color: black;">¿No estás registrado? <a href="/register">Regístrate</a></p>
+                </div>
+            </form>
+            <p style="color:white">@message</p> <!-- Mensaje de autenticación -->
+        </div>
+    </div>
+</div>
+
 
 @code {
     private AuthModel model = new AuthModel();
-    private bool showLogin = true;
-    private string message = "Se ha llegado a este punto"; // Mensaje para depuración
+    private string message = "";
+    private int userId = 0;// Mensaje de autenticación
+    private string token = "";
 
     private async Task HandleValidSubmit()
     {
-        if (showLogin)
+        var authenticationResult = await AuthService.VerifyPassword(model.Email, model.Password);
+
+        if (authenticationResult.IsSuccess)
         {
-            bool isAuthenticated = await AuthService.VerifyPassword(model.Email, model.Password);
-            message = isAuthenticated ? "Authenticated" : "Failed to authenticate";
+            UserSession.SetToken(authenticationResult.Token); // Aquí capturamos el token
+            token = authenticationResult.Token;
+            userId = UserSession.ExtractUserIdFromToken(token);
+            // Console.Write("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",userId);
+            message = "Authentication has been successful., Wellcome to ClimbApp";
+            StateHasChanged();
+            await Task.Delay(3000);
+            NavigationManager.NavigateTo("/");
         }
         else
         {
-            bool isCreated = await AuthService.CreateUser(model.Email, model.Password);
-            message = isCreated ? "User Created" : "Failed to create user";
+            // Mostrar un mensaje en inglés en caso de fallo
+            message = "Authentication failed. Please check your credentials.";
+            StateHasChanged();
         }
-    }
-
-    private void ToggleForm()
-    {
-        showLogin = !showLogin;
-        message = "Form toggled";
     }
 
     public class AuthModel
@@ -72,10 +196,9 @@
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
 
-        [Required (ErrorMessage = "Password is required")]
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
-
-        public string Role { get; set; }
     }
-
+  
 }
+
