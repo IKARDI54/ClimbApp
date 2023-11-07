@@ -1,11 +1,10 @@
-﻿@page "/register"
-@using Microsoft.AspNetCore.Components.Forms
+﻿@page "/Register"
+
 @using BlazorCLIMB.UI.Interfaces
 @using System.ComponentModel.DataAnnotations
 @using BlazorCLIMB.UI.Services;
 @inject IAuthService AuthService
 @inject NavigationManager NavigationManager
-@using BlazorInputFile;
 
 
 <style>
@@ -113,7 +112,6 @@
             <h3 class="card-title">Register</h3>
         </div>
         <div class="card-body">
-            <h4>Please enter your information</h4>
             <form @onsubmit="@HandleValidSubmit">
                 <div class="form-group">
                     <span class="input-icon"></span>
@@ -132,8 +130,9 @@
                     <input type="password" class="form-control" placeholder="Confirm Password" @bind="confirmPassword" required />
                 </div>
                 <div class="form-group">
-                    <span class="input-icon"></span>
-                    <RadzenFileInput @bind-Value="files" TValue="IEnumerable<IFileListEntry>" class="w-100" />
+                    <div class="custom-file">
+                    <InputFile class="form-control" id="avatar" accept="image/*" OnChange="OnAvatarChange" />
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-secondary login-button">Register</button>
             </form>
@@ -143,11 +142,11 @@
 </div>
 
 @code {
-    private AuthModel model = new AuthModel();
-    private IEnumerable<IFileListEntry> files = null;
-    private string confirmPassword = "";
-    private string message = "";
-    private string role = "User";
+    AuthModel model = new AuthModel();
+    string confirmPassword = "";
+    string message = "";
+    string role = "User";
+    string avatarUrl;
 
     private async Task HandleValidSubmit()
     {
@@ -157,14 +156,10 @@
         }
         else
         {
-            if (files != null && files.Any())
+            if (model.Img == null)
             {
-                var file = files.First(); // Obtén el primer archivo seleccionado
-                using (var memoryStream = new MemoryStream())
-                {
-                    await file.Data.CopyToAsync(memoryStream);
-                    model.Img = memoryStream.ToArray();
-                }
+                message = "Please select an avatar image.";
+                return;
             }
 
             bool isCreated = await AuthService.CreateUser(model);
@@ -172,6 +167,25 @@
             StateHasChanged();
             await Task.Delay(3000);
             NavigationManager.NavigateTo("/Login");
+        }
+    }
+
+    private async Task OnAvatarChange(InputFileChangeEventArgs e)
+    {
+        var imageFile = e.File;
+
+        if (imageFile != null)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await imageFile.OpenReadStream().CopyToAsync(memoryStream);
+                model.Img = memoryStream.ToArray();
+                avatarUrl = $"data:{imageFile.ContentType};base64,{Convert.ToBase64String(model.Img)}";
+            }
+        }
+        else
+        {
+            message = "Please select an avatar image.";
         }
     }
 
@@ -188,10 +202,4 @@
 
         public byte[] Img { get; set; }
     }
-}
-
-
-
-
-
 }
