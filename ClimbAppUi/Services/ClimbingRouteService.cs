@@ -1,6 +1,7 @@
 ﻿using BlazorCLIMB.Data.Dapper.Repositories;
 using BlazorCLIMB.Model;
 using BlazorCLIMB.UI.Data;
+using BlazorCLIMB.UI.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

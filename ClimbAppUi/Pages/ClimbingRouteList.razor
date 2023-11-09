@@ -1,60 +1,57 @@
 ﻿@page "/climbingRouteList"
-@using BlazorCLIMB.Data.Dapper.Repositories
 @using Model
 @using Interfaces
 @inject IClimbingRouteService ClimbingRouteService
 @inject NavigationManager NavigationManager
 
-<h1 class="title is-3 has-text-white">Listado de Vías Escaladas</h1>
-<p class="subtitle has-text-grey-lighter">
-    Esta página muestra un listado de todas las vías escaladas.
-</p>
+<div class="container">
+    <h1 class="mt-4">Listado de Vías Escaladas</h1>
+    <p>Esta página muestra un listado de todas las vías escaladas.</p>
 
-@if (climbingRoutes == null)
-{
-    <p><em>Loading...</em></p>
-}
-else if (loadingError != null)
-{
-    <p><em>@loadingError</em></p>
-}
-else
-{
-    <!-- El resto del código HTML para mostrar las rutas -->
+    <div class="mb-4">
+        <a href="/climbingRouteDetails" class="btn btn-primary">Añadir Ruta</a>
+    </div>
 
-    <div class="columns is-multiline">
-        @foreach (var route in climbingRoutes)
-        {
-            <div class="column is-one-quarter">
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-4by3">
-                            <img src="@route.ImageUrl" alt="Imagen de la ruta">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <h5 class="title is-5">@route.Name</h5>
-                        <p class="subtitle is-6">Sector: @route.ClimbingSectorId</p>
-                        <p class="subtitle is-6">Escuela: @route.ClimbingSchoolId</p>
-                        <div class="content">
-                            @route.Description
-                            <br>
+    @if (climbingRoutes == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else if (loadingError != null)
+    {
+        <p><em>@loadingError</em></p>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var route in climbingRoutes)
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card">
+                        <img src="@route.Imag" class="card-img-top" alt="Imagen de la ruta">
+                        <div class="card-body">
+                            <h5 class="card-title">@route.Name</h5>
+                            <p class="card-text">Sector: @route.ClimbingSector</p>
+                            <p class="card-text">Escuela: @route.ClimbingSchoolId</p>
+                            <p class="card-text">@route.Description</p>
                             <strong>Valoración:</strong> ⭐⭐⭐⭐☆
                             <br>
                             <strong>Comentarios:</strong> "Esta ruta es increíble, ¡me encantó!"
                         </div>
-                        <footer class="card-footer">
-                            <a href="/climbingRouteEdit/@route.Id" class="card-footer-item">Editar</a>
-                            <a href="/climbingRouteDelete/@route.Id" class="card-footer-item has-text-danger">Eliminar</a>
-                        </footer>
+                        <div class="card-footer">
+                            <a href="/climbingRouteDetails/@route.Id" class="btn btn-primary">Editar</a>
+                            <button @onclick="() => DeleteClimbingRoute(route.Id)" class="btn btn-danger">Eliminar</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        }
-    </div>
-}
+            }
+        </div>
+    }
+</div>
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
+
     private IEnumerable<ClimbingRoute> climbingRoutes;
     private string loadingError;
 
@@ -67,6 +64,23 @@ else
         catch (Exception ex)
         {
             loadingError = "An error occurred while loading the routes: " + ex.Message;
+        }
+    }
+
+    protected async Task DeleteClimbingRoute(int routeId)
+    {
+        try
+        {
+            // Llama al servicio para eliminar la ruta de escalada con el ID proporcionado.
+            await ClimbingRouteService.DeleteClimbingRoute(routeId);
+
+            // Después de eliminar la ruta, actualiza la lista de rutas para reflejar los cambios.
+            climbingRoutes = await ClimbingRouteService.GetAllClimbingRoutes();
+        }
+        catch (Exception ex)
+        {
+            // Maneja cualquier error que pueda ocurrir durante la eliminación.
+            loadingError = "An error occurred while deleting the route: " + ex.Message;
         }
     }
 }

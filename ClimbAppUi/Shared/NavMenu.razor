@@ -48,9 +48,14 @@
         <RadzenMenuItem Text="Galería" Path="galeria" Icon="photo"></RadzenMenuItem>
         <RadzenMenuItem Text="Videos" Path="videos" Icon="videocam"></RadzenMenuItem>
         <RadzenMenuItem Text="Foro" Path="foro" Icon="forum"></RadzenMenuItem>
-        <RadzenMenuItem Text="Login" Path="/Login" Icon="login"></RadzenMenuItem>
+        @if(userId != 0){
+            <RadzenMenuItem Text="Logout" Path="/Login" Icon="logout"></RadzenMenuItem>
+        }else{
+            <RadzenMenuItem Text="Login" Path="/Login" Icon="login"></RadzenMenuItem>
+        }
     </RadzenMenu>
 </div>
+
 
 <EventConsole/>
 
@@ -74,6 +79,12 @@
         {
             return logMessages;
         }
+    }
+    private int userId;
+
+    protected override void OnInitialized()
+    {
+        userId = UserSession.UserId; // Asumiendo que UserSession es tu clase para manejar la sesión
     }
 }
 

@@ -40,8 +40,6 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
         }
 
 
-
-
         public async Task<User?> GetUserByEmail(string email) 
         {
             var sql = "SELECT * FROM Users WHERE Email = @Email";
@@ -101,8 +99,7 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
 
         private string GenerateTokenForUser(User user)
         {
-            // Aquí va tu lógica para generar un token
-            // Podría ser con JWT u otro método que elijas
+            
             return $"{user.Id}_{DateTime.UtcNow.Ticks}";
         }
 

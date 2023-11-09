@@ -1,5 +1,6 @@
 ﻿@using BlazorCLIMB.UI.Shared
 <style>
+    /* Estilos para la imagen del escalador */
     .escalador-image {
         border-radius: 50%;
         width: 50px;
@@ -10,46 +11,41 @@
         margin-right: auto;
     }
 
-    
-
+    /* Estilos para ocultar el icono de filtro en el grid */
     .rzi.rz-grid-filter-icon {
         display: none;
     }
 
+    /* Estilos para elementos con tabindex -1 (puedes personalizarlos) */
     div[tabindex="-1"] {
-        /* Tus estilos aquí */
         text-align: left;
         font-size: 0.8em;
-        background-color:black;
-        
+        background-color: black;
     }
 
+    /* Estilos para elementos de datos en el grid */
     .rz-cell-data, .rz-column-title-content {
         color: white;
-        font-size:large;
+        font-size: large;
     }
 
+    /* Estilos para tarjetas de YouTube */
     .youtube-card {
         width: 80%; /* Ajusta este valor según tus necesidades */
         margin-left: auto;
         margin-right: auto;
     }
 
+    /* Estilos para hacer que los videos de YouTube tengan relación de aspecto 16:9 */
     .embed-responsive-16by9 {
         padding-bottom: 56.25%;
         margin-top: 20px; /* Espacio en la parte superior */
         margin-bottom: 20px; /* Espacio en la parte inferior */
     }
-
-    
 </style>
 
-
 <RadzenRow class="rz-text-align-center" Gap="1rem">
-
-
-
-    <RadzenColumn Size="3" Order="3" class=" rz-p-5">
+    <RadzenColumn Size="3" Order="3" class="rz-p-5">
         <div class="card youtube-card">
             <div class="card-body">
                 <h5 class="card-title">EDITORIAL</h5>
@@ -59,23 +55,16 @@
                 </div>
             </div>
         </div>
-
-
     </RadzenColumn>
 
-
-
-
-    <RadzenColumn Size="3" OrderLG="1" style="background-color: black;" class=" rz-p-5">
+    <RadzenColumn Size="3" OrderLG="1" style="background-color: black;" class="rz-p-5">
         @if (userId != null && userId != 0)
         {
-         <BlazorCLIMB.UI.Pages.Index/>   
+            <!-- Renderizar el componente Index si el usuario está autenticado -->
+            <BlazorCLIMB.UI.Pages.Index />
         }
         <RecentRockstarRoutes />
     </RadzenColumn>
-
-
-
 
     <RadzenColumn Size="6" OrderLG="2" class="rz-p-5">
         <div class="news-section">
@@ -86,8 +75,6 @@
         </div>
     </RadzenColumn>
 </RadzenRow>
-
-
 
 @code {
     private int? userId;

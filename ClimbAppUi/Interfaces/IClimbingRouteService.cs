@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BlazorCLIMB.Data.Dapper.Repositories
+namespace BlazorCLIMB.UI.Interfaces
 {
     public interface IClimbingRouteService
     {

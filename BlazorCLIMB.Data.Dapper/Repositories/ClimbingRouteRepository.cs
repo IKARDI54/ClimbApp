@@ -37,7 +37,7 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
         {
             var db = dbConnection();
 
-            var sql = @"SELECT Id, Name, Grade, Description, ClimbingSectorId, ClimbingSchoolId, ImageUrl 
+            var sql = @"SELECT Id, Name, Grade, Description, ClimbingSector, ClimbingSchoolId, Imag
                         FROM ClimbingRoute";
 
             return await db.QueryAsync<ClimbingRoute>(sql.ToString());
@@ -47,7 +47,7 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
         {
             var db = dbConnection();
 
-            var sql = @"SELECT Id, Name, Grade, Description, ClimbingSectorId, ClimbingSchoolId, ImageUrl 
+            var sql = @"SELECT Id, Name, Grade, Description, ClimbingSector, ClimbingSchoolId, Imag 
                         FROM ClimbingRoute
                         WHERE Id = @id";
 
@@ -58,8 +58,8 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
         {
             var db = dbConnection();
 
-            var sql = @"INSERT INTO ClimbingRoute (Name, Grade, Description, ClimbingSectorId, ClimbingSchoolId, ImageUrl)
-                        VALUES (@Name, @Grade, @Description, @ClimbingSectorId, @ClimbingSchoolId, @ImageUrl)";
+            var sql = @"INSERT INTO ClimbingRoute (Name, Grade, Description, ClimbingSector, ClimbingSchoolId, Imag)
+                        VALUES (@Name, @Grade, @Description, @ClimbingSector, @ClimbingSchoolId, @Imag)";
 
             var result = await db.ExecuteAsync(sql.ToString(),
                 new
@@ -67,9 +67,9 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
                     climbingRoute.Name,
                     climbingRoute.Grade,
                     climbingRoute.Description,
-                    climbingRoute.ClimbingSectorId,
+                    climbingRoute.ClimbingSector,
                     climbingRoute.ClimbingSchoolId,
-                    climbingRoute.ImageUrl
+                    climbingRoute.Imag
                 });
 
             return result > 0;
@@ -81,8 +81,8 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
 
             var sql = @"UPDATE ClimbingRoute 
                         SET Name = @Name, Grade = @Grade, Description = @Description,
-                            ClimbingSectorId = @ClimbingSectorId, ClimbingSchoolId = @ClimbingSchoolId,
-                            ImageUrl = @ImageUrl
+                            ClimbingSector = @ClimbingSector, ClimbingSchoolId = @ClimbingSchoolId,
+                            Imag = @Imag
                         WHERE Id = @Id";
 
             var result = await db.ExecuteAsync(sql.ToString(),
@@ -91,9 +91,9 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
                     climbingRoute.Name,
                     climbingRoute.Grade,
                     climbingRoute.Description,
-                    climbingRoute.ClimbingSectorId,
+                    climbingRoute.ClimbingSector,
                     climbingRoute.ClimbingSchoolId,
-                    climbingRoute.ImageUrl,
+                    climbingRoute.Imag,
                     climbingRoute.Id
                 });
 

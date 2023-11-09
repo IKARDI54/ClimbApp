@@ -1,4 +1,5 @@
 ﻿@page "/Login"
+@using BlazorCLIMB.Model.BlazorCRUD.Model;
 @using BlazorCLIMB.UI.Interfaces
 @using System.ComponentModel.DataAnnotations
 @using Radzen
@@ -167,6 +168,8 @@ body {
     private string message = "";
     private int userId = 0;// Mensaje de autenticación
     private string token = "";
+    private string NameUser = "";
+    private User userData = new User();
 
     private async Task HandleValidSubmit()
     {
@@ -175,10 +178,11 @@ body {
         if (authenticationResult.IsSuccess)
         {
             UserSession.SetToken(authenticationResult.Token); // Aquí capturamos el token
+            userData = await AuthService.GetUserByEmail(model.Email);
+            NameUser = userData.Name;
             token = authenticationResult.Token;
             userId = UserSession.ExtractUserIdFromToken(token);
-            // Console.Write("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",userId);
-            message = "Authentication has been successful., Wellcome to ClimbApp";
+            message = "Authentication has been successful, Wellcome to ClimbApp "+NameUser;
             StateHasChanged();
             await Task.Delay(3000);
             NavigationManager.NavigateTo("/");

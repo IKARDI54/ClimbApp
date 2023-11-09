@@ -23,7 +23,7 @@ builder.Services.AddScoped<IClimbingRouteRepository, ClimbingRouteRepository>(pr
     return new ClimbingRouteRepository(sqlConfig.ConnectionString);
 });
 
-
+builder.Services.AddScoped<IClimbingRouteService, ClimbingRouteService>();
 builder.Services.AddRadzenComponents();
 builder.Services.AddScoped<HttpClient>();
 
