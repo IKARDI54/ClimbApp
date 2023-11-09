@@ -37,17 +37,23 @@
     <img src="/images/logoClimb.png" alt="Logo Climb" width="70" height="70" /> 
     <h3 style="color:white; margin-top:10px" >ClimbAPP</h3>
     <RadzenMenu Click="OnParentClicked">
-        <RadzenMenuItem Text="Ascensiones" Icon="mountain">
-            <RadzenMenuItem Text="Por Vía" Path="ascensiones/via" Icon="add_circle"></RadzenMenuItem>
-            <RadzenMenuItem Text="Por Escuela" Path="ascensiones/escuela" Icon="school"></RadzenMenuItem>
-        </RadzenMenuItem>
+        @if (userId != 0)
+        {
+            <RadzenMenuItem Text="Ascensiones" Icon="add_circle">
+                <RadzenMenuItem Text="Añadir Via" Path="/climbingRouteDetails" Icon="add_circle"></RadzenMenuItem>
+                <RadzenMenuItem Text="Vías encadenadas" Path="/climbingRouteList" Icon="list"></RadzenMenuItem>
+            </RadzenMenuItem>
+        }
         <RadzenMenuItem Text="Noticias" Icon="book">
             <RadzenMenuItem Text="España" Path="noticias/espana" Icon="flag"></RadzenMenuItem>
             <RadzenMenuItem Text="Internacional" Path="noticias/internacional" Icon="public"></RadzenMenuItem>
         </RadzenMenuItem>
         <RadzenMenuItem Text="Galería" Path="galeria" Icon="photo"></RadzenMenuItem>
         <RadzenMenuItem Text="Videos" Path="videos" Icon="videocam"></RadzenMenuItem>
-        <RadzenMenuItem Text="Foro" Path="foro" Icon="forum"></RadzenMenuItem>
+        @if (userId != 0)
+        {
+            <RadzenMenuItem Text="Foro" Path="foro" Icon="forum"></RadzenMenuItem>
+        }
         @if(userId != 0){
             <RadzenMenuItem Text="Logout" Path="/Login" Icon="logout"></RadzenMenuItem>
         }else{

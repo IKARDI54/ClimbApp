@@ -1,6 +1,9 @@
 ﻿using BlazorCLIMB.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static BlazorCLIMB.UI.Pages.ClimbingRouteDetails;
+using static BlazorCLIMB.UI.Pages.ClimbingRouteList;
+
 
 namespace BlazorCLIMB.UI.Interfaces
 {

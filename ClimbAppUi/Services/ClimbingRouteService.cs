@@ -5,7 +5,9 @@ using BlazorCLIMB.UI.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-public class ClimbingRouteService : IClimbingRouteService
+namespace BlazorCLIMB.UI.Services
+{
+    public class ClimbingRouteService : IClimbingRouteService
 {
     private readonly IClimbingRouteRepository _climbingRouteRepository;
 
@@ -43,5 +45,6 @@ public class ClimbingRouteService : IClimbingRouteService
     {
         return await _climbingRouteRepository.CalculateAverageRating(climbingRouteId);
     }
+}
 }
 

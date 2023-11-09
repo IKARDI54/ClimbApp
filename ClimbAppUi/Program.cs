@@ -8,10 +8,15 @@ using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuración básica
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+// Configuración de la base de datos
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json")
+    .Build();
+builder.Services.AddSingleton<IConfiguration>(configuration);
 
+var sqlConnectionConfiguration = new SqlConfiguration(configuration.GetConnectionString("SqlConnection"));
+builder.Services.AddSingleton(sqlConnectionConfiguration);
 
 // Configuración de los servicios
 builder.Services.AddScoped<IDbConnection>(provider =>
@@ -27,20 +32,16 @@ builder.Services.AddScoped<IClimbingRouteService, ClimbingRouteService>();
 builder.Services.AddRadzenComponents();
 builder.Services.AddScoped<HttpClient>();
 
+// Configuración básica
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
 
-// Configuración de la base de datos
-var configuration = new ConfigurationBuilder()
-    .SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.json")
-    .Build();
-builder.Services.AddSingleton<IConfiguration>(configuration);
-
-var sqlConnectionConfiguration = new SqlConfiguration(configuration.GetConnectionString("SqlConnection"));
-builder.Services.AddSingleton(sqlConnectionConfiguration);
+// Agregar el logging
+builder.Logging.AddConsole();
 
 // Crear y configurar la aplicación web
 WebApplication app = builder.Build();
-builder.Logging.AddConsole();
+
 
 // Configuración del pipeline HTTP
 if (!app.Environment.IsDevelopment())

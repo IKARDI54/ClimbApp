@@ -8,26 +8,59 @@
     <h1 class="mt-4">Listado de Vías Escaladas</h1>
 
     <div class="mb-4">
-        <a href="/climbingRouteDetails" class="btn btn-primary">Añadir Ruta</a>
+        <a @onclick="AddClimbingRoute" class="btn btn-primary">Añadir Ruta</a>
     </div>
-
+    @if (climbingRoutes != null)
+    {
         <div class="row">
             @foreach (var route in climbingRoutes)
             {
                 <div class="col-md-3 mb-4">
                     <div class="card">
-                        <img src="@route.Imag" class="card-img-top" alt="Imagen de la ruta">
                         <div class="card-body">
                             <h5 class="card-title">@route.Name</h5>
+                            <p class="card-text">Grado: @route.Grade</p>
                             <p class="card-text">Sector: @route.ClimbingSector</p>
-                            <p class="card-text">Escuela: @route.ClimbingSchoolId</p>
-                            <p class="card-text">@route.Description</p>
+                            <p class="card-text">
+                                Escuela:
+                                @{
+                                    string schoolName = "";
+
+                                    // Verificar el valor de ClimbingSchoolId y asignar el nombre correspondiente
+                                    if (route.ClimbingSchoolId == 1)
+                                    {
+                                        schoolName = "Cuenca";
+                                    }
+                                    else if (route.ClimbingSchoolId == 2)
+                                    {
+                                        schoolName = "Entrepeñas";
+                                    }
+                                    else if (route.ClimbingSchoolId == 3)
+                                    {
+                                        schoolName = "Fin del Mundo";
+                                    }
+                                    else if (route.ClimbingSchoolId == 4)
+                                    {
+                                        schoolName = "Patones";
+                                    }
+                                    else
+                                    {
+                                        // En caso de que el valor no coincida con ninguno de los casos anteriores
+                                        schoolName = "Desconocida"; // Puedes asignar un valor predeterminado o manejarlo de otra manera.
+                                    }
+                                }
+
+                                @schoolName
+                            </p>
+                            <p class="card-text">Sector:@route.ClimbingSector</p>
+                            <p class="card-text">Descripción:@route.Description</p>
                             <strong>Valoración:</strong> ⭐⭐⭐⭐☆
                             <br>
                             <strong>Comentarios:</strong> "Esta ruta es increíble, ¡me encantó!"
                         </div>
                         <div class="card-footer">
-                            <a href="/climbingRouteDetails/@route.Id" class="btn btn-primary">Editar</a>
+                            <a @onclick="(() => EditClimbingRoute(route.Id))" class="btn btn-primary">Editar</a>
+
                             <button @onclick="() => DeleteClimbingRoute(route.Id)" class="btn btn-danger">Eliminar</button>
                         </div>
                     </div>
@@ -53,8 +86,19 @@
         catch (Exception ex)
         {
             loadingError = "An error occurred while loading the routes: " + ex.Message;
+            climbingRoutes = Enumerable.Empty<ClimbingRoute>(); // Inicializa climbingRoutes con una lista vacía
+            StateHasChanged(); // Forzar una actualización de la página
         }
     }
+        private void AddClimbingRoute()
+        {
+            NavigationManager.NavigateTo("/climbingRouteDetails");
+        }
+
+        private void EditClimbingRoute(int routeId)
+        {
+            NavigationManager.NavigateTo($"/climbingRouteDetails/{routeId}");
+        }
 
     protected async Task DeleteClimbingRoute(int routeId)
     {

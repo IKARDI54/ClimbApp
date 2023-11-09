@@ -37,7 +37,7 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
         {
             var db = dbConnection();
 
-            var sql = @"SELECT Id, Name, Grade, Description, ClimbingSector, ClimbingSchoolId, Imag
+            var sql = @"SELECT Id, Name, Grade, Description, ClimbingSector, ClimbingSchoolId
                         FROM ClimbingRoute";
 
             return await db.QueryAsync<ClimbingRoute>(sql.ToString());
@@ -45,21 +45,30 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
 
         public async Task<ClimbingRoute> GetClimbingRouteDetails(int id)
         {
-            var db = dbConnection();
+            try
+            {
+                var db = dbConnection();
 
-            var sql = @"SELECT Id, Name, Grade, Description, ClimbingSector, ClimbingSchoolId, Imag 
-                        FROM ClimbingRoute
-                        WHERE Id = @id";
+                var sql = @"SELECT Id, Name, Grade, Description, ClimbingSchoolId, ClimbingSector  
+                    FROM ClimbingRoute
+                    WHERE Id = @id";
 
-            return await db.QueryFirstOrDefaultAsync<ClimbingRoute>(sql.ToString(), new { id = id });
+                return await db.QueryFirstOrDefaultAsync<ClimbingRoute>(sql.ToString(), new { id });
+            }
+            catch (Exception ex)
+            {
+                // Manejo de la excepción, puedes imprimir el mensaje de error o hacer otro tipo de registro.
+                Console.WriteLine($"Error en GetClimbingRouteDetails: {ex.Message}");
+                throw; // Puedes lanzar la excepción nuevamente o manejarla según tus necesidades.
+            }
         }
 
         public async Task<bool> InsertClimbingRoute(ClimbingRoute climbingRoute)
         {
             var db = dbConnection();
 
-            var sql = @"INSERT INTO ClimbingRoute (Name, Grade, Description, ClimbingSector, ClimbingSchoolId, Imag)
-                        VALUES (@Name, @Grade, @Description, @ClimbingSector, @ClimbingSchoolId, @Imag)";
+            var sql = @"INSERT INTO ClimbingRoute (Name, Grade, Description, ClimbingSchoolId, ClimbingSector)
+                        VALUES (@Name, @Grade, @Description, @ClimbingSchoolId, @ClimbingSector )";
 
             var result = await db.ExecuteAsync(sql.ToString(),
                 new
@@ -67,9 +76,10 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
                     climbingRoute.Name,
                     climbingRoute.Grade,
                     climbingRoute.Description,
-                    climbingRoute.ClimbingSector,
                     climbingRoute.ClimbingSchoolId,
-                    climbingRoute.Imag
+                    climbingRoute.ClimbingSector,
+                    
+                  
                 });
 
             return result > 0;
@@ -81,8 +91,8 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
 
             var sql = @"UPDATE ClimbingRoute 
                         SET Name = @Name, Grade = @Grade, Description = @Description,
-                            ClimbingSector = @ClimbingSector, ClimbingSchoolId = @ClimbingSchoolId,
-                            Imag = @Imag
+                            ClimbingSector = @ClimbingSector, ClimbingSchoolId = @ClimbingSchoolId
+                            
                         WHERE Id = @Id";
 
             var result = await db.ExecuteAsync(sql.ToString(),
@@ -93,7 +103,6 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
                     climbingRoute.Description,
                     climbingRoute.ClimbingSector,
                     climbingRoute.ClimbingSchoolId,
-                    climbingRoute.Imag,
                     climbingRoute.Id
                 });
 

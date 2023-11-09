@@ -1,76 +1,78 @@
 ﻿@page "/climbingRouteDetails/{id:int?}"
-@page "/climbingRouteDetails"
+
 @using BlazorCLIMB.Data.Dapper.Repositories
 @using Model
 @using Interfaces
 @inject IClimbingRouteService ClimbingRouteService
 @inject NavigationManager NavigationManager
 
-    <div class="container mt-5">
-        <div class="columns is-centered">
-            <div class="column is-half">
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-4by3">
-                            <img src="@climbingRoute.Imag" alt="Imagen de la ruta de escalada">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <EditForm Model="@climbingRoute" class="my-form">
-                            <div class="field">
-                                <label class="label">Nombre de la vía:</label>
-                                <input type="text" class="input" @bind="climbingRoute.Name" />
-                            </div>
-                            <div class="field">
-                                <label class="label">Grado:</label>
-                                <input type="text" class="input" @bind="climbingRoute.Grade" />
-                            </div>
-                            <div class="field">
-                                <label class="label">Descripción:</label>
-                                <textarea class="textarea" @bind="climbingRoute.Description"></textarea>
-                            </div>
-                            <div class="field">
-                                <label class="label">URL de la Imagen:</label>
-                                <input type="text" class="input" @bind="climbingRoute.Imag" />
-                            </div>
-                            <div class="field is-grouped is-grouped-centered mt-5">
-                                <p class="control">
-                                    <button type="submit" class="button is-primary" @onclick="SaveClimbingRoute">Guardar</button>
-                                </p>
-                                <p class="control">
-                                    <button type="button" class="button is-light" @onclick="CancelClimbingRoute">Cancelar</button>
-                                </p>
-                            </div>
-                        </EditForm>
-                    </div>
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Detalles de la Ruta</h5>
+            <form>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="name" @bind="route.Name" />
                 </div>
-            </div>
+                <div class="mb-3">
+                    <label for="grade" class="form-label">Grado:</label>
+                    <input type="text" class="form-control" id="grade" @bind="route.Grade" />
+                </div>
+                <div class="mb-3">
+                    <label for="sector" class="form-label">Sector:</label>
+                    <input type="text" class="form-control" id="sector" @bind="route.ClimbingSector" />
+                </div>
+                <div class="mb-3">
+                    <label for="school" class="form-label">Escuela:</label>
+                    <select class="form-select" id="school" @bind="route.ClimbingSchoolId">
+                        <option value="1">Cuenca</option>
+                        <option value="2">Entrepeñas</option>
+                        <option value="3">Fin del Mundo</option>
+                        <option value="4">Patones</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Descripción:</label>
+                    <textarea class="form-control" id="description" rows="4" @bind="route.Description"></textarea>
+                </div>
+                <button type="button" class="btn btn-primary" @onclick="SaveClimbingRoute">Guardar</button>
+                <button type="button" class="btn btn-secondary" @onclick="CancelClimbingRoute">Cancelar</button>
+            </form>
         </div>
     </div>
-
+</div>
 
 @code {
     [Parameter]
     public int id { get; set; }
 
-    ClimbingRoute climbingRoute = new ClimbingRoute();
-
-    protected void CancelClimbingRoute()
-    {
-        NavigationManager.NavigateTo("/climbingRouteList");
-    }
-
-    protected async void SaveClimbingRoute()
-    {
-        await ClimbingRouteService.InsertClimbingRoute(climbingRoute);
-        NavigationManager.NavigateTo("/climbingRouteList");
-    }
+    private ClimbingRoute route = new ClimbingRoute();
 
     protected override async Task OnInitializedAsync()
     {
         if (id != 0)
         {
-            climbingRoute = await ClimbingRouteService.GetClimbingRouteDetails(id);
+            route = await ClimbingRouteService.GetClimbingRouteDetails(id);
         }
+    }
+
+    protected async Task SaveClimbingRoute()
+    {
+        if (id != 0)
+        {
+            await ClimbingRouteService.UpdateClimbingRoute(route);
+        }
+        else
+        {
+            await ClimbingRouteService.InsertClimbingRoute(route);
+        }
+
+        NavigationManager.NavigateTo("/climbingRouteList");
+    }
+
+    protected void CancelClimbingRoute()
+    {
+        NavigationManager.NavigateTo("/climbingRouteList");
     }
 }
