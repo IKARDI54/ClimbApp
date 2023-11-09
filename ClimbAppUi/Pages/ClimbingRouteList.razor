@@ -6,22 +6,11 @@
 
 <div class="container">
     <h1 class="mt-4">Listado de Vías Escaladas</h1>
-    <p>Esta página muestra un listado de todas las vías escaladas.</p>
 
     <div class="mb-4">
         <a href="/climbingRouteDetails" class="btn btn-primary">Añadir Ruta</a>
     </div>
 
-    @if (climbingRoutes == null)
-    {
-        <p><em>Loading...</em></p>
-    }
-    else if (loadingError != null)
-    {
-        <p><em>@loadingError</em></p>
-    }
-    else
-    {
         <div class="row">
             @foreach (var route in climbingRoutes)
             {

@@ -5,20 +5,26 @@
 
 <PageTitle>Página de Inicio</PageTitle>
 
-@if (userId != 0)
-{
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Bienvenido Usuario con ID: @userId</h5>
-            <p class="card-text">¡Feliz escalada!</p>
-            <button @onclick="GoToCreateRoute" class="btn btn-primary">Registrar una vía</button>
+<div class="card-container">
+    @if (userId != 0)
+    {
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Bienvenido Usuario con ID: @userId</h5>
+                <p class="card-text">¡Feliz escalada!</p>
+                <button @onclick="GoToCreateRoute" class="btn btn-primary">Registrar una vía</button>
+            </div>
         </div>
-    </div>
-}
-else
-{
-    <p>Por favor, inicie sesión.</p>
-}
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-body">
+                <h4>Por favor, inicie sesión.</h4>
+            </div>
+        </div>
+    }
+</div>
 
 @code {
     private int userId;

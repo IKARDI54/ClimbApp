@@ -9,13 +9,20 @@
 <PageTitle>BlazorCRUD.UI</PageTitle>
 
 <div class="page">
-    @if (!IsLoginPage)
+    @if (ShowNavMenu)
     {
         <div class="sidebar">
             <NavMenu />
+        </div>
+    }
+
+    @if (ShowCustomLayout)
+    {
+        <div class="content">
             <CustomLayout />
         </div>
     }
+
 
     <main>
         <article class="content px-4">
@@ -34,8 +41,13 @@
 @code {
     private List<RouteInfo> Routes { get; set; } = new List<RouteInfo>();
 
-    private bool IsLoginPage => NavManager.Uri.EndsWith("/Login", StringComparison.OrdinalIgnoreCase)
-                                || NavManager.Uri.EndsWith("/register", StringComparison.OrdinalIgnoreCase);
+    private bool ShowNavMenu => !NavManager.Uri.EndsWith("/Login", StringComparison.OrdinalIgnoreCase)
+                            && !NavManager.Uri.EndsWith("/register", StringComparison.OrdinalIgnoreCase);
+
+    private bool ShowCustomLayout => ShowNavMenu
+                                    && !NavManager.Uri.EndsWith("/climbingRouteList", StringComparison.OrdinalIgnoreCase)
+                                    && !NavManager.Uri.StartsWith("/climbingRouteDetails/", StringComparison.OrdinalIgnoreCase);
+
 
     private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
     {
