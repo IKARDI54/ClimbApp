@@ -8,72 +8,44 @@
     <h1 class="mt-4">Listado de Vías Escaladas</h1>
 
     <div class="mb-4">
-        <a @onclick="AddClimbingRoute" class="btn btn-primary">Añadir Ruta</a>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+            <RadzenButton Variant="Variant.Outlined" Click="AddClimbingRoute" Text="Añadir Ruta" ButtonStyle="ButtonStyle.Primary" />
+           
+        </RadzenStack>
     </div>
-    @if (climbingRoutes != null)
+
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" Style="width: 100%;" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="8" AllowPaging="true" PagerPosition="PagerPosition.Top" AllowPagerText="true" Data="@climbingRoutes">
+        <Columns>
+            <RadzenDataGridColumn TItem="ClimbingRoute" Property="Name" Title="Nombre" />
+            <RadzenDataGridColumn TItem="ClimbingRoute" Property="Grade" Title="Grado"/>
+            <RadzenDataGridColumn TItem="ClimbingRoute" Property="ClimbingSector" Title="Sector" />
+            <RadzenDataGridColumn TItem="ClimbingRoute" Property="ClimbingSchoolId" Title="Escuela">
+                <Template Context="route">
+                    @GetSchoolName(route.ClimbingSchoolId)
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="ClimbingRoute" Property="Description" Title="Descripción" />
+            <RadzenDataGridColumn TItem="ClimbingRoute" Property="Rating" Title="Valoración"/>
+            <RadzenDataGridColumn Title="Acciones" TItem="ClimbingRoute">
+                <Template Context="route">
+                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+                        <RadzenButton Variant="Variant.Outlined" Click="() => EditClimbingRoute(route.Id)" Icon="edit" ButtonStyle="ButtonStyle.Warning" />
+
+                        
+                        <RadzenButton Variant="Variant.Outlined" Click="() => DeleteClimbingRoute(route.Id)" Icon="delete" ButtonStyle="ButtonStyle.Danger" />
+                    </RadzenStack>
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+
+    @if (!string.IsNullOrEmpty(loadingError))
     {
-        <div class="row">
-            @foreach (var route in climbingRoutes)
-            {
-                <div class="col-md-3 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">@route.Name</h5>
-                            <p class="card-text">Grado: @route.Grade</p>
-                            <p class="card-text">Sector: @route.ClimbingSector</p>
-                            <p class="card-text">
-                                Escuela:
-                                @{
-                                    string schoolName = "";
-
-                                    // Verificar el valor de ClimbingSchoolId y asignar el nombre correspondiente
-                                    if (route.ClimbingSchoolId == 1)
-                                    {
-                                        schoolName = "Cuenca";
-                                    }
-                                    else if (route.ClimbingSchoolId == 2)
-                                    {
-                                        schoolName = "Entrepeñas";
-                                    }
-                                    else if (route.ClimbingSchoolId == 3)
-                                    {
-                                        schoolName = "Fin del Mundo";
-                                    }
-                                    else if (route.ClimbingSchoolId == 4)
-                                    {
-                                        schoolName = "Patones";
-                                    }
-                                    else
-                                    {
-                                        // En caso de que el valor no coincida con ninguno de los casos anteriores
-                                        schoolName = "Desconocida"; // Puedes asignar un valor predeterminado o manejarlo de otra manera.
-                                    }
-                                }
-
-                                @schoolName
-                            </p>
-                            <p class="card-text">Sector:@route.ClimbingSector</p>
-                            <p class="card-text">Descripción:@route.Description</p>
-                            <strong>Valoración:</strong> ⭐⭐⭐⭐☆
-                            <br>
-                            <strong>Comentarios:</strong> "Esta ruta es increíble, ¡me encantó!"
-                        </div>
-                        <div class="card-footer">
-                            <a @onclick="(() => EditClimbingRoute(route.Id))" class="btn btn-primary">Editar</a>
-
-                            <button @onclick="() => DeleteClimbingRoute(route.Id)" class="btn btn-danger">Eliminar</button>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
+        <p>@loadingError</p>
     }
 </div>
 
 @code {
-    [Parameter]
-    public int Id { get; set; }
-
     private IEnumerable<ClimbingRoute> climbingRoutes;
     private string loadingError;
 
@@ -86,33 +58,46 @@
         catch (Exception ex)
         {
             loadingError = "An error occurred while loading the routes: " + ex.Message;
-            climbingRoutes = Enumerable.Empty<ClimbingRoute>(); // Inicializa climbingRoutes con una lista vacía
-            StateHasChanged(); // Forzar una actualización de la página
+            climbingRoutes = Enumerable.Empty<ClimbingRoute>();
         }
     }
-        private void AddClimbingRoute()
-        {
-            NavigationManager.NavigateTo("/climbingRouteDetails");
-        }
 
-        private void EditClimbingRoute(int routeId)
+    private string GetSchoolName(int climbingSchoolId)
+    {
+        switch (climbingSchoolId)
         {
-            NavigationManager.NavigateTo($"/climbingRouteDetails/{routeId}");
+            case 1:
+                return "Cuenca";
+            case 2:
+                return "Entrepeñas";
+            case 3:
+                return "Fin del Mundo";
+            case 4:
+                return "Patones";
+            default:
+                return "Desconocida";
         }
+    }
 
-    protected async Task DeleteClimbingRoute(int routeId)
+    private void EditClimbingRoute(int routeId)
+    {
+        NavigationManager.NavigateTo($"/climbingRouteDetails/{routeId}");
+    }
+
+    private void AddClimbingRoute()
+    {
+        NavigationManager.NavigateTo("/climbingRouteDetails");
+    }
+
+    private async Task DeleteClimbingRoute(int routeId)
     {
         try
         {
-            // Llama al servicio para eliminar la ruta de escalada con el ID proporcionado.
             await ClimbingRouteService.DeleteClimbingRoute(routeId);
-
-            // Después de eliminar la ruta, actualiza la lista de rutas para reflejar los cambios.
             climbingRoutes = await ClimbingRouteService.GetAllClimbingRoutes();
         }
         catch (Exception ex)
         {
-            // Maneja cualquier error que pueda ocurrir durante la eliminación.
             loadingError = "An error occurred while deleting the route: " + ex.Message;
         }
     }
