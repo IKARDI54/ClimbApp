@@ -8,16 +8,17 @@
         padding: 10px; /* Espaciado interior */
         display: flex; /* Utilizar flexbox para alinear elementos horizontalmente */
         align-items: center; /* Alinear elementos verticalmente en el centro */
-        justify-content: space-between; /* Espacio entre el logo y el menú */
+        justify-content: space-around; /* Espacio entre el logo y el menú */
+        margin-bottom:20px;
     }
 
         .custom-menu img {
-            margin-right: 10px; /* Espacio a la derecha del logo */
-            transition: transform 0.3s ease; /* Agregar una transición suave */
+      
+            transition: transform 0.2s ease; /* Agregar una transición suave */
         }
 
         .custom-menu:hover img {
-            transform: translateY(10px); /* Mover el logo hacia abajo en el hover */
+            transform: translateY(5px); /* Mover el logo hacia abajo en el hover */
         }
 
     .rz-menu:not(.rz-profile-menu) {
@@ -34,8 +35,7 @@
 </style>
 
 <div class="custom-menu">
-    <img src="/images/logoClimb.png" alt="Logo Climb" width="70" height="70" /> 
-    <h3 style="color:white; margin-top:10px" >ClimbAPP</h3>
+    <img src="images/logoClimb.png" alt="ClimbApp Logo" style="height: 2.75rem; border-radius:50%; margin-right:15%" class="logo" />
     <RadzenMenu Click="OnParentClicked">
         @if (userId != 0)
         {

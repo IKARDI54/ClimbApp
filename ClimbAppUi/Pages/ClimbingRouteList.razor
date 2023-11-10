@@ -1,4 +1,5 @@
 ﻿@page "/climbingRouteList"
+@using BlazorBootstrap;
 @using Model
 @using Interfaces
 @inject IClimbingRouteService ClimbingRouteService
@@ -8,16 +9,15 @@
     <h1 class="mt-4">Listado de Vías Escaladas</h1>
 
     <div class="mb-4">
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="Radzen.FlexWrap.Wrap">
             <RadzenButton Variant="Variant.Outlined" Click="AddClimbingRoute" Text="Añadir Ruta" ButtonStyle="ButtonStyle.Primary" />
-           
         </RadzenStack>
     </div>
 
     <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" Style="width: 100%;" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="8" AllowPaging="true" PagerPosition="PagerPosition.Top" AllowPagerText="true" Data="@climbingRoutes">
         <Columns>
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="Name" Title="Nombre" />
-            <RadzenDataGridColumn TItem="ClimbingRoute" Property="Grade" Title="Grado"/>
+            <RadzenDataGridColumn TItem="ClimbingRoute" Property="Grade" Title="Grado" />
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="ClimbingSector" Title="Sector" />
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="ClimbingSchoolId" Title="Escuela">
                 <Template Context="route">
@@ -25,15 +25,10 @@
                 </Template>
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="Description" Title="Descripción" />
-            <RadzenDataGridColumn TItem="ClimbingRoute" Property="Rating" Title="Valoración"/>
             <RadzenDataGridColumn Title="Acciones" TItem="ClimbingRoute">
                 <Template Context="route">
-                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="FlexWrap.Wrap">
-                        <RadzenButton Variant="Variant.Outlined" Click="() => EditClimbingRoute(route.Id)" Icon="edit" ButtonStyle="ButtonStyle.Warning" />
-
-                        
-                        <RadzenButton Variant="Variant.Outlined" Click="() => DeleteClimbingRoute(route.Id)" Icon="delete" ButtonStyle="ButtonStyle.Danger" />
-                    </RadzenStack>
+                    <RadzenButton Variant="Variant.Outlined" Click="() => EditClimbingRoute(route.Id)" Icon="edit" ButtonStyle="ButtonStyle.Warning" />
+                    <RadzenButton Variant="Variant.Outlined" Click="() => DeleteClimbingRoute(route.Id)" Icon="delete" ButtonStyle="ButtonStyle.Danger" />
                 </Template>
             </RadzenDataGridColumn>
         </Columns>
@@ -45,9 +40,46 @@
     }
 </div>
 
+<!-- Modal para Editar/Agregar Rutas -->
+<BlazorBootstrap.Modal @ref="modal" Title="Editar Ruta">
+    <BodyTemplate>
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre:</label>
+            <input type="text" class="form-control" id="name" @bind="selectedRoute.Name" />
+        </div>
+        <div class="mb-3">
+            <label for="grade" class="form-label">Grado:</label>
+            <input type="text" class="form-control" id="grade" @bind="selectedRoute.Grade" />
+        </div>
+        <div class="mb-3">
+            <label for="sector" class="form-label">Sector:</label>
+            <input type="text" class="form-control" id="sector" @bind="selectedRoute.ClimbingSector" />
+        </div>
+        <div class="mb-3">
+            <label for="school" class="form-label">Escuela:</label>
+            <select class="form-select" id="school" @bind="selectedRoute.ClimbingSchoolId">
+                <option value="1">Cuenca</option>
+                <option value="2">Entrepeñas</option>
+                <option value="3">Fin del Mundo</option>
+                <option value="4">Patones</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Descripción:</label>
+            <textarea class="form-control" id="description" rows="4" @bind="selectedRoute.Description"></textarea>
+        </div>
+    </BodyTemplate>
+    <FooterTemplate>
+        <button class="btn btn-secondary" @onclick="OnHideModalClick">Cancelar</button>
+        <button class="btn btn-primary" @onclick="SaveClimbingRoute">Guardar</button>
+    </FooterTemplate>
+</BlazorBootstrap.Modal>
+
 @code {
+    private BlazorBootstrap.Modal modal;
     private IEnumerable<ClimbingRoute> climbingRoutes;
     private string loadingError;
+    private ClimbingRoute selectedRoute = new ClimbingRoute();
 
     protected override async Task OnInitializedAsync()
     {
@@ -81,12 +113,14 @@
 
     private void EditClimbingRoute(int routeId)
     {
-        NavigationManager.NavigateTo($"/climbingRouteDetails/{routeId}");
+        selectedRoute = climbingRoutes.FirstOrDefault(r => r.Id == routeId);
+        modal.ShowAsync();
     }
 
     private void AddClimbingRoute()
     {
-        NavigationManager.NavigateTo("/climbingRouteDetails");
+        selectedRoute = new ClimbingRoute();
+        modal.ShowAsync();
     }
 
     private async Task DeleteClimbingRoute(int routeId)
@@ -100,5 +134,25 @@
         {
             loadingError = "An error occurred while deleting the route: " + ex.Message;
         }
+    }
+
+    private async Task SaveClimbingRoute()
+    {
+        if (selectedRoute.Id != 0)
+        {
+            await ClimbingRouteService.UpdateClimbingRoute(selectedRoute);
+        }
+        else
+        {
+            await ClimbingRouteService.InsertClimbingRoute(selectedRoute);
+        }
+
+        modal.HideAsync();
+        climbingRoutes = await ClimbingRouteService.GetAllClimbingRoutes();
+    }
+
+    private void OnHideModalClick()
+    {
+        modal.HideAsync();
     }
 }

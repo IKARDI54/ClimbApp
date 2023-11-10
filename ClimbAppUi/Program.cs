@@ -5,23 +5,23 @@ using BlazorCLIMB.UI.Interfaces;
 using BlazorCLIMB.UI.Data;
 using System.Data;
 using Radzen;
+using Blazorise;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuración de la base de datos
-var configuration = new ConfigurationBuilder()
-    .SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.json")
-    .Build();
+var configuration = builder.Configuration;
 builder.Services.AddSingleton<IConfiguration>(configuration);
 
 var sqlConnectionConfiguration = new SqlConfiguration(configuration.GetConnectionString("SqlConnection"));
 builder.Services.AddSingleton(sqlConnectionConfiguration);
 
 // Configuración de los servicios
+builder.Services.AddBlazorBootstrap();
 builder.Services.AddScoped<IDbConnection>(provider =>
-    new SqlConnection(builder.Configuration.GetConnectionString("SqlConnection")));
-builder.Services.AddScoped<IAuthRepository, AuthRepository>();builder.Services.AddScoped<IAuthService, AuthService>();
+    new SqlConnection(configuration.GetConnectionString("SqlConnection")));
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IClimbingRouteRepository, ClimbingRouteRepository>(provider =>
 {
     var sqlConfig = provider.GetRequiredService<SqlConfiguration>();
@@ -40,23 +40,20 @@ builder.Services.AddServerSideBlazor();
 builder.Logging.AddConsole();
 
 // Crear y configurar la aplicación web
-WebApplication app = builder.Build();
-
+var app = builder.Build();
 
 // Configuración del pipeline HTTP
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    // Valor HSTS predeterminado es 30 días. Podrías querer cambiar esto en entornos de producción.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
 app.Run();
-
-

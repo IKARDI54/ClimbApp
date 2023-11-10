@@ -8,157 +8,164 @@
 @inject NavigationManager NavigationManager
 
 <style>
-.container{
+    .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Alinea el contenido al principio del contenedor */
+        padding: 1rem;
+        border-bottom: 1px solid #ccc; /* Línea que separa el header del body */
+    }
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
+       
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
 
-body {
-    background-image: url('/images/169781.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    height: 100%;
-    width: 100%;
-    backdrop-filter: blur(5px);
-}
+    body {
+      background: rgb(178,180,188);
+        background: radial-gradient(circle, rgba(178,180,188,1) 21%, rgba(98,82,85,1) 100%);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        height: 100%;
+        width: 100%;
+        backdrop-filter: blur(5px);
+    }
 
-.card {
-    width: 420px;
-    margin: 0 auto;
-    background: linear-gradient(0deg, rgba(128, 128, 128, 0.3), rgba(0, 0, 0, 0.8));
-    padding: 20px;
-    border-radius: 10px;
-}
+    .card {
+        width: 50rem; /* Ancho ajustado */
+        height: auto; /* Altura automática para mantener la proporción */
+        margin: 0 auto;
+        background: linear-gradient(0deg, rgba(128, 128, 128, 0.3), rgba(0, 0, 0, 0.8));
+        padding: 2rem; /* Ajustado para proporcionar más espacio */
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Opcional: sombra para la tarjeta */
+    }
 
-.card-title {
-    text-align: center;
-    font-size: 24px;
-    color: #FFF;
+    .card-title {
+        text-align: center;
+        font-size: 2rem; /* Ajustado para tamaños en rem */
+        color: #FFF;
+    }
+
+    .form-group {
+        position: relative;
+        margin-bottom: 0.5rem;
+    }
+
+    .input-icon .icon {
+    position: absolute;
+    left: -0.70rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 1.2rem;
 }
 
 .form-control {
+    width: 90%; /* Disminuir el ancho a 90% del contenedor */
+    height: 3rem; /* Aumentar la altura del input */
+    padding: 0.5rem 0.5rem 0.5rem 3rem; /* Padding izquierdo para el icono */
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+    margin: 10px auto; /* Centro el input con margen automático */
     background-color: transparent;
     color: black;
-    margin: 10px;
-    border: 2px solid #817B77;
-    border-radius: 10px;
-    padding-left: 30px;
 }
 
-.input-icon {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
+/* Aplicar estilos al placeholder */
+.form-control::placeholder {
+    padding-left: 10%; /* Esto no moverá el texto, solo cambiará el padding interno */
+    color: white;
+    font-size:bold;
 }
 
-.card-body h4 {
-    text-align: center;
-    font-size: 24px;
-    color: #FFF;
-}
-
-.card-body h6 {
-    text-align: center;
-    font-size: 16px;
-    color: #FFF;
-}
-
-.login-button {
-    width: 80%;
-    margin: 20px auto;
-    display: block;
-    background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente blanco */
-    border-radius: 10px;
-    color: #000; /* Color de texto negro */
-}
-
-.google-button {
-    background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente blanco */
-    color: #000; /* Color de texto negro */
-    width: 80%;
-    margin: 0 auto;
-    display: block;
-    border-radius: 10px;
-}
-
-    .google-button i {
-        margin-right: 10px;
+    .card-header img {
+        height: 4rem; /* Ajusta según sea necesario */
+        /* No es necesario vertical-align en flexbox */
+    }
+    .login-button {
+        width: 50%; /* Ajustado para ocupar todo el ancho disponible */
+        padding: 0.5rem;
+        margin: 20px auto;
+        display: block;
+        border-radius: 10px;
+        color: #000;
+        background-color: rgba(255, 255, 255, 0.7);
+        border: none;
     }
 
-.register-link {
-    text-align: center;
-    font-size: 12px;
-    color: #FFF;
-    margin-top: 10px;
-}
-
-    .register-link a {
+    .register-link,
+    .message {
+        text-align: center;
+        font-size: 1rem;
         color: #FFF;
-        font-weight: bold;
-        text-decoration: none;
+        margin-top: 1rem;
     }
 
-.radzen-stack-centered {
-    display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
-    height: 100%; /* Puede que necesites ajustar esto dependiendo del tamaño de tu div */
+        .register-link a {
+            color: #FFF;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .card-header {
+    position: relative;
+    text-align: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #ccc; /* Línea que separa el header del body */
 }
 
+    img {
+        transition: transform 0.3s ease; /* Agregar una transición suave */
+    }
 
+    img {
+        transform: translateY(10px); /* Mover el logo hacia abajo en el hover */
+    }
 
-
-.google-icon {
-    background-image: url('images/google.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-right: 8px; /* margen para separar el icono del texto */
-    border-radius: 50%;
-    vertical-align: middle; /* para centrarlo verticalmente con el texto */
+.card-header .user-icon {
+    font-size: 2rem; /* Hacer el icono más grande */
+    color: #fff; /* Color blanco para la silueta */
+    margin-bottom: 0.5rem;
 }
-
-.radzen-button {
-    background-color: transparent; /* fondo transparente */
-}
-
 </style>
-
+<img src="images/logoClimb.png" style="height: 7rem; border-radius:50%; margin-left:45%; margin-bottom:20px;" alt="ClimbApp Logo" />
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Login</h3>
+           
+            <i class="far fa-user user-icon" style="margin-left:40%;"></i> <!-- Icono de usuario (silueta) -->
+            <h1 style="color:white; margin:20px">Login</h1>
         </div>
+
         <div class="card-body">
-            <h4>Please enter your email and password</h4>
+           
             <form @onsubmit="@HandleValidSubmit">
-                <div class="form-group">
-                    <span class="input-icon"></span>
+                <div class="form-group input-icon">
+                    <i class="fa fa-envelope icon"></i>
                     <input type="text" class="form-control" placeholder="Email" @bind="model.Email" required />
                 </div>
-                <div class="form-group">
-                    <span class="input-icon"></span>
+                <div class="form-group input-icon">
+                    <i class="fa fa-key icon"></i>
                     <input type="password" class="form-control" placeholder="Password" @bind="model.Password" required />
                 </div>
-                <button type="submit" class="btn btn-secondary login-button">Login</button>
-                <!-- Enlace para registro -->
-                <div class="mt-2" style="margin-left: 40px;">
-                    <p style="color: black;">¿No estás registrado? <a href="/register">Regístrate</a></p>
+                <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="Radzen.FlexWrap.Wrap">
+                    <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Text="Login" ButtonStyle="ButtonStyle.Primary" Style="width: 30%; margin-left:35%; margin-top:20px; margin-bottom:20px;" />
+
+                </RadzenStack>
+
+                <div class="mt-2 register-link">
+                    <p>¿No estás registrado? <a href="/register">Regístrate</a></p>
                 </div>
             </form>
-            <p style="color:white">@message</p>
-           
+            <p class="message">@message</p>
         </div>
     </div>
 </div>

@@ -1,5 +1,4 @@
-﻿@page "/"
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 @inject NavigationManager NavManager
 @inject HttpClient Http
 @using BlazorCLIMB.UI.Shared
@@ -28,21 +27,14 @@
             @Body
         </article>
     </main>
-
 </div>
-
-
 
 @code {
     private List<RouteInfo> Routes { get; set; } = new List<RouteInfo>();
 
     private bool ShowNavMenu => !NavManager.Uri.EndsWith("/Login", StringComparison.OrdinalIgnoreCase)
                             && !NavManager.Uri.EndsWith("/register", StringComparison.OrdinalIgnoreCase)
-                            && !NavManager.Uri.EndsWith("/climbingRouteList", StringComparison.OrdinalIgnoreCase)
-                            && !NavManager.Uri.StartsWith("/climbingRouteDetails/", StringComparison.OrdinalIgnoreCase);
-
-
-  
+                            && !NavManager.Uri.EndsWith("/climbingRouteList", StringComparison.OrdinalIgnoreCase);
 
 
     private void HandleLocationChanged(object sender, LocationChangedEventArgs e)

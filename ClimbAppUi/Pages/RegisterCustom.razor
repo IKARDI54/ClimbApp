@@ -8,18 +8,20 @@
 
 
 <style>
+    <style >
     .container {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
     }
 
     body {
-        background-image: url('/images/169781.jpg');
+        background: rgb(178,180,188);
+        background: radial-gradient(circle, rgba(178,180,188,1) 21%, rgba(98,82,85,1) 100%);
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -29,74 +31,71 @@
     }
 
     .card {
-        width: 420px;
+        width: 50rem; /* Ancho ajustado */
+        height: auto; /* Altura automática para mantener la proporción */
         margin: 0 auto;
         background: linear-gradient(0deg, rgba(128, 128, 128, 0.3), rgba(0, 0, 0, 0.8));
-        padding: 20px;
-        border-radius: 10px;
+        padding: 2rem; /* Ajustado para proporcionar más espacio */
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Opcional: sombra para la tarjeta */
     }
 
     .card-title {
         text-align: center;
-        font-size: 24px;
+        font-size: 2rem; /* Ajustado para tamaños en rem */
         color: #FFF;
+    }
+
+    .form-group {
+        position: relative;
+        margin-bottom: 0.5rem;
+    }
+
+    .input-icon .icon {
+        position: absolute;
+        left: 0.10rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fff;
+        font-size: 1.2rem;
     }
 
     .form-control {
+        width: 90%; /* Disminuir el ancho a 90% del contenedor */
+        height: 3rem; /* Aumentar la altura del input */
+        padding: 0.5rem 0.5rem 0.5rem 3rem; /* Padding izquierdo para el icono */
+        font-size: 1rem;
+        border-radius: 0.25rem;
+        border: 1px solid #ccc;
+        margin: 10px auto; /* Centro el input con margen automático */
         background-color: transparent;
         color: black;
-        margin: 10px;
-        border: 2px solid #817B77;
-        border-radius: 10px;
-        padding-left: 30px;
     }
 
-    .input-icon {
-        position: absolute;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    .card-body h4 {
-        text-align: center;
-        font-size: 24px;
-        color: #FFF;
-    }
-
-    .card-body h6 {
-        text-align: center;
-        font-size: 16px;
-        color: #FFF;
-    }
-
-    .login-button {
-        width: 80%;
-        margin: 20px auto;
-        display: block;
-        background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente blanco */
-        border-radius: 10px;
-        color: #000; /* Color de texto negro */
-    }
-
-    .google-button {
-        background-color: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente blanco */
-        color: #000; /* Color de texto negro */
-        width: 80%;
-        margin: 0 auto;
-        display: block;
-        border-radius: 10px;
-    }
-
-        .google-button i {
-            margin-right: 10px;
+        /* Aplicar estilos al placeholder */
+        .form-control::placeholder {
+            padding-left: 10%; /* Esto no moverá el texto, solo cambiará el padding interno */
+            color: white;
+            font-size: bold;
         }
 
-    .register-link {
+    .login-button {
+        width: 50%; /* Ajustado para ocupar todo el ancho disponible */
+        padding: 0.5rem;
+        margin: 20px auto;
+        display: block;
+        border-radius: 10px;
+        color: #000;
+        background-color: rgba(255, 255, 255, 0.7);
+        border: none;
+    }
+
+    .register-link,
+    .message {
         text-align: center;
-        font-size: 12px;
+        font-size: 1rem;
         color: #FFF;
-        margin-top: 10px;
+        margin-top: 1rem;
     }
 
         .register-link a {
@@ -104,39 +103,93 @@
             font-weight: bold;
             text-decoration: none;
         }
+
+    .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Esto distribuirá el espacio uniformemente entre los elementos */
+    padding: 1rem;
+    border-bottom: 1px solid #ccc; /* Línea que separa el header del body */
+}
+.user-icons-container {
+    flex-grow: 1; /* Permite que el contenedor de íconos crezca y llene el espacio */
+    display: flex;
+    justify-content: center; /* Centra los íconos horizontalmente */
+    gap: 1rem; /* Añade un espacio entre los íconos */
+}
+        .card-header .user-icon {
+            /* Hacer el icono más grande */
+            color: #fff; /* Color blanco para la silueta */
+            margin-bottom: 0.5rem;
+        }
+      
+
+.card-header img {
+    height: 4rem; /* Ajusta según sea necesario */
+    /* No es necesario vertical-align en flexbox */
+}
+    .custom-file-input {
+        display: block; /* Asegúrate de que el input se comporte como un bloque */
+        width: 70%; /* O cualquier ancho que desees para el input */
+        margin: 20px auto;
+        border-radius: 0.5rem; /* Esquinas redondeadas */
+        padding: 0.5rem; /* Algo de padding para que el botón sea más grande */
+        border: 1px solid #ccc; /* Un borde ligero */
+        background-color: rgba(255, 255, 255, 0.7); /* Fondo blanco o cualquier color que prefieras */
+        color: black; /* Color del texto */
+        font-size: 1rem; /* Tamaño del texto */
+        cursor: pointer; /* Cambia el cursor a un puntero para indicar que es un botón */
+    }
+
+        .custom-file-input::file-selector-button {
+            border-radius: 0.25rem; /* Esquinas redondeadas para el botón */
+            margin-right: 0.5rem; /* Margen entre el botón y el nombre del archivo */
+            padding: 0.5rem; /* Algo de padding */
+            background-color: #7c7277; /* Color de fondo del botón */
+            color: white; /* Color del texto del botón */
+            border: 1px solid black; /* Eliminar el borde del botón */
+        }
+</style>
+
 </style>
 
 <div class="container">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Register</h3>
-        </div>
+    <img src="images/logoClimb.png"  style="height: 5rem; border-radius:50%;" alt="ClimbApp Logo" />
+            <div class="user-icons-container" style="margin-left:-25%;"> 
+                <i class="fa-solid fa-book-skull user-icon" style="font-size: 2rem;"></i>
+                <i class="fa fa-pencil-alt user-icon" style="font-size: 2rem; margin-top:4px;"></i>
+                 <h2 style="color:white;">Create Account</h2>
+            </div>
+</div
         <div class="card-body">
             <form @onsubmit="@HandleValidSubmit">
-                <div class="form-group">
-                    <span class="input-icon"></span>
+                <div class="form-group input-icon">
+                    <i class="fa fa-user icon"></i>
                     <input type="text" class="form-control" placeholder="Name" @bind="model.Name" required />
                 </div>
-                <div class="form-group">
-                    <span class="input-icon"></span>
+                <div class="form-group input-icon">
+                    <i class="fa fa-envelope icon"></i>
                     <input type="text" class="form-control" placeholder="Email" @bind="model.Email" required />
                 </div>
-                <div class="form-group">
-                    <span class="input-icon"></span>
+                <div class="form-group input-icon">
+                    <i class="fa fa-key icon"></i>
                     <input type="password" class="form-control" placeholder="Password" @bind="model.Password" required />
                 </div>
-                <div class="form-group">
-                    <span class="input-icon"></span>
+                <div class="form-group input-icon">
+                    <i class="fa fa-check icon"></i>
                     <input type="password" class="form-control" placeholder="Confirm Password" @bind="confirmPassword" required />
                 </div>
                 <div class="form-group">
-                    <div class="custom-file">
-                    <InputFile class="form-control" id="avatar" accept="image/*" OnChange="OnAvatarChange" />
-                    </div>
+                    <InputFile class="custom-file-input" style="margin-top:35px; margin-bottom:35px;" id="avatar" accept="image/*" OnChange="OnAvatarChange" />
                 </div>
-                <button type="submit" class="btn btn-secondary login-button">Register</button>
+              <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="Radzen.FlexWrap.Wrap">
+                    <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Text="Register" ButtonStyle="ButtonStyle.Primary" Style="width: 30%; margin-left:35%;" />
+
+                </RadzenStack>
             </form>
-            <p style="color:white">@message</p> <!-- Mensaje de registro -->
+            <p class="message">@message</p> <!-- Mensaje de registro -->
         </div>
     </div>
 </div>
