@@ -32,6 +32,11 @@
             color: white; /* Color del texto del menú */
         }
 
+    .avatar-button {
+      
+        background-color: black;
+      border: none;
+    }
 </style>
 
 <div class="custom-menu">
@@ -55,11 +60,23 @@
             <RadzenMenuItem Text="Foro" Path="foro" Icon="forum"></RadzenMenuItem>
         }
         @if(userId != 0){
-           
-           <BlazorCLIMB.UI.Pages.Shared.AvatarNav></BlazorCLIMB.UI.Pages.Shared.AvatarNav>
+
+            <li class="nav-item">
+                <button class="avatar-button" @onclick="ToggleAvatarMenu">
+                    <BlazorCLIMB.UI.Pages.Shared.AvatarNav />
+                </button>
+            </li>
 
         }else{
             <RadzenMenuItem Text="Login" Path="/Login" Icon="login"></RadzenMenuItem>
+        }
+        @if (showAvatarMenu)
+        {
+            <div class="avatar-menu">
+                <!-- Contenido del menú desplegable del avatar aquí -->
+                <button class="btn btn-danger">Cerrar</button>
+                <button class="btn btn-primary">Ir a Área Personal</button>
+            </div>
         }
     </RadzenMenu>
 </div>
@@ -69,6 +86,20 @@
 
 @code {
     EventConsole console = new EventConsole();
+    private int userId;
+    private bool showAvatarMenu = false;
+
+    // Resto de tu código...
+
+    private void ToggleAvatarMenu()
+    {
+        showAvatarMenu = !showAvatarMenu;
+    }
+
+    private void HideAvatarMenu()
+    {
+        showAvatarMenu = false;
+    }
     void OnParentClicked(MenuItemEventArgs args)
     {
         console.Log($"{args.Text} clicked from parent");
@@ -88,7 +119,7 @@
             return logMessages;
         }
     }
-    private int userId;
+   
 
     protected override void OnInitialized()
     {
