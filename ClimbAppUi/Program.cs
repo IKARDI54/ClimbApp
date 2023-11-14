@@ -9,6 +9,7 @@ using Blazorise;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Configuración de la base de datos
 var configuration = builder.Configuration;
 builder.Services.AddSingleton<IConfiguration>(configuration);

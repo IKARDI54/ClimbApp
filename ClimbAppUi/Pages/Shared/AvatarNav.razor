@@ -1,0 +1,51 @@
+﻿@using BlazorCLIMB.Data.Dapper.Repositories;
+@using BlazorCLIMB.Model.BlazorCRUD.Model;
+@using BlazorCLIMB.UI.Interfaces;
+@using BlazorCLIMB.UI.Services;
+@inject IAuthService authService
+@inject NavigationManager NavigationManager
+
+<div>
+    <img src="@GetImageAsBase64()"
+         style="border-radius: 50%; width: 50px; height: 50px; border: 3px solid white; margin-left: 10px; cursor: pointer;" />
+
+   
+</div>
+
+
+
+
+
+
+@code {
+    private User user;
+    private byte[] base64Image;
+    private bool isDropdownOpen=false;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        int userId = UserSession.UserId;
+
+        if (userId != 0)
+        {
+
+            user = await authService.GetUserById(userId);
+            base64Image = user.Img;
+
+        }
+        StateHasChanged();
+    }
+
+    private string GetImageAsBase64()
+    {
+        if (user?.Img != null)
+        {
+            return $"data:image/png;base64,{Convert.ToBase64String(user.Img)}";
+        }
+        return null;
+    }
+   
+}
+}

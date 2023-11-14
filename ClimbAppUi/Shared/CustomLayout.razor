@@ -52,6 +52,11 @@
 <div class="margenizq">
 <RadzenRow class="rz-text-align-center" >
     <RadzenColumn Size="12" SizeSM="4" SizeMD="3" SizeLG="2" Order="3">
+            @if (userId != null && userId != 0)
+            {
+                <!-- Renderizar el componente Index si el usuario está autenticado -->
+                <Avatar/>
+            }
         <div class="card youtube-card" style="border-radius: 15px;">
             <div class="card-body">
                 <h5 class="card-title">EDITORIAL</h5>

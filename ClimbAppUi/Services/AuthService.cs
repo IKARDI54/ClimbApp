@@ -46,6 +46,10 @@ namespace BlazorCLIMB.UI.Services
         {
             return await _authRepository.GetUserByEmail(email);
         }
+        public async Task<User> GetUserById(int userId)
+        {
+            return await _authRepository.GetUserById(userId);
+        }
 
         public async Task<AuthenticationResult> VerifyPassword(string email, string password)
         {

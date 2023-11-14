@@ -8,6 +8,7 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
     {
         Task<bool> CreateUser(UserDto userDto);
         Task<User?> GetUserByEmail(string email);
+        Task<User?> GetUserById(int id);
         Task<AuthenticationResult> VerifyPassword(string email, string password);
 
         Task<string?> GetUserRole(string email);

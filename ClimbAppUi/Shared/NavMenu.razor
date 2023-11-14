@@ -55,7 +55,9 @@
             <RadzenMenuItem Text="Foro" Path="foro" Icon="forum"></RadzenMenuItem>
         }
         @if(userId != 0){
-            <RadzenMenuItem Text="Logout" Path="/Login" Icon="logout"></RadzenMenuItem>
+           
+           <BlazorCLIMB.UI.Pages.Shared.AvatarNav></BlazorCLIMB.UI.Pages.Shared.AvatarNav>
+
         }else{
             <RadzenMenuItem Text="Login" Path="/Login" Icon="login"></RadzenMenuItem>
         }
