@@ -1,4 +1,10 @@
-﻿@using Radzen
+﻿@using BlazorCLIMB.Model.BlazorCRUD.Model;
+@using BlazorCLIMB.UI.Interfaces;
+@using BlazorCLIMB.UI.Services;
+@using Radzen
+@inject IAuthService authService
+@inject NavigationManager NavigationManager
+
 <style>
     .custom-menu {
         background-color: black; /* Color de fondo negro */
@@ -12,15 +18,7 @@
         margin-bottom:20px;
     }
 
-        .custom-menu img {
-      
-            transition: transform 0.2s ease; /* Agregar una transición suave */
-        }
-
-        .custom-menu:hover img {
-            transform: translateY(5px); /* Mover el logo hacia abajo en el hover */
-        }
-
+        
     .rz-menu:not(.rz-profile-menu) {
         background-color: black;
         display: flex;
@@ -37,6 +35,9 @@
         background-color: black;
       border: none;
     }
+
+
+      
 </style>
 
 <div class="custom-menu">
@@ -72,10 +73,15 @@
         }
         @if (showAvatarMenu)
         {
-            <div class="avatar-menu">
+            <div class="avatar-menu" style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; margin-top:20px;">
                 <!-- Contenido del menú desplegable del avatar aquí -->
-                <button class="btn btn-danger">Cerrar</button>
-                <button class="btn btn-primary">Ir a Área Personal</button>
+                <div class="d-flex flex-column">
+                    <p style="font-size: 11px; margin-bottom: 10px; font-weight: bold;">Nombre: @user.Name</p>
+                    <p style="font-size: 11px; margin-bottom: 10px; font-weight: bold;">Email: @user.Email</p>
+                    <p style="font-size: 11px; margin-bottom: 10px; font-weight: bold;">Role de Usuario: @user.Role</p>
+                    <RadzenButton Size="ButtonSize.Small"  Variant="Variant.Outlined" Click="AddClimbingRoute" Text="Área Personal" ButtonStyle="ButtonStyle.Dark"/>
+                    <RadzenButton Size="ButtonSize.Small" Variant="Variant.Outlined" Click="LoginGo" Text="LogOut" ButtonStyle="ButtonStyle.Dark"/>
+                </div>
             </div>
         }
     </RadzenMenu>
@@ -85,21 +91,35 @@
 <EventConsole/>
 
 @code {
+    private User user;
     EventConsole console = new EventConsole();
-    private int userId;
+    int userId = UserSession.UserId;
     private bool showAvatarMenu = false;
 
-    // Resto de tu código...
+    protected override async Task OnInitializedAsync()
+    {
+        if (userId != 0)
+        {
+            user = await authService.GetUserById(userId);
+        }
+        StateHasChanged();
+    }
 
     private void ToggleAvatarMenu()
     {
         showAvatarMenu = !showAvatarMenu;
     }
 
-    private void HideAvatarMenu()
+    private void LoginGo()
     {
-        showAvatarMenu = false;
+        NavigationManager.NavigateTo("/Login");
     }
+
+    private void AddClimbingRoute()
+    {
+        NavigationManager.NavigateTo("/climbingRouteList");
+    }
+
     void OnParentClicked(MenuItemEventArgs args)
     {
         console.Log($"{args.Text} clicked from parent");
@@ -119,12 +139,7 @@
             return logMessages;
         }
     }
-   
 
-    protected override void OnInitialized()
-    {
-        userId = UserSession.UserId; // Asumiendo que UserSession es tu clase para manejar la sesión
-    }
 }
 
 

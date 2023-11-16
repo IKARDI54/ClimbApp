@@ -6,6 +6,8 @@ using BlazorCLIMB.UI.Data;
 using System.Data;
 using Radzen;
 using Blazorise;
+using Microsoft.AspNetCore.Http.Features;
+using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,10 +34,16 @@ builder.Services.AddScoped<IClimbingRouteRepository, ClimbingRouteRepository>(pr
 builder.Services.AddScoped<IClimbingRouteService, ClimbingRouteService>();
 builder.Services.AddRadzenComponents();
 builder.Services.AddScoped<HttpClient>();
+builder.Services.AddBlazoredLocalStorage();
 
 // Configuración básica
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 1024 * 1024 * 10; // Aumenta el límite a 10 MB (por ejemplo)
+});
 
 // Agregar el logging
 builder.Logging.AddConsole();

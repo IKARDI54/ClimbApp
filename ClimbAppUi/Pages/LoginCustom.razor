@@ -32,8 +32,8 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
-        height: 100%;
-        width: 100%;
+        height: 90%;
+        width: 90%;
         backdrop-filter: blur(5px);
     }
 
@@ -50,7 +50,7 @@
     .card-title {
         text-align: center;
         font-size: 2rem; /* Ajustado para tamaños en rem */
-        color: #FFF;
+        color: #a9dcf6;
     }
 
     .form-group {
@@ -68,8 +68,8 @@
 }
 
 .form-control {
-    width: 90%; /* Disminuir el ancho a 90% del contenedor */
-    height: 3rem; /* Aumentar la altura del input */
+    width: 80%; /* Disminuir el ancho a 90% del contenedor */
+    height: 2rem; /* Aumentar la altura del input */
     padding: 0.5rem 0.5rem 0.5rem 3rem; /* Padding izquierdo para el icono */
     font-size: 1rem;
     border-radius: 0.25rem;
@@ -82,7 +82,7 @@
 /* Aplicar estilos al placeholder */
 .form-control::placeholder {
     padding-left: 10%; /* Esto no moverá el texto, solo cambiará el padding interno */
-    color: white;
+    color: #fff;
     font-size:bold;
 }
 
@@ -136,13 +136,15 @@
     margin-bottom: 0.5rem;
 }
 </style>
-<img src="images/logoClimb.png" style="height: 7rem; border-radius:50%; margin-left:45%; margin-bottom:20px;" alt="ClimbApp Logo" />
+
+
+<img src="images/logoClimb.png" style="height: 5rem; border-radius:50%; margin-left:45%; margin-bottom:10px;" alt="ClimbApp Logo" />
 <div class="container">
     <div class="card">
         <div class="card-header">
            
             <i class="far fa-user user-icon" style="margin-left:40%;"></i> <!-- Icono de usuario (silueta) -->
-            <h1 style="color:white; margin:20px">Login</h1>
+            <h1 style="color:white; margin:10px">Login</h1>
         </div>
 
         <div class="card-body">
@@ -157,9 +159,12 @@
                     <input type="password" class="form-control" placeholder="Password" @bind="model.Password" required />
                 </div>
                 <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="Radzen.FlexWrap.Wrap">
-                    <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Text="Login" ButtonStyle="ButtonStyle.Primary" Style="width: 30%; margin-left:35%; margin-top:20px; margin-bottom:20px;" />
-
+                    <div style="flex-grow: 1;"></div> <!-- Espacio flexible para centrar los botones -->
+                    <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Text="Login" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Medium" style="margin: 20px; font-weight: bold;" />
+                    <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Click="Cancelar" Text="Return" ButtonStyle="ButtonStyle.Info" Size="ButtonSize.Medium" style="margin: 20px; font-weight: bold;" />
+                    <div style="flex-grow: 1;"></div> <!-- Espacio flexible para centrar los botones -->
                 </RadzenStack>
+
 
                 <div class="mt-2 register-link">
                     <p>¿No estás registrado? <a href="/register">Regístrate</a></p>
@@ -201,6 +206,10 @@
             message = "Authentication failed. Please check your credentials.";
             StateHasChanged();
         }
+    }
+    private async Task Cancelar()
+    {
+        NavigationManager.NavigateTo("/");
     }
 
     public class AuthModel

@@ -11,6 +11,26 @@
         background-color: black;
         /* Agregar más estilos si es necesario */
     }
+
+    .avatar-menu {
+        position: absolute;
+        top: 50px; /* Ajusta la posición vertical según tus necesidades */
+        right: 10px; /* Ajusta la posición horizontal según tus necesidades */
+        width: 200px;
+        max-height: 200px;
+        background-color: white;
+        border: 1px solid #ccc;
+        z-index: 1002;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+    }
+
+        .avatar-menu button {
+            margin: 5px; /* Espacio entre los botones */
+        }
 </style>
 
 <div class="page">
@@ -18,8 +38,9 @@
     @if (ShowNavMenu)
     {
         <div class="sidebar">
-            <NavMenu />
+            <NavMenu/>
             <CustomLayout />
+
         </div>
     }
     <main>
@@ -27,13 +48,19 @@
             @Body
         </article>
     </main>
+    
 </div>
 
 @code {
+    
+
     private List<RouteInfo> Routes { get; set; } = new List<RouteInfo>();
 
     private bool ShowNavMenu => !NavManager.Uri.EndsWith("/Login", StringComparison.OrdinalIgnoreCase)
-                            && !NavManager.Uri.EndsWith("/register", StringComparison.OrdinalIgnoreCase);
+                            && !NavManager.Uri.EndsWith("/register", StringComparison.OrdinalIgnoreCase)
+                            && !NavManager.Uri.EndsWith("/climbingRouteList", StringComparison.OrdinalIgnoreCase)
+                         && !NavManager.Uri.EndsWith("/register", StringComparison.OrdinalIgnoreCase);
+                        
     // && !NavManager.Uri.EndsWith("/climbingRouteList", StringComparison.OrdinalIgnoreCase);
 
 
@@ -46,4 +73,6 @@
     {
         NavManager.LocationChanged -= HandleLocationChanged;
     }
+
+
 }

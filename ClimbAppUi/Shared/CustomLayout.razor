@@ -52,12 +52,8 @@
 <div class="margenizq">
 <RadzenRow class="rz-text-align-center" >
     <RadzenColumn Size="12" SizeSM="4" SizeMD="3" SizeLG="2" Order="3">
-            @if (userId != null && userId != 0)
-            {
-                <!-- Renderizar el componente Index si el usuario está autenticado -->
-                <Avatar/>
-            }
-        <div class="card youtube-card" style="border-radius: 15px;">
+
+            <div class="card youtube-card" background-color:#e5e8ed">
             <div class="card-body">
                 <h5 class="card-title">EDITORIAL</h5>
                 <p class="card-text">by Jens Larssen, Editor-in-Chief</p>
@@ -68,7 +64,7 @@
         </div>
     </RadzenColumn>
 
-    <RadzenColumn Size="12" SizeSM="5" SizeMD="3" SizeLG="2" Order="1" style="background-color: black; border-radius: 15px;" class="rz-p-5">
+    <RadzenColumn Size="12" SizeSM="5" SizeMD="3" SizeLG="2" Order="1" style="background-color: black; " class="rz-p-5">
         @if (userId != null && userId != 0)
         {
             <!-- Renderizar el componente Index si el usuario está autenticado -->

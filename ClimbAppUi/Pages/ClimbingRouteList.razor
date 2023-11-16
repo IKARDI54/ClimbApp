@@ -6,11 +6,14 @@
 @inject NavigationManager NavigationManager
 
 <div class="container">
-    <h1 class="mt-4">Listado de Vías Escaladas</h1>
-
+    <div class="d-flex align-items-center justify-content-between mb-0">
+        <h1 class="mt-4" style="margin:10px;" >Listado de Vías Escaladas</h1>
+        <img src="images/logoClimb.png" alt="ClimbApp Logo" style="margin:10px; height: 4.75rem; border-radius: 50%;" class="logo" />
+    </div>
     <div class="mb-4">
         <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="Radzen.FlexWrap.Wrap">
             <RadzenButton Variant="Variant.Outlined" Click="AddClimbingRoute" Text="Añadir Ruta" ButtonStyle="ButtonStyle.Primary" />
+            <RadzenButton Variant="Variant.Outlined" Click="LoginGo" Text="Volver" ButtonStyle="ButtonStyle.Dark" />
         </RadzenStack>
     </div>
 
@@ -27,8 +30,8 @@
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="Description" Title="Descripción" />
             <RadzenDataGridColumn Title="Acciones" TItem="ClimbingRoute">
                 <Template Context="route">
-                    <RadzenButton Variant="Variant.Outlined" Click="() => EditClimbingRoute(route.Id)" Icon="edit" ButtonStyle="ButtonStyle.Warning" />
-                    <RadzenButton Variant="Variant.Outlined" Click="() => DeleteClimbingRoute(route.Id)" Icon="delete" ButtonStyle="ButtonStyle.Danger" />
+                    <RadzenButton Variant="Variant.Outlined" Click="() => EditClimbingRoute(route.Id)" Icon="edit" ButtonStyle="ButtonStyle.Primary" />
+                    <RadzenButton Variant="Variant.Outlined" Click="() => DeleteClimbingRoute(route.Id)" Icon="delete" ButtonStyle="ButtonStyle.Dark" />
                 </Template>
             </RadzenDataGridColumn>
         </Columns>
@@ -121,6 +124,10 @@
     {
         selectedRoute = new ClimbingRoute();
         modal.ShowAsync();
+    }
+    private void LoginGo()
+    {
+        NavigationManager.NavigateTo("/");
     }
 
     private async Task DeleteClimbingRoute(int routeId)

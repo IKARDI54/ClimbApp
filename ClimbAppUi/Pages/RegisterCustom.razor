@@ -1,5 +1,6 @@
 ﻿@page "/Register"
 
+@using BlazorCLIMB.Model;
 @using BlazorCLIMB.UI.Interfaces
 @using System.ComponentModel.DataAnnotations
 @using BlazorCLIMB.UI.Services;
@@ -13,7 +14,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 100vh;
+        min-height: 90vh;
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
@@ -61,8 +62,8 @@
     }
 
     .form-control {
-        width: 90%; /* Disminuir el ancho a 90% del contenedor */
-        height: 3rem; /* Aumentar la altura del input */
+        width: 80%; /* Disminuir el ancho a 90% del contenedor */
+        height: 2rem; /* Aumentar la altura del input */
         padding: 0.5rem 0.5rem 0.5rem 3rem; /* Padding izquierdo para el icono */
         font-size: 1rem;
         border-radius: 0.25rem;
@@ -184,9 +185,11 @@
                 <div class="form-group">
                     <InputFile class="custom-file-input" style="margin-top:35px; margin-bottom:35px;" id="avatar" accept="image/*" OnChange="OnAvatarChange" />
                 </div>
-              <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="Radzen.FlexWrap.Wrap">
-                    <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Text="Register" ButtonStyle="ButtonStyle.Primary" Style="width: 30%; margin-left:35%;" />
-
+               <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="Radzen.FlexWrap.Wrap">
+                    <div style="flex-grow: 1;"></div> <!-- Espacio flexible para centrar los botones -->
+                    <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Text="Register" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Medium" fon  />
+                    <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Click="Cancelar" Text="Return" ButtonStyle="ButtonStyle.Info" Size="ButtonSize.Medium" />
+                    <div style="flex-grow: 1;"></div> <!-- Espacio flexible para centrar los botones -->
                 </RadzenStack>
             </form>
             <p class="message">@message</p> <!-- Mensaje de registro -->
@@ -218,11 +221,14 @@
             bool isCreated = await AuthService.CreateUser(model);
             message = isCreated ? "User Created" : "Failed to create user";
             StateHasChanged();
-            await Task.Delay(3000);
+            await Task.Delay(1500);
             NavigationManager.NavigateTo("/Login");
         }
     }
-
+     private async Task Cancelar()
+    {
+        NavigationManager.NavigateTo("/");
+    }
     private async Task OnAvatarChange(InputFileChangeEventArgs e)
     {
         var imageFile = e.File;
@@ -242,17 +248,5 @@
         }
     }
 
-    public class AuthModel
-    {
-        [Required(ErrorMessage = "Name is required")]
-        public string Name { get; set; }
-
-        [Required(ErrorMessage = "Email is required")]
-        public string Email { get; set; }
-
-        [Required(ErrorMessage = "Password is required")]
-        public string Password { get; set; }
-
-        public byte[] Img { get; set; }
-    }
+    
 }
