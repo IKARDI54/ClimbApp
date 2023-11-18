@@ -1,0 +1,161 @@
+﻿@page "/videos"
+@using System.Net.Http
+@using System.Net.Http.Json
+@using System.Text;
+@using System.Net.Http.Headers;
+@using System.Text.Json;
+
+
+<style>
+    .sport{
+        line-height: 0;
+        color: #000000;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        border-top-style: solid;
+        border-bottom-style: solid;
+        border-left-style: solid;
+        border-right-style: solid;
+        width: 728px;
+        aspect-ratio: auto 728 / 90;
+        height: 90px;
+    }
+
+    .globa-sesrch-inactive-wrapper{
+        -webkit-text-size-adjust: 100%;
+        font-size: 14px;
+        font-family: "IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+        font-weight: 400;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        color: #3e3f44;
+        margin: 0;
+        display: flex;
+        width: 296px;
+        height: 48px;
+        background-color: #3b3b42;
+        cursor: pointer;
+        text-align: left;
+        padding: 12px;
+        border: 1px solid #3b3b42;
+        box-sizing: border-box;
+        border-radius: 4px;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+<div data-v-1b09d9d4="" class="globa-sesrch-inactive-wrapper">
+    <i data-v-1b09d9d4="" class="nu8a-icon nu8a-search__white"></i> <span data-v-1b09d9d4="" class="globa-sesrch-inactive-placeholder">
+        Search for areas, crags or routes
+    </span>
+</div>
+<h1>Videos de Vimeo</h1>
+<img class="sport" src="https://tpc.googlesyndication.com/simgad/6746290795579018088" border="0" width="728" height="90" >
+<div>
+    <input type="text" @bind="searchQuery" placeholder="Introduce tu término de búsqueda" />
+    <button @onclick="BuscarVideos">Buscar</button>
+</div>
+
+@if (videos != null)
+{
+    <div>
+        @foreach (var video in videos)
+        {
+            <h3><u>TÍTULO: @video.name</u></h3>
+            <h4>DESCRIPCIÓN: @video.description</h4>
+            <a href="@video.link"><img src="@video.pictures.sizes[1].link_with_play_button" alt="Video" /></a>
+        }
+    </div>
+}
+
+@code {
+    private string searchQuery = "";
+    private List<Video> videos;
+
+    // Ingresa tus credenciales de Vimeo aquí
+    private string accessToken = "10feba93f1ee0e94d9830b7caff547ec";
+           private readonly string clientId = "59dd4406a2ffdc66631f62f3d4407f5b4fc31760";
+           private readonly string clientSecret = "RfLzh79Af5SKnk0lpAJRaYXjN/W4lMQcSmGtnEKwT+WUOabTfkYyFXhT2z0CmMQu2YMK4/agnod1jtPAUU9fuuDA7yABo7nxF0u3aAk7k64ybLRVcNjYJq5Spbrm7Jyw";
+
+    private class Video
+    {
+        public string name { get; set; }
+        public string description { get; set; }
+        public string link { get; set; }
+        public Picture pictures { get; set; }
+    }
+
+    private class Picture
+    {
+        public List<PictureSize> sizes { get; set; }
+    }
+
+    private class PictureSize
+    {
+        public string link_with_play_button { get; set; }
+    }
+
+    private async Task BuscarVideos()
+    {
+        var httpClient = new HttpClient();
+        var authHeaderValue = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{clientId}:{clientSecret}"));
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeaderValue);
+
+        var response = await httpClient.GetFromJsonAsync<VimeoResponse>($"https://api.vimeo.com/videos?query={searchQuery}", new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+
+        if (response != null)
+        {
+            videos = response.data;
+        }
+    }
+
+    private class VimeoResponse
+    {
+        public List<Video> data { get; set; }
+    }
+}

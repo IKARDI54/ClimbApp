@@ -24,6 +24,7 @@
     <PackageReference Include="Quick.AspNetCore.Components.Web.Extensions" Version="6.0.2" />
     <PackageReference Include="Radzen.Blazor" Version="4.19.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+    <PackageReference Include="VimeoDotNet" Version="3.2.4" />
   </ItemGroup>
 
 </Project>

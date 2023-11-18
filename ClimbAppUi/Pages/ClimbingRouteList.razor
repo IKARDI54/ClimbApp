@@ -32,6 +32,8 @@
                 <Template Context="route">
                     <RadzenButton Variant="Variant.Outlined" Click="() => EditClimbingRoute(route.Id)" Icon="edit" ButtonStyle="ButtonStyle.Primary" />
                     <RadzenButton Variant="Variant.Outlined" Click="() => DeleteClimbingRoute(route.Id)" Icon="delete" ButtonStyle="ButtonStyle.Dark" />
+                    <RadzenButton Variant="Variant.Outlined" Click="() => DeleteClimbingRoute(route.Id)" Icon="check" ButtonStyle="ButtonStyle.Success" />
+
                 </Template>
             </RadzenDataGridColumn>
         </Columns>
@@ -75,6 +77,7 @@
     <FooterTemplate>
         <button class="btn btn-secondary" @onclick="OnHideModalClick">Cancelar</button>
         <button class="btn btn-primary" @onclick="SaveClimbingRoute">Guardar</button>
+
     </FooterTemplate>
 </BlazorBootstrap.Modal>
 

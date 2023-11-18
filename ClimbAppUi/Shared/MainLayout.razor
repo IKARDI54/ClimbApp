@@ -59,7 +59,9 @@
     private bool ShowNavMenu => !NavManager.Uri.EndsWith("/Login", StringComparison.OrdinalIgnoreCase)
                             && !NavManager.Uri.EndsWith("/register", StringComparison.OrdinalIgnoreCase)
                             && !NavManager.Uri.EndsWith("/climbingRouteList", StringComparison.OrdinalIgnoreCase)
-                         && !NavManager.Uri.EndsWith("/register", StringComparison.OrdinalIgnoreCase);
+                         && !NavManager.Uri.EndsWith("/videos", StringComparison.OrdinalIgnoreCase)
+                         && !NavManager.Uri.EndsWith("/gallery", StringComparison.OrdinalIgnoreCase)
+                         && !NavManager.Uri.EndsWith("/climbindRouteList", StringComparison.OrdinalIgnoreCase);
                         
     // && !NavManager.Uri.EndsWith("/climbingRouteList", StringComparison.OrdinalIgnoreCase);
 

@@ -9,7 +9,7 @@
     .custom-menu {
         background-color: black; /* Color de fondo negro */
         border: 1px solid gray; /* Borde gris de 1 píxel */
-        border-radius: 10px; /* Bordes redondeados */
+      
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra suave */
         padding: 10px; /* Espaciado interior */
         display: flex; /* Utilizar flexbox para alinear elementos horizontalmente */
@@ -36,12 +36,31 @@
       border: none;
     }
 
+    .sport {
+        line-height: 0;
+        color: #000000;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        border-top-style: solid;
+        border-bottom-style: solid;
+        border-left-style: solid;
+        border-right-style: solid;
+        width: 30%;
+        aspect-ratio: auto 728 / 90;
+        height: 20%;
+        margin-right:50px;
+    }
 
       
 </style>
 
 <div class="custom-menu">
-    <img src="images/logoClimb.png" alt="ClimbApp Logo" style="height: 2.75rem; border-radius:50%; margin-right:15%" class="logo" />
+    <a href="/climbingRouteList"><img src="images/logoClimb.png" alt="ClimbApp Logo" style="height: 2.75rem; border-radius:50%; margin-right:15px" class="logo" /></a>
+    <img class="sport" src="https://tpc.googlesyndication.com/simgad/6746290795579018088" border="0" width="728" height="90">
+
+    
     <RadzenMenu Click="OnParentClicked">
         @if (userId != 0)
         {
@@ -54,8 +73,8 @@
             <RadzenMenuItem Text="España" Path="noticias/espana" Icon="flag"></RadzenMenuItem>
             <RadzenMenuItem Text="Internacional" Path="noticias/internacional" Icon="public"></RadzenMenuItem>
         </RadzenMenuItem>
-        <RadzenMenuItem Text="Galería" Path="galeria" Icon="photo"></RadzenMenuItem>
-        <RadzenMenuItem Text="Videos" Path="videos" Icon="videocam"></RadzenMenuItem>
+        <RadzenMenuItem Text="Galería" Path="/gallery" Icon="photo"></RadzenMenuItem>
+        <RadzenMenuItem Text="Videos" Path="/videos" Icon="videocam"></RadzenMenuItem>
         @if (userId != 0)
         {
             <RadzenMenuItem Text="Foro" Path="foro" Icon="forum"></RadzenMenuItem>

@@ -9,7 +9,7 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
 {
     public class ClimbingRouteRepository : IClimbingRouteRepository
     {
-        private string ConnectionString;
+        private readonly string ConnectionString;
 
         public ClimbingRouteRepository(string ConnectionString)
         {
@@ -78,8 +78,8 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
                     climbingRoute.Description,
                     climbingRoute.ClimbingSchoolId,
                     climbingRoute.ClimbingSector,
-                    
-                  
+
+
                 });
 
             return result > 0;
@@ -92,7 +92,7 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
             var sql = @"UPDATE ClimbingRoute 
                         SET Name = @Name, Grade = @Grade, Description = @Description,
                             ClimbingSector = @ClimbingSector, ClimbingSchoolId = @ClimbingSchoolId
-                            
+
                         WHERE Id = @Id";
 
             var result = await db.ExecuteAsync(sql.ToString(),
