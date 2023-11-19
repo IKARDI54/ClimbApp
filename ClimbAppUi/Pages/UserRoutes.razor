@@ -1,0 +1,124 @@
+﻿
+@page "/userRoutes/{routeId}"
+
+@using BlazorCLIMB.Model
+@using BlazorBootstrap;
+
+@using BlazorCLIMB.Model.BlazorCRUD.Model;
+@using Interfaces
+@inject IClimbingRouteService ClimbingRouteService
+@inject NavigationManager NavigationManager
+
+@inject IUserClimbingRouteService UserClimbingRouteService
+
+<h1>Detalles de la Vía Escalada</h1>
+
+@if (climbingRoute != null)
+{
+    <div>
+        <h2>@climbingRoute.Name</h2>
+    <p>@climbingRoute.Description</p>
+    
+   @*  <h3>Valoración Promedio</h3>
+    <p>@climbingRoute.AverageRating</p> *@
+
+    <h3>Anotación de Vía Escalada</h3>
+    <form>
+        <div class="form-group">
+            <label for="comments">Comentarios:</label>
+            <input type="text" class="form-control" id="comments" @bind="userClimbingRoute.Comments" />
+        </div>
+        <div class="form-group">
+            <label for="pegs">Pegs:</label>
+            <input type="number" class="form-control" id="pegs" @bind="userClimbingRoute.Pegs" />
+        </div>
+        <div class="form-group">
+            <label for="cintas">Cintas:</label>
+            <input type="number" class="form-control" id="cintas" @bind="userClimbingRoute.Cintas" />
+        </div>
+        <div class="form-group">
+            <label for="date">Fecha:</label>
+            <input type="date" class="form-control" id="date" @bind="userClimbingRoute.Date" />
+        </div>
+            <button class="btn btn-primary" @onclick="() => GuardarAnotacion(userClimbingRoute)">Guardar Anotación</button>
+        </form>
+    </div>
+}
+
+<h3>Cuaderno de bitácora (La lista de vias esclaladas por tí)</h3>
+@if (userClimbingRouteList != null && userClimbingRouteList.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+             
+                <th>Comentarios</th>
+                <th>Pegs</th>
+                <th>Cintas</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var anotacion in userClimbingRouteList)
+            {
+                <tr>
+                    <td>@anotacion.Comments</td>
+                    <td>@anotacion.Pegs</td>
+                    <td>@anotacion.Cintas</td>
+                    <td>@anotacion.Date</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No tienes anotaciones de esta vía.</p>
+}
+@code {
+    private User user;
+    private int routeId;
+    private bool routeCreated;
+    private ClimbingRoute climbingRoute;
+    private UserClimbingRoutes userClimbingRoute = new UserClimbingRoutes();
+    private IEnumerable<UserClimbingRoutes> userClimbingRouteList = Enumerable.Empty<UserClimbingRoutes>();
+
+
+
+    [Parameter]
+    public string RouteId
+    {
+        get { return routeId.ToString(); }
+        set
+        {
+            if (int.TryParse(value, out int result))
+            {
+                routeId = result;
+            }
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        climbingRoute = await ClimbingRouteService.GetClimbingRouteDetails(routeId);
+
+       
+        int userId = UserSession.UserId;
+        userClimbingRouteList = await UserClimbingRouteService.GetUserClimbingRoutes(userId);
+    }
+
+
+    private async Task GuardarAnotacion(UserClimbingRoutes userClimbingRoute)
+    {
+       
+
+        // Llamar al servicio para crear la anotación de vía escalada
+        bool resultado = await UserClimbingRouteService.CreateUserClimbingRoute(userClimbingRoute);
+
+        if (resultado)
+        {
+            routeCreated = true;
+        }
+    }
+}

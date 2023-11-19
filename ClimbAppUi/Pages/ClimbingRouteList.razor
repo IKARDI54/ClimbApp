@@ -5,7 +5,7 @@
 @inject IClimbingRouteService ClimbingRouteService
 @inject NavigationManager NavigationManager
 
-<div class="container">
+<div class="container" Style="background-color:#e5e8ed;">
     <div class="d-flex align-items-center justify-content-between mb-0">
         <h1 class="mt-4" style="margin:10px;" >Listado de Vías Escaladas</h1>
         <img src="images/logoClimb.png" alt="ClimbApp Logo" style="margin:10px; height: 4.75rem; border-radius: 50%;" class="logo" />
@@ -16,12 +16,14 @@
             <RadzenButton Variant="Variant.Outlined" Click="LoginGo" Text="Volver" ButtonStyle="ButtonStyle.Dark" />
         </RadzenStack>
     </div>
-
-    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" Style="width: 100%;" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="8" AllowPaging="true" PagerPosition="PagerPosition.Top" AllowPagerText="true" Data="@climbingRoutes">
+    <div class="alert alert-info">
+        Filtra las vías por escuela utilizando las opciones de filtro en la columna "Escuela". Simplemente haz clic en el ícono de filtro en la cabecera de la columna y selecciona la escuela que deseas filtrar.
+    </div>
+    <RadzenDataGrid AllowGrouping="true"  AllowFiltering="true" AllowColumnResize="true" Style="width: 100%;" FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="8" AllowPaging="true" PagerPosition="PagerPosition.Bottom" AllowPagerText="true" Data="@climbingRoutes">
         <Columns>
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="Name" Title="Nombre" />
-            <RadzenDataGridColumn TItem="ClimbingRoute" Property="Grade" Title="Grado" />
-            <RadzenDataGridColumn TItem="ClimbingRoute" Property="ClimbingSector" Title="Sector" />
+            <RadzenDataGridColumn TItem="ClimbingRoute" Property="Grade" Title="Grado" Filterable="true" />
+            <RadzenDataGridColumn TItem="ClimbingRoute" Property="ClimbingSector" Title="Sector" Filterable="true" />
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="ClimbingSchoolId" Title="Escuela">
                 <Template Context="route">
                     @GetSchoolName(route.ClimbingSchoolId)
@@ -32,7 +34,7 @@
                 <Template Context="route">
                     <RadzenButton Variant="Variant.Outlined" Click="() => EditClimbingRoute(route.Id)" Icon="edit" ButtonStyle="ButtonStyle.Primary" />
                     <RadzenButton Variant="Variant.Outlined" Click="() => DeleteClimbingRoute(route.Id)" Icon="delete" ButtonStyle="ButtonStyle.Dark" />
-                    <RadzenButton Variant="Variant.Outlined" Click="() => DeleteClimbingRoute(route.Id)" Icon="check" ButtonStyle="ButtonStyle.Success" />
+                    <RadzenButton Variant="Variant.Outlined" Click="() => AnotarViaEscalada(route.Id)" Icon="check" ButtonStyle="ButtonStyle.Success" />
 
                 </Template>
             </RadzenDataGridColumn>
@@ -46,7 +48,7 @@
 </div>
 
 <!-- Modal para Editar/Agregar Rutas -->
-<BlazorBootstrap.Modal @ref="modal" Title="Editar Ruta">
+<BlazorBootstrap.Modal @ref="modal" Title="Editar Ruta" Style="background-color:#e5e8ed;">
     <BodyTemplate>
         <div class="mb-3">
             <label for="name" class="form-label">Nombre:</label>
@@ -82,6 +84,7 @@
 </BlazorBootstrap.Modal>
 
 @code {
+
     private BlazorBootstrap.Modal modal;
     private IEnumerable<ClimbingRoute> climbingRoutes;
     private string loadingError;
@@ -89,6 +92,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+       
+
         try
         {
             climbingRoutes = await ClimbingRouteService.GetAllClimbingRoutes();
@@ -99,7 +104,19 @@
             climbingRoutes = Enumerable.Empty<ClimbingRoute>();
         }
     }
+    private void OnRender(DataGridRenderEventArgs<ClimbingRoute> args)
+    {
+        if (args.FirstRender)
+        {
+            args.Grid.Groups.Add(new GroupDescriptor() { Property = "ClimbingSchoolId" });
+            StateHasChanged();
+        }
+    }
 
+    private void AnotarViaEscalada(int routeId)
+    {
+        NavigationManager.NavigateTo($"/userRoutes/{routeId}");
+    }
     private string GetSchoolName(int climbingSchoolId)
     {
         switch (climbingSchoolId)
@@ -130,7 +147,7 @@
     }
     private void LoginGo()
     {
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/climbingRouteList");
     }
 
     private async Task DeleteClimbingRoute(int routeId)

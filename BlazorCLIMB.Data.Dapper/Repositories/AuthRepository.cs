@@ -47,8 +47,17 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
         }
         public async Task<User?> GetUserById(int id)
         {
-            var sql = "SELECT * FROM Users WHERE Id = @Id";
-            return await _dbConnection.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
+            try
+            {
+                var sql = "SELECT * FROM Users WHERE Id = @Id";
+                return await _dbConnection.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
+            }
+            catch (Exception ex)
+            {
+                
+                Console.WriteLine($"Error al obtener el usuario por ID: {ex.Message}");
+                return new User { Id = 41 };
+            }
         }
 
         public async Task<string?> GetUserRole(string email) 

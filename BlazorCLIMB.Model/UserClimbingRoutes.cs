@@ -11,5 +11,9 @@ namespace BlazorCLIMB.Model
         public int Id { get; set; }
         public int UserId { get; set; }
         public int ClimbingRouteId { get; set; }
+        public string Comments { get; set; }
+        public int? Pegs { get; set; } // Campo Pegs es nulable
+        public int? Cintas { get; set; } // Campo Cintas es nulable
+        public DateTime? Date { get; set; }
     }
 }

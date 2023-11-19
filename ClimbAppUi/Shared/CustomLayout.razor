@@ -1,14 +1,11 @@
-﻿@using BlazorCLIMB.UI.Shared
+﻿@page "/"
+
+@using BlazorCLIMB.UI.Shared
 <style>
     
-    a {
-        text-decoration: none; /* Elimina el subrayado */
-        color: black; /* Establece el color del texto en negro */
-        /* Puedes agregar otros estilos según tus preferencias, como el tamaño de fuente, márgenes, etc. */
-    }
 
     .unimg {
-        height: 100%;
+        height: 25%;
         width: 100%;
     }
     .unimg img{
@@ -25,26 +22,38 @@
             border-right-style: solid;
             width: 100%;
             aspect-ratio: auto 828 / 190;
-            height:100%;
-            margin-right: 30px;
+            height:180%;
+            margin-right: 10px;
     }
    
-    .grid-x{
+    .user-links {
         -webkit-text-size-adjust: 100%;
+        -webkit-font-smoothing: antialiased;
+        color: #fff;
+        box-sizing: inherit;
+        margin: 0;
+        font-family: "IBM Plex Sans";
+        font-size: 16px;
+        line-height: 24px;
+        font-style: normal;
+        font-weight: 400;
+        padding: 10px 0;
+    }
+
+    iframe {
+        width: 275px;
+        -webkit-text-size-adjust: 100%;
+        font-size: 14px;
         font-family: "IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
         font-weight: 400;
+        line-height: 1.5;
         -webkit-font-smoothing: antialiased;
-        list-style-position: outside;
-        list-style-type: none;
-        font-size: inherit;
+        border-top-width: 0px;
+        border-bottom-width: 0px;
+        border-left-width: 0px;
+        border-right-width: 0px;
         box-sizing: inherit;
-        background-color: transparent;
-        line-height: inherit;
         display: flex;
-        flex-flow: row wrap;
-        cursor: pointer;
-        color: #c4c7cc;
-        text-decoration: none;
     }
     .enmedio img{
     
@@ -61,71 +70,40 @@
         vertical-align: middle;
         max-width: 100%;
         height: auto;
-        width: 85%;
+        width: 100%;
     }
 
-    .video-sin-controles::-webkit-media-controls {
-        display: none !important;
-    }
-
-    .video-sin-controles::-webkit-media-controls-play-button,
-    .video-sin-controles::-webkit-media-controls-start-playback-button {
-        display: none !important;
-    }
-    .user-links{
-        -webkit-text-size-adjust: 100%;
-        -webkit-font-smoothing: antialiased;
-        color: #fff;
-        box-sizing: inherit;
-        margin: 0;
-        font-family: "IBM Plex Sans";
-        font-size: 16px;
-        line-height: 24px;
-        font-style: normal;
-        font-weight: 400;
-        padding: 10px 0;
-    }
-    iframe {
-        width:275px;
-        -webkit-text-size-adjust: 100%;
-        font-size: 14px;
-        font-family: "IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
-        font-weight: 400;
-        line-height: 1.5;
+    .responsive-embed{
       
-        -webkit-font-smoothing: antialiased;
-        border-top-width: 0px;
-        border-bottom-width: 0px;
-        border-left-width: 0px;
-        border-right-width: 0px;
-        box-sizing: inherit;
-       display: flex;
-       
+        margin: 10px;
+        text-align: justify;
+        width: 80%;
+        margin: 10px;
     }
-
-    .video-responsive {
-        max-width: 100%;
-        height: auto;
-    }
-    .cardigan{
-        -webkit-text-size-adjust: 100%;
-        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Lato,Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-        font-size: 72%;
-        line-height: 1.5em;
-        color: #333;
-        background: #fff;
+    a {
         text-align: left;
-        max-width: 100%;
-        width: 300px;
-        height: 180px;
-        display: inline-block;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        transition: all .3s cubic-bezier(.25, .8, .25, 1);
-        margin-bottom: 16px;
-        position: relative;
-        top: 0;
-        border-radius: 4px;
-        overflow: hidden;
+        width: 80%;
+        margin: 10px;
+        text-decoration: none; /* Elimina el subrayado */
+        color: black; /* Establece el color del texto en negro */
+        /* Puedes agregar otros estilos según tus preferencias, como el tamaño de fuente, márgenes, etc. */
+    }
+    .grid-x {
+        -webkit-text-size-adjust: 100%;
+        font-family: "IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+        font-weight: 300;
+        -webkit-font-smoothing: antialiased;
+        list-style-position: outside;
+        list-style-type: none;
+        font-size: inherit;
+        box-sizing: inherit;
+        background-color: transparent;
+        line-height: inherit;
+        display: flex;
+        flex-flow: row wrap;
+        cursor: pointer;
+        color: black;
+        text-decoration: none;
     }
     .side-box{
         -webkit-text-size-adjust: 100%;
@@ -133,132 +111,58 @@
         font-family: "IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
         font-weight: 400;
         line-height: 1.5;
-  
         -webkit-font-smoothing: antialiased;
         box-sizing: inherit;
         margin: 0;
         width: 324px;
-        margin-left: 24px;
         background-color: #e5e8ed;
-        padding: 0 18px 66px;
-    }
-    .noticia{
-        -webkit-text-size-adjust: 100%;
-        font-size: 14px;
-        font-family: "IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
-        font-weight: 400;
-        line-height: 1.5;
-        
-        -webkit-font-smoothing: antialiased;
-        box-sizing: inherit;
-        margin: 0;
-        padding: 0;
-    }
-
-    .news-content {
-        width:85%;
-        -webkit-text-size-adjust: 100%;
-        font-family: "IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
-        font-weight: 400;
-        color: #2a2a2f;
-        -webkit-font-smoothing: antialiased;
-        box-sizing: inherit;
-        margin: 0px,0px,4px;
-        padding: 0;
-        margin-bottom: 1rem;
-        font-size: inherit;
-        line-height: 1.6;
-        text-rendering: optimizeLegibility;
-        position: relative;
-        text-align:center;
-  }
-    div .cell{
-        -webkit-text-size-adjust: 100%;
-        margin-left: 20%;
-        font-size: 14px;
-        font-family: "IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #2a2a2f;
-        -webkit-font-smoothing: antialiased;
-        box-sizing: inherit;
-        margin: 0;
-        padding: 0;
-        flex: 0 0 auto;
-        min-height: 0;
-        min-width: 0;
-        width: 100%;
-        text-align: center;
-    }
-    .hTres {
-        -webkit-text-size-adjust: 100%;
-        -webkit-font-smoothing: antialiased;
-        box-sizing: inherit;
-        margin: 0;
-        padding: 0;
-        font-family: "IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
-        font-style: normal;
-        font-weight: 400;
-        color: inherit;
-        text-rendering: optimizeLegibility;
-        line-height: 1.4;
-        margin-top: 0;
-        font-size: 16px;
-        letter-spacing: .05em;
-        width: 100%;
-        overflow: hidden;
-        padding-top: 22px;
-        margin-bottom: 0;
+        padding:10px;
     }
   
-    .rz-text-align-center img{
-        -webkit-text-size-adjust: 100%;
-        font-size: 14px;
-        font-family: "IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #2a2a2f;
-        -webkit-font-smoothing: antialiased;
-        box-sizing: inherit;
-        border-style: none;
-        display: inline-block;
-        vertical-align: middle;
-        max-width: 100%;
-        height: auto;
-        width: 80%;
-        margin-bottom: 10px;
-    }
 
     .rz-text-align-center {
         text-align: center;
         width: 100%; /* Ancho del 100% para adaptarse al ancho de la pantalla */
-        padding: 1rem; /* Espaciado relativo */
+         /* Espaciado relativo */
         /* Otros estilos flexibles según tus necesidades */
     }
 
+    .news-content{
+        text-align:start;
+        width:80%;
+        margin:10px;
+        margin-right:30px;
+    }
+   
 </style>
 
 <RadzenRow class="rz-text-align-center" >
-    <RadzenColumn Size="12" SizeSM="4" SizeMD="3" SizeLG="2" Order="3">
+    <RadzenColumn Size="11" SizeSM="3" SizeMD="2" SizeLG="1" Order="3" style="border:solid,2px,black">
             <div data-v-6a95720a="" class="side-box">
                 <h3 class="hTres">EDITORIAL</h3><div class="linea"></div> <p data-v-6a95720a="" class="editorial-title">
                     by Jens Larssen, Editor-in-Chief
                 </p> <div data-v-215186a1="" data-v-6a95720a="" class="news-list medium">
                     <div data-v-215186a1="" class="grid-x news-list-item">
-                        <div data-v-215186a1="" class="cell"><div data-v-215186a1="" id="0"><div data-v-215186a1="" class="responsive-embed widescreen">Babsi Zangerl did the third repeat of Beth Rodden’s Meltdown (8c+) in <b><a class="int-url" href="https://www.8a.nu/areas/united-states/yosemite-ca">Yosemite (CA)</a></b> last month. Rodden put it up in 2008 and it is considered to be the first 8c+ trad in the world. Carlo Traversi did the first repeat in 2018 and then Babsi's partner Jacopo Larcher sent it last year. <iframe width="560" height="315" src="https://www.youtube.com/embed/Jyj6_k_kJ-M?si=6vh1spfRleBDjGDi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe></div></div></div> <div data-v-215186a1="" class="cell">
+                        <div data-v-215186a1="" class="cell">
+                            <div data-v-215186a1="" id="0">
+                            <div data-v-215186a1="" class="responsive-embed widescreen">Babsi Zangerl did the third repeat of Beth Rodden’s Meltdown (8c+) in 
+                                <b><a class="int-url" href="https://www.8a.nu/areas/united-states/yosemite-ca">Yosemite (CA)</a></b>
+                                last month. Rodden put it up in 2008 and it is considered to be the first 8c+ trad in the world. Carlo Traversi did the first repeat in 2018 and then Babsi's partner Jacopo Larcher sent it last year.
+                            </div>
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/Jyj6_k_kJ-M?si=6vh1spfRleBDjGDi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe></div></div></div> <div data-v-215186a1="" class="cell">
                             <!----> <h4 data-v-215186a1="">
-                                <a data-v-215186a1="" href="/news/babsi-zangerl-sends-meltdown-8c+-trad-964zi" class="">
-                                    Babsi Zangerl's footage of Meltdown (8c+) trad
+                        <a data-v-215186a1="" href="/news/babsi-zangerl-sends-meltdown-8c+-trad-964zi" class="news-content" style="text-align:start; width:250px%; margin:10px; margin-right:30px;">
+                                    Babsi Zangerl's footage Meltdown (8c+) trad
                                 </a>
                             </h4> <!----> <div data-v-215186a1="" class="content-wrapper"><p data-v-215186a1="" class="news-content">Babsi Zangerl did the third repeat of Beth Rodden’s Meltdown (8c+) in Yosemite (CA) last month. Rodden put it up in 2008 and it is considered to be the first 8c+ trad in the world. Carlo Traversi did the first repeat in 2018 and then Babsi's partner Jacopo Larcher sent it last year. </p></div> <div data-v-215186a1="" class="news-footer-wrapper grid-x align-middle">
                                 <!----> <div data-v-215186a1="" class="cell auto text-right">
                                     <div data-v-215186a1="" class="news-list-footer">
                                         <div data-v-18391dc0="" data-v-215186a1="" class="nu8a-like-component">
-                                            <span data-v-18391dc0="" class="like-icon-wrapper"><i data-v-18391dc0="" class="nu8a-icon nu8a-like-inactive-dark"></i></span><span data-v-18391dc0="" class="like-count like-count__dark">7</span> <div data-v-18391dc0="" class="help is-danger" style="display: none;">
+                                            <span data-v-18391dc0="" class="like-icon-wrapper"><i data-v-18391dc0="" class="nu8a-icon nu8a-like-inactive-dark"></i></span><span data-v-18391dc0="" class="like-count like-count__dark"></span> <div data-v-18391dc0="" class="help is-danger" style="display: none;">
                                             </div> <!---->
                                         </div> <a data-v-215186a1="" href="/news/babsi-zangerl-sends-meltdown-8c+-trad-964zi#comments" class="news-list-footer-comments">
                                             <i data-v-215186a1="" class="webicon xx-small vl-comment"></i> <span data-v-215186a1="" class="comment-count">
-                                                1
+                                          
                                             </span>
                                         </a>
                                     </div>
@@ -268,39 +172,18 @@
                     </div> <hr data-v-215186a1="" class="ddd"><div data-v-215186a1="" class="grid-x news-list-item">
                         <div data-v-215186a1="" class="cell"><div data-v-215186a1="" id="1"><div data-v-215186a1="" class="responsive-embed widescreen"><iframe width="560" height="315" src="https://www.youtube.com/embed/L_9JiYrr32k?si=I9vpQnBBdV3jTmx3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen=""></iframe></div></div></div> <div data-v-215186a1="" class="cell">
                             <!----> <h4 data-v-215186a1="">
-                                <a data-v-215186a1="" href="/news/how-toby-roberts-became-an-olympian-in-3-days" class="">
-                                    How Toby Roberts became an Olympian in 3 days
+                        <a data-v-215186a1="" href="/news/how-toby-roberts-became-an-olympian-in-3-days" class="news-content" style="text-align:start; width:250px; margin:10px; margin-right:30px;">
+                                    Toby Roberts became an Olympian in 3 days
                                 </a>
                             </h4> <!----> <div data-v-215186a1="" class="content-wrapper"><p data-v-215186a1="" class="news-content"></p></div> <div data-v-215186a1="" class="news-footer-wrapper grid-x align-middle">
                                 <!----> <div data-v-215186a1="" class="cell auto text-right">
                                     <div data-v-215186a1="" class="news-list-footer">
                                         <div data-v-18391dc0="" data-v-215186a1="" class="nu8a-like-component">
-                                            <span data-v-18391dc0="" class="like-icon-wrapper"><i data-v-18391dc0="" class="nu8a-icon nu8a-like-inactive-dark"></i></span><span data-v-18391dc0="" class="like-count like-count__dark">2</span> <div data-v-18391dc0="" class="help is-danger" style="display: none;">
+                                            <span data-v-18391dc0="" class="like-icon-wrapper"><i data-v-18391dc0="" class="nu8a-icon nu8a-like-inactive-dark"></i></span><span data-v-18391dc0="" class="like-count like-count__dark"></span> <div data-v-18391dc0="" class="help is-danger" style="display: none;">
                                             </div> <!---->
                                         </div> <a data-v-215186a1="" href="/news/how-toby-roberts-became-an-olympian-in-3-days#comments" class="news-list-footer-comments">
                                             <i data-v-215186a1="" class="webicon xx-small vl-comment"></i> <span data-v-215186a1="" class="comment-count">
-                                                0
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> <hr data-v-215186a1="" class="ddd"><div data-v-215186a1="" class="grid-x news-list-item">
-                        <div data-v-215186a1="" class="cell"><div data-v-215186a1="" class="responsive-embed widescreen"><img data-v-215186a1="" alt="Sorato Anraku is booked for Paris 2024" data-src="https://d3byf4kaqtov0k.cloudfront.net/p/news/2emxqurr.webp" src="https://d3byf4kaqtov0k.cloudfront.net/p/news/2emxqurr.webp" lazy="loaded"></div></div> <div data-v-215186a1="" class="cell">
-                            <!----> <h4 data-v-215186a1="">
-                                <a data-v-215186a1="" href="/news/sorato-anraku-is-booked-for-paris-2024-nydkv" class="">
-                                    Sorato Anraku is booked for Paris 2024
-                                </a>
-                            </h4> <!----> <div data-v-215186a1="" class="content-wrapper"><p data-v-215186a1="" class="news-content">Sorato Anraku the overall World Cup winner in both Lead and Boulder, was rather superior in the Asian Olympic qualifier. The 16-year-old won all three rounds wi…</p></div> <div data-v-215186a1="" class="news-footer-wrapper grid-x align-middle">
-                                <!----> <div data-v-215186a1="" class="cell auto text-right">
-                                    <div data-v-215186a1="" class="news-list-footer">
-                                        <div data-v-18391dc0="" data-v-215186a1="" class="nu8a-like-component">
-                                            <span data-v-18391dc0="" class="like-icon-wrapper"><i data-v-18391dc0="" class="nu8a-icon nu8a-like-inactive-dark"></i></span><span data-v-18391dc0="" class="like-count like-count__dark">9</span> <div data-v-18391dc0="" class="help is-danger" style="display: none;">
-                                            </div> <!---->
-                                        </div> <a data-v-215186a1="" href="/news/sorato-anraku-is-booked-for-paris-2024-nydkv#comments" class="news-list-footer-comments">
-                                            <i data-v-215186a1="" class="webicon xx-small vl-comment"></i> <span data-v-215186a1="" class="comment-count">
-                                                2
+                                        
                                             </span>
                                         </a>
                                     </div>
@@ -309,7 +192,7 @@
                         </div>
                     </div>  
                 </div>
-            </div>
+            
     </RadzenColumn>
 
     <RadzenColumn Size="12" SizeSM="5" SizeMD="3" SizeLG="2" Order="1">
@@ -320,19 +203,12 @@
         </RadzenColumn>
 
     <RadzenColumn Size="11" SizeMD="6" SizeLG="6" Order="2" class="enmedio">
-        <video autoplay loop controls class="video-sin-controles video-responsive">
-            <source src="/images/ClimbApp.mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-    </RadzenColumn>
+
+        <img src="./images/169781.jpg" class="responsive-picture" />
+</RadzenColumn>
 
 </RadzenRow>
 
 @code {
-    private int? userId;
-
-    protected override void OnInitialized()
-    {
-        userId = UserSession.UserId;  // Acceso directo a la propiedad estática
-    }
+   
 }

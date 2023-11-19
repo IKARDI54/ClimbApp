@@ -33,9 +33,21 @@ builder.Services.AddScoped<IClimbingRouteRepository, ClimbingRouteRepository>(pr
 });
 
 builder.Services.AddScoped<IClimbingRouteService, ClimbingRouteService>();
+// Otro servicio imitantando la inyeccion del anterior
+builder.Services.AddScoped<IUserClimbingRouteRepository, UserClimbingRouteRepository>(provider =>
+{
+    var sqlConfig = provider.GetRequiredService<SqlConfiguration>();
+    return new UserClimbingRouteRepository(sqlConfig.ConnectionString);
+});
+
+builder.Services.AddScoped<IUserClimbingRouteService, UserClimbingRouteService>();
+
+
+
 builder.Services.AddRadzenComponents();
 builder.Services.AddScoped<HttpClient>();
 builder.Services.AddBlazoredLocalStorage();
+
 
 
 

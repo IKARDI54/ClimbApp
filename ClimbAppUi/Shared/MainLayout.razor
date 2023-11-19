@@ -7,6 +7,7 @@
 @using System.Text.Json;
 
 <style>
+  
     .central-column {
         background-color: black;
         /* Agregar más estilos si es necesario */
@@ -39,8 +40,6 @@
     {
         <div class="sidebar">
             <NavMenu/>
-            <CustomLayout />
-
         </div>
     }
     <main>
@@ -52,16 +51,14 @@
 </div>
 
 @code {
-    
+
 
     private List<RouteInfo> Routes { get; set; } = new List<RouteInfo>();
 
     private bool ShowNavMenu => !NavManager.Uri.EndsWith("/Login", StringComparison.OrdinalIgnoreCase)
-                            && !NavManager.Uri.EndsWith("/register", StringComparison.OrdinalIgnoreCase)
-                            && !NavManager.Uri.EndsWith("/climbingRouteList", StringComparison.OrdinalIgnoreCase)
-                         && !NavManager.Uri.EndsWith("/videos", StringComparison.OrdinalIgnoreCase)
-                         && !NavManager.Uri.EndsWith("/gallery", StringComparison.OrdinalIgnoreCase)
-                         && !NavManager.Uri.EndsWith("/climbindRouteList", StringComparison.OrdinalIgnoreCase);
+                             && !NavManager.Uri.EndsWith("/register", StringComparison.OrdinalIgnoreCase);
+
+
                         
     // && !NavManager.Uri.EndsWith("/climbingRouteList", StringComparison.OrdinalIgnoreCase);
 
