@@ -5,15 +5,16 @@
 @inject IClimbingRouteService ClimbingRouteService
 @inject NavigationManager NavigationManager
 
-<div class="container" Style="background-color:#e5e8ed;">
+<div class="container" Style=" background-image: url('/images/back.png'); background-size: cover; background-repeat: no-repeat; background-position: center center;">
     <div class="d-flex align-items-center justify-content-between mb-0">
-        <h1 class="mt-4" style="margin:10px;" >Listado de Vías Escaladas</h1>
+        <h1 class="mt-4" style="margin:10px; color:white; margin-left:30%" >Listado de Vías Escaladas</h1>
         <img src="images/logoClimb.png" alt="ClimbApp Logo" style="margin:10px; height: 4.75rem; border-radius: 50%;" class="logo" />
     </div>
     <div class="mb-4">
-        <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="Radzen.FlexWrap.Wrap">
-            <RadzenButton Variant="Variant.Outlined" Click="AddClimbingRoute" Text="Añadir Ruta" ButtonStyle="ButtonStyle.Primary" />
-            <RadzenButton Variant="Variant.Outlined" Click="LoginGo" Text="Volver" ButtonStyle="ButtonStyle.Dark" />
+        <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="Radzen.FlexWrap.Wrap" style="color:white; margin-left:35%">
+             <RadzenButton Click="AddClimbingRoute" Variant="Variant.Outlined" Text="Añadir una Vía" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:5px;" />
+            <RadzenButton Click="LoginGo" Variant="Variant.Outlined" Text="Volver" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:5px;" />
+            
         </RadzenStack>
     </div>
     <div class="alert alert-info">

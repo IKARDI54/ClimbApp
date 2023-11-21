@@ -9,7 +9,7 @@
 
 
 <style>
-    <style >
+   
     .container {
         display: flex;
         justify-content: center;
@@ -35,7 +35,7 @@
         width: 50rem; /* Ancho ajustado */
         height: auto; /* Altura automática para mantener la proporción */
         margin: 0 auto;
-        background: linear-gradient(0deg, rgba(128, 128, 128, 0.3), rgba(0, 0, 0, 0.8));
+        background: linear-gradient(0deg, rgba(128, 128, 128, 0.3), rgba(0, 0, 0, 0));
         padding: 2rem; /* Ajustado para proporcionar más espacio */
         border-radius: 0.5rem;
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Opcional: sombra para la tarjeta */
@@ -152,7 +152,6 @@
         }
 </style>
 
-</style>
 
 <div class="container">
     <div class="card">
@@ -187,8 +186,8 @@
                 </div>
                <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="Radzen.FlexWrap.Wrap">
                     <div style="flex-grow: 1;"></div> <!-- Espacio flexible para centrar los botones -->
-                    <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Text="Register" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Medium" fon  />
-                    <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Click="Cancelar" Text="Return" ButtonStyle="ButtonStyle.Info" Size="ButtonSize.Medium" />
+                    <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Text="Register" ButtonStyle="ButtonStyle.Dark" Size="ButtonSize.Medium" fon  />
+                    <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Click="Cancelar" Text="Return" ButtonStyle="ButtonStyle.Dark" Size="ButtonSize.Medium" />
                     <div style="flex-grow: 1;"></div> <!-- Espacio flexible para centrar los botones -->
                 </RadzenStack>
             </form>

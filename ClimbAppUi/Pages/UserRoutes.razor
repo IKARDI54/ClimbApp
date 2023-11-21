@@ -10,20 +10,20 @@
 @inject NavigationManager NavigationManager
 
 @inject IUserClimbingRouteService UserClimbingRouteService
-
-<h1>Detalles de la Vía Escalada</h1>
+<div style="color:white; font-weight:600">
+    <h1 style="color:white; font-weight:600">Detalles de la Vía Escalada</h1>
 
 @if (climbingRoute != null)
 {
     <div>
-        <h2>@climbingRoute.Name</h2>
+            <h2 style="color:white; font-weight:600">@climbingRoute.Name</h2>
     <p>@climbingRoute.Description</p>
     
    @*  <h3>Valoración Promedio</h3>
     <p>@climbingRoute.AverageRating</p> *@
 
-    <h3>Anotación de Vía Escalada</h3>
-    <form>
+            <h3 style="color:white; font-weight:600">Anotación de Vía Escalada</h3>
+            <form style="color:white; font-weight:600">
         <div class="form-group">
             <label for="comments">Comentarios:</label>
             <input type="text" class="form-control" id="comments" @bind="userClimbingRoute.Comments" />
@@ -45,10 +45,10 @@
     </div>
 }
 
-<h3>Cuaderno de bitácora (La lista de vias esclaladas por tí)</h3>
+    <h3 style="color:white; font-weight:600">Cuaderno de bitácora (La lista de vias esclaladas por tí)</h3>
 @if (userClimbingRouteList != null && userClimbingRouteList.Any())
 {
-    <table class="table">
+        <table class="table" style="color:white; font-weight:600">
         <thead>
             <tr>
              
@@ -75,6 +75,7 @@ else
 {
     <p>No tienes anotaciones de esta vía.</p>
 }
+</div>
 @code {
     private User user;
     private int routeId;

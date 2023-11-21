@@ -8,32 +8,24 @@
 @inject NavigationManager NavigationManager
 
 <style>
-    .card-header {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start; /* Alinea el contenido al principio del contenedor */
-        padding: 1rem;
-        border-bottom: 1px solid #ccc; /* Línea que separa el header del body */
-    }
-
-       
-    body {
+    .container {
         display: flex;
         justify-content: center;
         align-items: center;
+        min-height: 100vh;
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
     }
 
     body {
-      background: rgb(178,180,188);
+      
         background: radial-gradient(circle, rgba(178,180,188,1) 21%, rgba(98,82,85,1) 100%);
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
-        height: 90%;
-        width: 90%;
+        height: 100%;
+        width: 100%;
         backdrop-filter: blur(5px);
     }
 
@@ -41,7 +33,7 @@
         width: 50rem; /* Ancho ajustado */
         height: auto; /* Altura automática para mantener la proporción */
         margin: 0 auto;
-        background: linear-gradient(0deg, rgba(128, 128, 128, 0.3), rgba(0, 0, 0, 0.8));
+        background: linear-gradient(0deg, rgba(128, 128, 128, 0), rgba(0, 0, 0, 0));
         padding: 2rem; /* Ajustado para proporcionar más espacio */
         border-radius: 0.5rem;
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Opcional: sombra para la tarjeta */
@@ -50,12 +42,51 @@
     .card-title {
         text-align: center;
         font-size: 2rem; /* Ajustado para tamaños en rem */
-        color: #a9dcf6;
+        color: #FFF;
     }
 
     .form-group {
         position: relative;
         margin-bottom: 0.5rem;
+    }
+
+    .input-icon .icon {
+        position: absolute;
+        left: 0.10rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #fff;
+        font-size: 1.2rem;
+    }
+
+    .form-control {
+        width: 80%; /* Disminuir el ancho a 90% del contenedor */
+        height: 2rem; /* Aumentar la altura del input */
+        padding: 0.5rem 0.5rem 0.5rem 3rem; /* Padding izquierdo para el icono */
+        font-size: 1rem;
+        border-radius: 0.25rem;
+        border: 1px solid #ccc;
+        margin: 10px auto; /* Centro el input con margen automático */
+        background-color: transparent;
+        color: black;
+    }
+
+        /* Aplicar estilos al placeholder */
+        .form-control::placeholder {
+            padding-left: 10%; /* Esto no moverá el texto, solo cambiará el padding interno */
+            color: white;
+            font-size: bold;
+        }
+
+    .login-button {
+        width: 50%; /* Ajustado para ocupar todo el ancho disponible */
+        padding: 0.5rem;
+        margin: 20px auto;
+        display: block;
+        border-radius: 10px;
+        color: #000;
+        background-color: rgba(255, 255, 255, 0.7);
+        border: none;
     }
 
     .input-icon .icon {
@@ -143,7 +174,7 @@
     <div class="card">
         <div class="card-header">
            
-            <i class="far fa-user user-icon" style="margin-left:40%;"></i> <!-- Icono de usuario (silueta) -->
+            <i class="far fa-user user-icon" ></i> <!-- Icono de usuario (silueta) -->
             <h1 style="color:white; margin:10px">Login</h1>
         </div>
 
