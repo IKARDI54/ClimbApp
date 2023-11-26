@@ -35,13 +35,7 @@ namespace BlazorCLIMB.UI.Services
             };
             return await _authRepository.CreateUser(userDto);
         }
-
-
-        public async Task<string> GetRolesForUser(string email)
-        {
-            return await _authRepository.GetUserRole(email);
-        }
-
+        
         public async Task<User> GetUserByEmail(string email)
         {
             return await _authRepository.GetUserByEmail(email);
@@ -55,5 +49,24 @@ namespace BlazorCLIMB.UI.Services
         {
             return await _authRepository.VerifyPassword(email, password);
         }
+
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+            
+            return await _authRepository.GetAllUsers();
+        }
+        public async Task<bool> UpdateUser(User user)
+        {
+            
+            return await _authRepository.UpdateUser(user);
+        }
+
+        public async Task<bool> DeleteUser(int userId)
+        {
+            
+            return await _authRepository.DeleteUser(userId);
+        }
+
+
     }
 }

@@ -60,13 +60,6 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
             }
         }
 
-        public async Task<string?> GetUserRole(string email) 
-        {
-            var user = await GetUserByEmail(email);
-            return user?.Role;
-        }
-
-
         public async Task<AuthenticationResult> VerifyPassword(string email, string password)
         {
             var user = await GetUserByEmail(email);
@@ -96,18 +89,42 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
             return false;
         }
 
+        public async Task<bool> UpdateUser(User user)
+        {
+            var sql = @"UPDATE Users 
+                    SET Email = @Email, 
+                        PasswordHash = @PasswordHash, 
+                        Role = @Role, 
+                        Name = @Name, 
+                        Img = @Img 
+                    WHERE Id = @Id";
 
-        // Método para hashing de contraseñas
+            var result = await _dbConnection.ExecuteAsync(sql, user);
+            return result > 0;
+        }
+
+        public async Task<bool> DeleteUser(int userId)
+        {
+            var sql = "DELETE FROM Users WHERE Id = @Id";
+            var result = await _dbConnection.ExecuteAsync(sql, new { Id = userId });
+            return result > 0;
+        }
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+            var sql = "SELECT * FROM Users";
+            return await _dbConnection.QueryAsync<User>(sql);
+        }
+       
 
 
         private string HashPassword(string password)
         {
-            return password; // Simplemente devolvemos la contraseña como su "hash"
+            return password; 
         }
 
         private bool VerifyHashedPassword(string storedPassword, string passwordToVerify)
         {
-            return storedPassword == passwordToVerify; // Comparación directa
+            return storedPassword == passwordToVerify; 
         }
 
 

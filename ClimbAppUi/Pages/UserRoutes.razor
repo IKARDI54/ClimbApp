@@ -1,6 +1,4 @@
-﻿
-@page "/userRoutes/{routeId}"
-
+﻿@page "/userRoutes/{routeId}"
 @using BlazorCLIMB.Model
 @using BlazorBootstrap;
 
@@ -8,15 +6,20 @@
 @using Interfaces
 @inject IClimbingRouteService ClimbingRouteService
 @inject NavigationManager NavigationManager
-
 @inject IUserClimbingRouteService UserClimbingRouteService
-<div style="color:white; font-weight:600">
-    <h1 style="color:white; font-weight:600">Detalles de la Vía Escalada</h1>
 
+
+
+
+
+<div class="container" style="color:white; font-weight:600">
+    <h1 style="color:white; font-weight:600">Detalles de la Vía Escalada</h1>
+    <RadzenButton Click="LoginGo" Variant="Variant.Outlined" Text="Volver" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:75%;" />
 @if (climbingRoute != null)
 {
     <div>
             <h2 style="color:white; font-weight:600">@climbingRoute.Name</h2>
+            <h1 style="color:white; font-weight:600">@climbingRoute.Grade</h1>
     <p>@climbingRoute.Description</p>
     
    @*  <h3>Valoración Promedio</h3>
@@ -84,8 +87,6 @@ else
     private UserClimbingRoutes userClimbingRoute = new UserClimbingRoutes();
     private IEnumerable<UserClimbingRoutes> userClimbingRouteList = Enumerable.Empty<UserClimbingRoutes>();
 
-
-
     [Parameter]
     public string RouteId
     {
@@ -101,18 +102,26 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        
-        climbingRoute = await ClimbingRouteService.GetClimbingRouteDetails(routeId);
-
-       
         int userId = UserSession.UserId;
-        userClimbingRouteList = await UserClimbingRouteService.GetUserClimbingRoutes(userId);
+
+
+          if (routeId > 0)
+        {
+      
+            climbingRoute = await ClimbingRouteService.GetClimbingRouteDetails(routeId);
+        }
+      
+          
+            userClimbingRouteList = await UserClimbingRouteService.GetUserClimbingRoutes(userId);
+
+        userClimbingRoute.UserId = userId;
+        userClimbingRoute.ClimbingRouteId = routeId;
     }
 
 
     private async Task GuardarAnotacion(UserClimbingRoutes userClimbingRoute)
     {
-       
+
 
         // Llamar al servicio para crear la anotación de vía escalada
         bool resultado = await UserClimbingRouteService.CreateUserClimbingRoute(userClimbingRoute);
@@ -120,6 +129,10 @@ else
         if (resultado)
         {
             routeCreated = true;
-        }
+        };
+    }
+    private void LoginGo()
+    {
+        NavigationManager.NavigateTo("/climbingRouteList");
     }
 }

@@ -1,0 +1,392 @@
+﻿@page "/gallery"
+@using System.IO.Compression;
+
+<style>
+#image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-auto-rows: minmax(150px, auto);
+    gap: 10px;
+    padding: 5%; /* Padding añadido alrededor de todo el bloque de fotos */
+    margin: auto; /* Centra el bloque en la página */
+    max-width: 1200px; /* Establece una anchura máxima para el bloque de imágenes */
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.gallery-item.large {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.gallery-item.wide {
+    grid-column: span 2;
+}
+
+/* Asegúrate de que las imágenes se ajustan bien en pantallas pequeñas */
+@@media (max-width: 768px) {
+    #image-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    .gallery-item.large, .gallery-item.wide {
+        grid-column: span 1;
+        grid-row: span 1;
+    }
+}
+
+#add-image {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 20px 0;
+}
+
+    .gallery-item.double-column {
+        grid-column: span 2;
+    }
+
+    .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 5px solid white; /* Borde negro de 2px */
+        box-sizing: border-box; /* Para incluir el borde en el ancho y alto total */
+    }
+
+    .input-file-gallery {
+        display: block; /* Asegurarse de que se comporte como un bloque */
+        width: 70%; /* Ancho específico para el input */
+        margin: 20px auto; /* Centrado con margen automático */
+        border-radius: 0.5rem; /* Esquinas redondeadas */
+        padding: 0.5rem; /* Padding adecuado */
+        border: 1px solid #ccc; /* Borde definido */
+        background-color: rgba(255, 255, 255, 0.7); /* Fondo semitransparente */
+        color: black; /* Color del texto */
+        font-size: 1rem; /* Tamaño del texto */
+    }
+
+        .input-file-gallery::file-selector-button {
+            border-radius: 10px; 
+            background-color: #7c7277; 
+            color: white; 
+            border: none; 
+            padding: 0.5rem; 
+        }
+
+    .temp-gallery-item {
+        grid-column: span 1; /* Ocupar una sola columna */
+        grid-row: span 1; /* Ocupar una sola fila */
+    }
+
+        .temp-gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 3px solid #ddd; /* Borde para distinguirlas */
+        }
+
+    .custom-accordion .accordion-button {
+        --bs-accordion-btn-bg: #365664;
+    }
+
+    .custom-accordion .accordion-button {
+        color: black;
+        font-weight:600;/* Color del texto */
+    }
+
+    /* Estilo personalizado para el cuerpo del acordeón */
+    .custom-accordion .accordion-body {
+     
+    
+        background-image: url('/images/back.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        -webkit-text-size-adjust: 100%;
+        margin: 0;
+        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Lato,Roboto,"Helvetica Neue",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+        font-size: 72%;
+        color: #333;
+        background-color: #e3e6e8 !important;
+    
+    }
+
+
+    .pdf-item card {
+        display: flex;
+        align-items: center;
+        background-color: ;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px;
+    }
+
+   
+
+    .pdf-thumbnails {
+        display: flex;
+        flex-wrap: wrap; /* Permite que los elementos pasen a la siguiente fila si no hay espacio */
+        justify-content: center; /* Alinea elementos al inicio del contenedor */
+        gap: 5px; /* Espacio entre elementos */
+        align-items: stretch;
+    }
+
+        .pdf-item:hover {
+            transform: scale(1.03); /* Efecto de elevación al pasar el ratón por encima */
+        }
+
+    .pdf-item {
+        flex: 0 1 20%; /* Ajusta esto según el tamaño deseado */
+        display: flex;
+        flex-direction: column; /* Organiza el contenido en columnas */
+        align-items: center;
+        justify-content: center;
+        background-color: #f5f5f5;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        margin: 10px; /* Asegura suficiente espacio alrededor */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        transition: transform 0.2s;
+        position: relative; /* Necesario para posicionar absolutamente los botones */
+    }
+
+        .pdf-item img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px; /* Espacio entre la imagen y el texto */
+        }
+
+    .btn-container {
+        display: flex;
+        width: 100%; /* Los botones llenan el ancho de la tarjeta */
+        justify-content: space-between; /* Espacio entre botones */
+        margin-top: 10px; /* Espacio entre los botones y el texto o la imagen arriba de ellos */
+    }
+
+    .btn {
+        flex: 1; /* Los botones se expanden para llenar el espacio disponible */
+        margin: 0 10px; /* Espacio alrededor de los botones */
+    }
+
+    .btn-primary {
+        background-color: #0056b3; /* Color primario más oscuro */
+        padding: 8px 16px; /* Más relleno */
+        font-weight: bold; /* Texto en negrita */
+        transition: background-color 0.2s; /* Animación suave al hacer hover */
+    }
+
+        .btn-primary:hover {
+            background-color: #004085; /* Color más oscuro al hacer hover */
+        }
+
+    .btn-danger {
+        background-color: #c9302c; /* Color peligro más oscuro */
+        padding: 8px 16px; /* Más relleno */
+        font-weight: bold; /* Texto en negrita */
+        transition: background-color 0.2s; /* Animación suave al hacer hover */
+    }
+
+        .btn-danger:hover {
+            background-color: #761c19; /* Color más oscuro al hacer hover */
+        }
+
+    .txt {
+        text-align: center;
+        font-weight: bold; /* Hace el texto más grueso */
+        font-size: 18px; /* Tamaño de fuente más grande */
+        font-family: 'Roboto', sans-serif; /* Cambia la fuente a Roboto */
+        padding: 0 10px; /* Agrega padding para que el texto no toque los bordes de la tarjeta */
+    }
+
+    
+
+   
+</style>
+
+
+<BlazorBootstrap.Accordion class="custom-accordion">
+    <AccordionItem>
+         <TitleTemplate>
+                <RadzenIcon Icon="map" IconColor="@Colors.Info" />  &nbsp &nbsp Croquis de las escuelas (Mapas)
+         </TitleTemplate>
+
+        <Content>
+            <div class="form-group text-center">
+                <!-- Agregada la clase text-center -->
+                <InputFile class="input-file-gallery" id="pdfFile" accept=".pdf" OnChange="HandlePdfSelection" />
+                <button class="btn btn-primary" @onclick="HandlePdfUpload">Subir PDF</button>
+                <p style="color:white; font-size:14px">@pdfUploadStatus</p>
+            </div>
+
+            <div class="pdf-thumbnails">
+                @foreach (var file in Files)
+                {
+                    <div class="pdf-item">
+                        <div class="txt">@file</div>
+                        <img src="@pdfIconUrl" alt="PDF Icon" />
+                        <div class="btn-container">
+                            <button class="btn btn-primary" @onclick="() => GetFileUrl(file)"> <RadzenIcon Icon="assignment_returned" IconColor="@Colors.White" /> </button>
+                            <button class="btn btn-danger" @onclick="() => RemovePdf(file)"> <RadzenIcon Icon="delete" IconColor="@Colors.White" /></button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </Content>
+    </AccordionItem>
+
+    <AccordionItem>
+       <TitleTemplate>
+            <RadzenIcon Icon="camera_enhance" IconColor="@Colors.Info" /> &nbsp &nbsp Fotos de escalada.
+         </TitleTemplate>
+       
+            <Content>
+            
+                <div class="form-group">
+                    <InputFile class="input-file-gallery" id="avatar" accept="image/*" OnChange="LoadTemporaryImage" />
+                </div>
+                <div id="image-gallery">
+                    @foreach (var imageUrl in temporaryImages)
+                    {
+                        <div class="gallery-item"><img src="@imageUrl" alt="Imagen Temporal" /></div>
+                    }
+                    <!-- Tus imágenes existentes aquí -->
+                </div>
+                <div id="image-gallery">
+                    <div class="gallery-item large"><img src="/images/7.jpg" alt="Escalada 1" /></div>
+                    <div class="gallery-item"><img src="/images/2.jpg" alt="Escalada 2" /></div>
+                    <div class="gallery-item"><img src="/images/3.jpg" alt="Escalada 3" /></div>
+                    <div class="gallery-item wide"><img src="/images/4.jpg" alt="Escalada 4" /></div>
+                    <div class="gallery-item"><img src="/images/5.jpg" alt="Escalada 5" /></div>
+                    <div class="gallery-item"><img src="/images/6.jpg" alt="Escalada 6" /></div>
+                    <div class="gallery-item large"><img src="/images/1.jpg" alt="Escalada 7" /></div>
+                    <div class="gallery-item wide"><img src="/images/8.jpg" alt="Escalada 8" /></div>
+                    <div class="gallery-item"><img src="/images/9.jpg" alt="Escalada 9" /></div>
+                    <div class="gallery-item"><img src="/images/10.jpg" alt="Escalada 10" /></div>
+                    <div class="gallery-item full-width"><img src="/images/11.jpg" alt="Escalada 11" style="width:200%" /></div>
+                    <div class="gallery-item large"><img src="/images/12.jpg" alt="Escalada 12" /></div>
+                    <div class="gallery-item full-width"><img src="/images/13.jpg" alt="Escalada 13" style="width:200%" /></div>
+                    <div class="gallery-item wide"><img src="/images/14.jpg" alt="Escalada 14" /></div>
+                    <div class="gallery-item"><img src="/images/15.jpg" alt="Escalada 15" /></div>
+                </div>
+            </Content>
+        </AccordionItem>
+  
+</BlazorBootstrap.Accordion>
+
+
+
+@code {
+    private List<string> temporaryImages = new List<string>();
+    private List<string> Files { get; set; }
+    private IBrowserFile selectedPdf;
+    private string pdfUploadStatus;
+    private string pdfIconUrl = "/images/des.jpg";
+
+
+    protected override void OnInitialized()
+    {
+        var path = Path.Combine("wwwroot", "pdf");
+        Files = Directory.GetFiles(path).Select(Path.GetFileName).ToList();
+    }
+    private async Task LoadTemporaryImage(InputFileChangeEventArgs e)
+    {
+        var imageFile = e.File;
+        if (imageFile != null)
+        {
+            long maxAllowedSize = 1024L * 1024L * 10L;
+            var stream = imageFile.OpenReadStream(maxAllowedSize);
+
+
+            var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            stream.Close();
+            memoryStream.Seek(0, SeekOrigin.Begin);
+
+            var imageData = new byte[memoryStream.Length];
+            memoryStream.Read(imageData, 0, imageData.Length);
+            var imageDataUrl = $"data:image/png;base64,{Convert.ToBase64String(imageData)}";
+            temporaryImages.Add(imageDataUrl);
+        }
+    }
+    private void HandlePdfSelection(InputFileChangeEventArgs e)
+    {
+        selectedPdf = e.File;
+        long maxAllowedSize = 1024L * 1024L * 100L; 
+
+        if (selectedPdf.Size > maxAllowedSize)
+        {
+            pdfUploadStatus = $"El archivo PDF seleccionado supera el límite de tamaño permitido de {maxAllowedSize / (1024 * 1024)} MB.";
+            return;
+        }
+
+        pdfUploadStatus = $"Archivo PDF '{selectedPdf.Name}' seleccionado. Listo para subir.";
+        StateHasChanged();
+    }
+
+    private async Task HandlePdfUpload()
+    {
+        if (selectedPdf != null)
+        {
+            long maxAllowedSize = 1024L * 1024L * 100L; // 100 MB (puedes ajustar este valor según tus necesidades)
+
+            if (selectedPdf.Size > maxAllowedSize)
+            {
+                pdfUploadStatus = $"El archivo PDF seleccionado supera el límite de tamaño permitido de {maxAllowedSize / (1024 * 1024)} MB.";
+                return;
+                
+            }
+
+            var path = Path.Combine("wwwroot", "pdf", $"{Path.GetFileNameWithoutExtension(selectedPdf.Name)}.zip");
+
+            using (var originalFileStream = selectedPdf.OpenReadStream(maxAllowedSize))
+            {
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                using (var zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Create))
+                {
+                    var zipEntry = zipArchive.CreateEntry(selectedPdf.Name);
+
+                    using (var entryStream = zipEntry.Open())
+                    {
+                        await originalFileStream.CopyToAsync(entryStream);
+                    }
+                }
+            }
+
+            pdfUploadStatus = $"Archivo PDF '{selectedPdf.Name}' subido y comprimido con éxito.";
+            StateHasChanged();
+        }
+        else
+        {
+            pdfUploadStatus = "No se seleccionó ningún archivo PDF.";
+        }
+    }
+
+
+    private string GetFileUrl(string fileName)
+    {
+        return $"/pdf/{fileName}";
+        StateHasChanged();
+    }
+    private void RemovePdf(string fileName)
+    {
+     
+        Files.Remove(fileName);
+        var filePath = Path.Combine("wwwroot", "pdf", fileName);
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+            StateHasChanged();
+        }
+    }
+}
+
+}

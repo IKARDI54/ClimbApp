@@ -1,9 +1,16 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
-html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    
+body {
+    background-image: url('/images/169781.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100%;
+    width: 100%;
+    backdrop-filter: blur(5px);
+  
 }
+
 
 h1:focus {
     outline: none;
@@ -18,10 +25,10 @@ a, .btn-link {
     background-color: #1b6ec2;
     border-color: #1861ac;
 }
-/* Cambiar el color de fondo del navbar a azul */
+ Cambiar el color de fondo del navbar a azul 
 .navbar {
     background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 100%);
-    color: white; /* Cambiar el color del texto a blanco */
+    color: white;  Cambiar el color del texto a blanco 
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -57,7 +64,7 @@ a, .btn-link {
 }
 
     #blazor-error-ui .dismiss {
-        cursor: pointer;
+      
         position: absolute;
         right: 0.75rem;
         top: 0.5rem;
@@ -72,3 +79,4 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+*/

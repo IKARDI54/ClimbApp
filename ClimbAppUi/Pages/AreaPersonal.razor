@@ -1,0 +1,506 @@
+﻿@page "/personalArea"
+
+@using BlazorCLIMB.Model
+@using BlazorCLIMB.Model.BlazorCRUD.Model;
+@using BlazorCLIMB.UI.Interfaces
+@inject IAuthService AuthService
+@inject IJSRuntime JS
+<style>
+    * {
+        color:white;
+    }
+
+    h2 {
+        color: white;
+    }
+
+    .imagen-perfil {
+        width: 80px; 
+        height: 80px;
+        border: 3px solid transparent;
+        border-radius: 50%;
+        background-image: linear-gradient(white, white), linear-gradient(to right, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+        background-origin: border-box;
+        background-clip: content-box, border-box;
+        overflow: hidden; 
+    }
+
+        .imagen-perfil img {
+            border-radius: 50%;
+            width: 80%;
+            height: 80%;
+            object-fit: cover;
+            
+        }
+   
+    .container {
+        margin-top:-10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-card {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .imagen-perfil {
+        width: 100px;
+        height: 100px;
+        border: 3px solid transparent;
+        border-radius: 50%;
+        background-image: linear-gradient(white, white), linear-gradient(to right, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+        background-origin: border-box;
+        background-clip: content-box, border-box;
+        overflow: hidden;
+    }
+
+        .imagen-perfil img {
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+           
+        }
+
+    
+    .admin-button {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    .profile-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+       
+    }
+    .form-group {
+    display: flex;
+    align-items: start; /* Alinea verticalmente los elementos del form-group */
+    margin-top: 10px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 0; /* Elimina el margen inferior */
+   
+}
+
+.form-control {
+    width: auto; /* Cambia de 100% a auto para que el input no ocupe todo el ancho */
+    max-width: none; /* Elimina el max-width */
+}
+    
+    .tabla.usuarios {
+        margin: 0 auto;
+        max-width: 800px; /* Define un ancho máximo para la tabla */
+        border-collapse: collapse; /* Colapsa los bordes de la tabla */
+       /* Color de fondo */
+        border: 2px solid #ddd; /* Borde con estilo */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    }
+
+    /* Estilos para el encabezado de la tabla */
+    .tabla h3 {
+        text-align: center; /* Centra el texto */
+        background-color: #333; /* Color de fondo del encabezado */
+        color: #fff; /* Color del texto del encabezado */
+        padding: 10px; /* Espaciado interno */
+        margin-top: 0; /* Elimina el margen superior predeterminado */
+    }
+
+
+    .table {
+        width: 100%;
+        max-width: 600px;
+        margin-top: 20px;
+        margin-left:10%;
+    }
+
+        .table th,
+        .table td {
+            text-align: center;
+        }
+
+    .imgUser {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+    /* Estilo para el campo de carga de avatar */
+    .custom-file-input {
+        display: none; 
+    }
+
+    
+   
+
+   
+    .custom-file-label {
+        background-color: #007bff;
+        color: white; /* Color del texto del botón */
+        padding: 5px 10px; /* Espaciado interno del botón */
+        border-radius: 5px; /* Borde redondeado del botón */
+        cursor: pointer; 
+        width:200px;
+    }
+
+        /* Estilo para el botón cuando se pasa el ratón por encima */
+        .custom-file-label:hover {
+            background-color: #0056b3; /* Cambia el color de fondo cuando se pasa el ratón */
+        }
+
+    .admin-button-container {
+        display: flex; /* Utiliza flexbox para expandir el botón */
+        justify-content: flex-end; /* Alinea el botón al extremo derecho */
+        margin-top: 10px; /* Margen superior */
+    }
+
+    /* Estilo para el botón de "Administrar Usuarios" */
+    .admin-button {
+        flex: 1; 
+        margin-left: 10px; 
+    }
+
+    .form-group {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+        .form-group label {
+            display: inline-block; /* Esto asegura que el label tiene un ancho */
+            width: 100px; /* Un ancho fijo para todos los labels */
+            text-align: center; /* Alinea el texto del label a la derecha */
+            /* Espacio entre el label y el input */
+        }
+
+    .form-control, .custom-file-label {
+        flex-grow: 1; 
+    }
+
+    /* Alinea el contenedor del formulario en el centro */
+    .formulario {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Esto centrará los .form-group en el contenedor .formulario */
+        width: 100%; /* Opcional: ajusta el ancho según necesites */
+    }
+
+
+
+    .toast {
+        position: fixed; /* Posición fija en la pantalla */
+        bottom: 20px; /* Distancia desde la parte inferior */
+        right: 20px; /* Distancia desde la derecha */
+        background-color: #333; /* Color de fondo */
+        color: #fff; /* Color del texto */
+        border-radius: 5px; /* Bordes redondeados */
+        padding: 10px 20px; /* Espaciado interno */
+        z-index: 9999; /* Índice z alto para estar sobre otros elementos */
+       
+    }
+
+        /* Estilos para el icono dentro del toast */
+        .toast .toast-icon {
+            float: left; /* Alineación a la izquierda */
+            margin-right: 10px; /* Margen a la derecha del icono */
+        }
+
+        /* Estilos para el mensaje dentro del toast */
+        .toast .message {
+            font-size: 16px; /* Tamaño de fuente */
+        }
+
+        
+        .toast #icon {
+            font-size: 24px; /* Tamaño de fuente del ícono */
+        }
+</style>
+
+
+<div class="container">
+        <div class="profile-card">
+            <div class="item">
+                <div class="imagen-perfil">
+                    <!-- Coloca aquí tu código de imagen -->
+                    <img src="@(avatarUrl != null ? avatarUrl : (user?.Img != null && user.Img.Length > 0 ? $"data:image/jpg;base64,{Convert.ToBase64String(user.Img)}" : "images/schu.jpg"))" alt="User Avatar" />
+                </div>
+             
+            </div>
+        </div>
+
+
+
+     @if (editedUser != null)
+    {  
+        <div Class="formulario">
+            <EditForm Model="@editedUser" OnValidSubmit="SaveProfile">
+                <div class="profile-info">
+       
+                    <div class="form-group">
+                        <label for="name">Nombre:</label>
+                        <InputText id="name" class="form-control" @bind-Value="editedUser.Name" />
+                    </div>
+
+       
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <InputText id="email" class="form-control" @bind-Value="editedUser.Email" InputMode="email" />
+                    </div>
+
+       
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <InputText id="password" class="form-control" @bind-Value="editedUser.PasswordHash" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="avatar">Avatar:</label>
+                        <InputFile class="custom-file-input" style="margin-top:35px; margin-bottom:35px;" id="avatar" accept="image/*" OnChange="OnAvatarChange" />
+                        <label class="custom-file-label" for="avatar"> <RadzenIcon Icon="account_box" IconColor="@Colors.Info" /></label>
+                    </div>
+                    <RadzenButton Click="SaveProfile" Variant="Variant.Outlined" Icon="backup" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:5px; width:400px; border:solid 2px white" />
+
+          
+                </div>
+            </EditForm>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex align-items-center">
+            <div class="spinner-border text-success" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <span class="ml-2">Loading...</span>
+        </div>
+    }
+    @if (showToast)
+    {
+        <div class="toast" style="display: block;">
+            <div class="toast-icon">
+                <RadzenIcon Icon="account_box" IconColor="@Colors.Info" />
+            </div>
+            <div class="toast-message">@message</div>
+        </div>
+
+    }
+</div>
+@if (user?.Role == "SuperUser")
+{
+    <div class="admin-button-container">
+        <RadzenButton Variant="Variant.Outlined" Text="Administrar Usuarios" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold;" Click="OpenModal" class="admin-button" />
+    </div>
+}
+@if (showModal)
+{
+     <div class="tabla usuarios">
+        <h3>Administración de Usuarios</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (users != null)
+                {
+
+
+       
+                @foreach (var userItem in users)
+                {
+                    <tr>
+                        <td class="imgUser">@userItem.Id</td>
+                        <td>@userItem.Name</td>
+                        <td>@userItem.Email</td>
+                        <td>@userItem.Role</td>
+                        <td>
+                            <RadzenButton Click="() => DeleteUser(userItem.Id)" Variant="Variant.Outlined" Text="Banear" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:5px;" />
+                      
+                       
+                        </td>
+                        </tr>
+                    }
+
+                }
+                else
+                {
+                    <div class="d-flex align-items-center">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <span class="ml-2">Loading...</span>
+                    </div>
+                }
+            </tbody>
+        </table>
+    
+    </div>
+
+  
+}
+
+
+@code {
+    private bool showToast = true;
+    private string toastMessage = "";
+    private User user;
+    private User editedUser;
+    // private UserSession modelUser;
+    private bool editMode = false;
+    private List<User> users;
+    private byte[] base64Image;
+    AuthModel model = new AuthModel();
+    string message = "";
+    string role = "User";
+    string avatarUrl;
+    private bool showModal = false;
+
+    private void OpenModal()
+    {
+        showModal = !showModal;
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        int userId = UserSession.UserId;
+
+        if (userId != 0)
+        {
+            editedUser = await AuthService.GetUserById(userId);
+            user = await AuthService.GetUserById(userId);
+            base64Image = user.Img;
+        }
+        else
+        {
+            editedUser = new User(); 
+        }
+        StateHasChanged();
+
+        users = (await AuthService.GetAllUsers()).ToList();
+
+    }
+
+    private async Task ToggleEditMode()
+    {
+        editMode = !editMode;
+    }
+
+    private async Task SaveProfile()
+    {
+        try
+        {
+
+            bool isUpdated = await AuthService.UpdateUser(editedUser);
+
+            if (isUpdated)
+            {
+                message = "Profile updated successfully.";
+                ShowToast(message);
+              
+                avatarUrl = $"data:image/png;base64,{Convert.ToBase64String(editedUser.Img)}"; // Actualiza avatarUrl
+                StateHasChanged();
+
+            }
+            else
+            {
+                message = "Failed to update profile.";
+                ShowToast(message);
+               
+            }
+        }
+        catch (Exception ex)
+        {
+            message = $"Error updating profile: {ex.Message}";
+            ShowToast(message);
+           
+        }
+        finally
+        {
+            editMode = false;
+        }
+    }
+
+    private async Task DeleteUser(int id)
+    {
+        await AuthService.DeleteUser(id); 
+        users.Remove(users.Single(u => u.Id == id)); // Actualiza la lista después de eliminar
+    }
+    private string GetImageAsBase64()
+    {
+        if (user?.Img != null)
+        {
+            return $"data:image/png;base64,{Convert.ToBase64String(user.Img)}";
+        }
+        else
+        {
+            return "_content/ClimbAppUi/images/ondra.jpg";
+        }
+    }
+    private async Task OnAvatarChange(InputFileChangeEventArgs e)
+    {
+        var imageFile = e.File;
+
+        if (imageFile != null)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                await imageFile.OpenReadStream().CopyToAsync(memoryStream);
+                editedUser.Img = memoryStream.ToArray(); 
+                avatarUrl = $"data:{imageFile.ContentType};base64,{Convert.ToBase64String(editedUser.Img)}";
+            }
+            message = "Avatar Seleccionado.";
+            ShowToast(message);
+        }
+        else
+        {
+            message = "Please select an avatar image.";
+            ShowToast(message);
+
+        }
+    }
+    private void ShowToast(string message)
+    {
+        toastMessage = message;
+        showToast = true;
+        StateHasChanged(); // Notifica a Blazor que actualice la UI
+
+        // Opcional: Ocultar toast después de un tiempo
+        Task.Delay(3000).ContinueWith(t =>
+        {
+            showToast = false;
+           
+        });
+    }
+    class SomeModel
+    {
+        public bool SomeBooleanProperty { get; set; }
+        public DateTime? SomeDateTimeProperty { get; set; }
+        public int SomeIntegerProperty { get; set; }
+        public decimal SomeDecimalProperty { get; set; }
+        public string SomeStringProperty { get; set; }
+        public string SomeMultiLineStringProperty { get; set; }
+        public SomeStateEnum SomeSelectProperty { get; set; } = SomeStateEnum.Active;
+    }
+
+    public enum SomeStateEnum
+    {
+        Pending,
+        Active,
+        Suspended
+    }
+}

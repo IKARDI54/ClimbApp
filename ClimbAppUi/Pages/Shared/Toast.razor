@@ -1,0 +1,28 @@
+﻿@if (showToast)
+{
+    <div class="toast @(toastType)">
+        <div class="toast-icon">
+            <i class="@(toastType == "success" ? "fa fa-check-circle" : "fa fa-times-circle")"></i>
+        </div>
+        <div class="toast-message">@message</div>
+    </div>
+}
+
+@code {
+    private bool showToast = false;
+    private string message = "";
+    private string toastType = "";
+
+    public void ShowToast(string message, bool isSuccess)
+    {
+        this.message = message;
+        toastType = isSuccess ? "success" : "error";
+        showToast = true;
+
+        Task.Delay(5000).ContinueWith(_ =>
+        {
+            showToast = false;
+            StateHasChanged();
+        });
+    }
+}

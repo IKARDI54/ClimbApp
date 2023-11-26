@@ -11,7 +11,9 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
         Task<User?> GetUserById(int id);
         Task<AuthenticationResult> VerifyPassword(string email, string password);
 
-        Task<string?> GetUserRole(string email);
         Task<bool> AssignRoleToUser(string email, string role);
+        Task<IEnumerable<User>> GetAllUsers();
+        Task<bool> UpdateUser(User user);
+        Task<bool> DeleteUser(int userId);
     }
 }

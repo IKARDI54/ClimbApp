@@ -53,24 +53,28 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
 
         public async Task<bool> CreateUserClimbingRoute(UserClimbingRoutes userClimbingRoute)
         {
-            var db = dbConnection();
-           
+            using (var db = dbConnection())
+            {
                 await db.OpenAsync();
+
                 var sql = @"INSERT INTO UserClimbingRoutes (UserId, ClimbingRouteId, Comments, Pegs, Cintas, Date)
-                        VALUES (@UserId, @ClimbingRouteId, @Comments, @Pegs, @Cintas, @Date)";
-                var result = await db.ExecuteAsync(sql.ToString(),
-                     new
-                     {
-                         userClimbingRoute.UserId,
-                         userClimbingRoute.ClimbingRouteId,
-                         userClimbingRoute.Comments,
-                         userClimbingRoute.Pegs,
-                         userClimbingRoute.Cintas,
-                         userClimbingRoute.Date,
-                     }) ;
+                    VALUES (@UserId, @ClimbingRouteId, @Comments, @Pegs, @Cintas, @Date)";
+
+                var result = await db.ExecuteAsync(sql,
+                    new
+                    {
+                        UserId = userClimbingRoute.UserId,
+                        ClimbingRouteId = userClimbingRoute.ClimbingRouteId,
+                        Comments = userClimbingRoute.Comments,
+                        Pegs = userClimbingRoute.Pegs,
+                        Cintas = userClimbingRoute.Cintas,
+                        Date = userClimbingRoute.Date
+                    });
+
                 return result > 0;
-            
+            }
         }
+
 
         public async Task<bool> UpdateUserClimbingRoute(UserClimbingRoutes userClimbingRoute)
         {

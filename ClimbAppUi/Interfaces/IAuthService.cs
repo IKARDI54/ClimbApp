@@ -12,7 +12,9 @@ namespace BlazorCLIMB.UI.Interfaces
         Task<User> GetUserById(int userId);
         Task<AuthenticationResult> VerifyPassword(string email, string password);
         Task<bool> AssignRoleToUser(string email, string role);
-        Task<string> GetRolesForUser(string email);
+        Task<bool> UpdateUser(User user);
+        Task<bool> DeleteUser(int userId);
+        Task<IEnumerable<User>> GetAllUsers();
     }
 }
 

@@ -57,7 +57,8 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.Configure<FormOptions>(options =>
 {
-    options.MultipartBodyLengthLimit = 1024 * 1024 * 10; // Aumenta el límite a 10 MB (por ejemplo)
+    options.BufferBodyLengthLimit = 100000000; // 100 MB
+    options.MultipartBodyLengthLimit = 100000000; // 100 MB
 });
 
 // Agregar el logging
