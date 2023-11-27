@@ -17,6 +17,8 @@ namespace BlazorCLIMB.Model
         public int? Pegs { get; set; } // Campo Pegs es nulable
         public int? Cintas { get; set; } // Campo Cintas es nulable
         public DateTime? Date { get; set; }
+        public int? Rating { get; set; }
+        public ClimbingRoute ClimbingRoute { get; set; }
     }
 }
     

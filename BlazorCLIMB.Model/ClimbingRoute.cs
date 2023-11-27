@@ -14,6 +14,7 @@ namespace BlazorCLIMB.Model
         public string? Description { get; set; }
         public int ClimbingSchoolId { get; set; }
         public string? ClimbingSector { get; set; }
+
     }
 }
 

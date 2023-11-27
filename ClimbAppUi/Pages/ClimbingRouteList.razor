@@ -6,27 +6,23 @@
 @inject NavigationManager NavigationManager
 
 <style>
-  
 
     .container.full-background {
         height: 100%;
         margin: 0;
-        min-height: 100%; /* Asegura que el contenedor tenga al menos el alto de la ventana */
-        background-color: #6d7477; /* Establece el color de fondo deseado */
-        /* Ajusta el padding y el margen como sea necesario */
+        min-height: 100%;
+        background-color: #6d7477;
         padding: 0;
-        margin: 0;
     }
-
-  
     .RadzenDataGrid {
         background-color: transparent; /* O el mismo color del contenedor si es necesario */
     }
 
     .search-container {
+        margin-right:-50px;
+        margin-top:-50px;
         display: flex;
         justify-content: center;
-        margin-bottom: 20px;
     }
 
     .search-input {
@@ -58,32 +54,32 @@
             background-color: #4cae4c;
         }
 
+    .grilla-personalizada {
+        background-color: #f2f2f2; /* Cambia este valor al color que desees */
+    }
+ 
+
+    .grilla-container {
+        padding: 30px; /* Ajusta el valor de padding según tus preferencias */
+        margin-right: -20px;
+        margin-top: -40px;
+    }
 
 </style>
 
-
-<div class="container full-background" style="background-image: url('/images/back.png'); background-size: cover; background-repeat: no-repeat; background-position: center center;">
-
-    <div class="search-container">
-        <input type="text" class="search-input" placeholder="Buscar vías..." @bind="@searchTerm" @onkeypress="SearchKeyPress" />
-        <button class="search-button" @onclick="ApplySearch">
-            <i class="fas fa-search"></i> <!-- Icono de FontAwesome -->
-        </button>
-    </div>
-
     <div class="d-flex align-items-center justify-content-between mb-0">
-        <h1 class="mt-4" style="margin:10px; color:white; margin-left:30%" >Listado de Vías Escaladas</h1>
+        <h1 style=" color:white; margin-left:33%" >Listado de Vías Escaladas</h1>
         <img src="images/logoClimb.png" alt="ClimbApp Logo" style="margin:10px; height: 4.75rem; border-radius: 50%;" class="logo" />
     </div>
-    <div class="mb-4">
+<div class="mb-4 d-flex justify-content-center">
         <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="Radzen.FlexWrap.Wrap">
-             <RadzenButton Click="AddClimbingRoute" Variant="Variant.Outlined" Text="Añadir una Vía" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:5px;" />
-            <RadzenButton Click="LoginGo" Variant="Variant.Outlined" Text="Volver" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:5px;" />
+        <RadzenButton Click="AddClimbingRoute" Variant="Variant.Outlined" Text="Añadir una Vía" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:5px;  border:solid 1px white" />
+            <RadzenButton Click="LoginGo" Variant="Variant.Outlined" Text="Volver" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:5px; border:solid 1px white" />
             
         </RadzenStack>
     </div>
-  
-        <RadzenDataGrid AllowGrouping="true" AllowFiltering="true" AllowColumnResize="true" style="--rz-grid-header-background-img: red;" FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="8" AllowPaging="true" PagerPosition="PagerPosition.Bottom" AllowPagerText="true" Data="@climbingRoutes">
+  <div class="grilla-container">
+    <RadzenDataGrid AllowGrouping="true" AllowFiltering="true" AllowColumnResize="true" FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="5" AllowPaging="true" PagerPosition="PagerPosition.Bottom" AllowPagerText="true" Data="@climbingRoutes">
         <Columns>
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="Name" Title="Nombre" />
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="Grade" Title="Grado" Filterable="true" />
@@ -104,12 +100,12 @@
             </RadzenDataGridColumn>
         </Columns>
     </RadzenDataGrid>
-
+</div>
     @if (!string.IsNullOrEmpty(loadingError))
     {
         <p>@loadingError</p>
     }
-</div>
+
 
 
 <!-- Modal para Editar/Agregar Rutas -->

@@ -21,6 +21,12 @@
         font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
         color:white;
    }
+
+        .map-container iframe {
+            width: 100%;
+            height: 200px; /* Reduzco la altura del mapa iframe */
+            border: 0;
+        }
     .card {
         margin: 10px;
         padding: 20px;
@@ -83,6 +89,16 @@
         border-radius:50%;
         }
 
+    .card h3 {
+        font-size: 16px; /* Reduzco el tamaño del texto de la escuela */
+        font-weight: 600;
+        color: white;
+    }
+
+    .card p {
+        font-size: 14px; /* Reduzco el tamaño del texto de las vías */
+        color: white;
+    }
     div > input[type="text"] {
         width: 300px; /* Ancho del campo de búsqueda */
         padding: 10px; /* Espaciado interior */
@@ -172,10 +188,10 @@ else
             <RadzenButton Click="() => BuscarVideos(searchQuery1)"
                           Variant="Variant.Outlined"
                           Shade="Shade.Darker"
-                          Text="Buscar Videos"
+                          Icon="pageview"
                           ButtonStyle="ButtonStyle.Dark"
                           Size="ButtonSize.Medium"
-                          style="font-weight: bold;" />
+                          style="font-weight: bold; border:solid 1px white" />
             <div class="map-container">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d38531.69481383389!2d-2.185835841325398!3d40.09736889895434!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd5d670b20120e65%3A0xa9dd9bfc4a08d2d5!2sPuente%20de%20Las%20Grajas!5e1!3m2!1ses!2ses!4v1700312468584!5m2!1ses!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
@@ -189,11 +205,11 @@ else
             <RadzenButton Click="() => BuscarVideos(searchQuery3)"
                           Variant="Variant.Outlined"
                           Shade="Shade.Darker"
-                          Text="Buscar Videos"
+                              Icon="pageview"
                               ButtonStyle="ButtonStyle.Dark"
                               Size="ButtonSize.Medium"
-                          style="font-weight: bold;" />           
-            <div class="map-container">
+                              style="font-weight: bold; border:solid 1px white" />
+                <div class="map-container">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d306456.0279005681!2d-3.3319202265624672!3d40.49256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd42ddcb1609565d%3A0xdb8adbe81280e93f!2sPunto%20de%20escalada%20Entrepe%C3%B1as!5e1!3m2!1ses!2ses!4v1700305563598!5m2!1ses!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
@@ -206,11 +222,11 @@ else
             <RadzenButton Click="() => BuscarVideos(searchQuery3)"
                           Variant="Variant.Outlined"
                           Shade="Shade.Darker"
-                          Text="Buscar Videos"
+                              Icon="pageview"
                               ButtonStyle="ButtonStyle.Dark"
                               Size="ButtonSize.Medium"
-                          style="font-weight: bold;" />            
-               <div class="map-container">
+                              style="font-weight: bold; border:solid 1px white" />
+                <div class="map-container">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19041.196416931!2d-3.44055600820619!3d40.88444401258092!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd43c041ce8efeab%3A0xccb5cfc10bd25e74!2sPont%C3%B3n%20de%20la%20Oliva!5e1!3m2!1ses!2ses!4v1700312423348!5m2!1ses!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
@@ -223,10 +239,10 @@ else
             <RadzenButton Click="() => BuscarVideos(searchQuery4)"
                           Variant="Variant.Outlined"
                           Shade="Shade.Darker"
-                          Text="Buscar Videos"
+                              Icon="pageview"
                               ButtonStyle="ButtonStyle.Dark"
                               Size="ButtonSize.Medium"
-                          style="font-weight: bold;" />            <div class="map-container">
+                              style="font-weight: bold; border:solid 1px white" />            <div class="map-container">
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2399.9870056961176!2d-2.817559674949047!3d40.32975107145383!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd42ea4b8ef68335%3A0x37b108e2c5452613!2sBarranco%20del%20Fin%20del%20Mundo!5e1!3m2!1ses!2ses!4v1700305617725!5m2!1ses!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
         </div>
