@@ -15,6 +15,8 @@ namespace BlazorCLIMB.Model
         public int ClimbingSchoolId { get; set; }
         public string? ClimbingSector { get; set; }
 
+        public double AverageRating { get; set; }
+        public int NumberOfRatings { get; set; }
     }
 }
 

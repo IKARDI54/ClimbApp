@@ -37,10 +37,18 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
         {
             var db = dbConnection();
 
-            var sql = @"SELECT Id, Name, Grade, Description, ClimbingSector, ClimbingSchoolId
-                        FROM ClimbingRoute";
+            var sql = @"
+        SELECT CR.Id, CR.Name, CR.Grade, CR.Description, CR.ClimbingSector, CR.ClimbingSchoolId,
+               COALESCE(AVG(RR.Rating), 0.0) AS AverageRating,
+               COUNT(RR.Id) AS NumberOfRatings
+        FROM ClimbingRoute CR
+        LEFT JOIN RouteRating RR ON CR.Id = RR.ClimbingRouteId
+        GROUP BY CR.Id, CR.Name, CR.Grade, CR.Description, CR.ClimbingSector, CR.ClimbingSchoolId
+    ";
 
-            return await db.QueryAsync<ClimbingRoute>(sql.ToString());
+            var result = await db.QueryAsync<ClimbingRoute>(sql);
+
+            return result;
         }
 
         public async Task<ClimbingRoute> GetClimbingRouteDetails(int id)
@@ -113,7 +121,7 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
             var db = dbConnection();
 
             var sql = @"SELECT AVG(Rating) 
-                FROM RouteRatings 
+                FROM RouteRating
                 WHERE ClimbingRouteId = @ClimbingRouteId";
 
             var averageRating = await db.ExecuteScalarAsync<double?>(sql, new { ClimbingRouteId = climbingRouteId });

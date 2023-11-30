@@ -26,6 +26,12 @@ builder.Services.AddScoped<IDbConnection>(provider =>
     new SqlConnection(configuration.GetConnectionString("SqlConnection")));
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRouteRatingService, RouteRatingService>(provider =>
+{
+    var sqlConfig = provider.GetRequiredService<SqlConfiguration>();
+    return new RouteRatingService(sqlConfig.ConnectionString);
+});
+
 builder.Services.AddScoped<IClimbingRouteRepository, ClimbingRouteRepository>(provider =>
 {
     var sqlConfig = provider.GetRequiredService<SqlConfiguration>();

@@ -1,0 +1,107 @@
+﻿@using System.Globalization
+@using BlazorCLIMB.UI.Interfaces;
+@using BlazorCLIMB.UI.Services;
+@inject IClimbingRouteService ClimbingRouteService
+<style>
+    text.rz-tick-text {
+        fill: white;
+        font-size: 5px !important;
+        
+    }
+
+    .rz-category-axis .rz-tick-text {
+        text-anchor: middle;
+    }
+
+    .rz-legend-text {
+        fill: white; 
+
+    }
+    text{
+        color:white;
+    }
+
+    .rz-axis .rz-axis-title {
+        stroke: none;
+        text-anchor: middle;
+        fill: white;
+    }
+</style>
+<div class="rz-p-0 rz-p-md-12">
+    <RadzenChart>
+        <RadzenColumnSeries Data="@topClimbingRoutes" CategoryProperty="RouteName" ValueProperty="AverageRating">
+            <TooltipTemplate Context="data">
+                <div>
+                    Vía: <strong>@data.RouteName</strong><br />
+                    Escuela: <strong>@data.SchoolName</strong><br />
+                    Puntuación Media: <strong>@data.AverageRating</strong>
+                </div>
+            </TooltipTemplate>
+        </RadzenColumnSeries>
+        <RadzenValueAxis>
+            <RadzenAxisTitle Text="Puntuación media" />
+        </RadzenValueAxis>
+        <RadzenCategoryAxis>
+            <RadzenAxisTitle Text="Nombre de la Vía" />
+        </RadzenCategoryAxis>
+    </RadzenChart>
+</div>
+
+@code {
+    bool showDataLabels = false;
+    IList<DataItem> topClimbingRoutes = new List<DataItem>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var routes = await ClimbingRouteService.GetAllClimbingRoutes();
+
+        var tasks = new List<Task<DataItem>>();
+
+
+        foreach (var route in routes)
+        {
+            tasks.Add(GetDataItemAsync(route));
+        }
+
+        var results = await Task.WhenAll(tasks);
+
+        topClimbingRoutes = results.OrderByDescending(item => item.AverageRating).Take(5).ToList();
+    }
+
+    private async Task<DataItem> GetDataItemAsync(BlazorCLIMB.Model.ClimbingRoute route)
+    {
+        var averageRating = await ClimbingRouteService.CalculateAverageRating(route.Id);
+        var schoolName = GetSchoolNameById(route.ClimbingSchoolId);
+        return new DataItem
+            {
+                RouteName = route.Name,
+                SchoolName = schoolName, // Usa el nombre de la escuela en lugar del ID
+                AverageRating = averageRating
+            };
+    }
+
+    private string GetSchoolNameById(int schoolId)
+    {
+        switch (schoolId)
+        {
+            case 1:
+                return "Cuenca";
+            case 2:
+                return "Entrepeñas";
+            case 3:
+                return "Fin del Mundo";
+            case 4:
+                return "Patones";
+            default:
+                return "Desconocida"; // O cualquier valor predeterminado
+        }
+    }
+
+
+    public class DataItem
+    {
+        public string RouteName { get; set; }
+        public string SchoolName { get; set; } // Asegúrate de que esta propiedad esté presente
+        public double AverageRating { get; set; }
+    }
+}

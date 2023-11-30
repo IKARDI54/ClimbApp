@@ -33,6 +33,11 @@ namespace BlazorCLIMB.UI.Services
             return await _repository.CreateUserClimbingRoute(userClimbingRoute);
         }
 
+        public async Task<double?> GetRatingForClimbingRoute(int climbingRouteId)
+        {
+            return await _repository.GetRatingForClimbingRoute(climbingRouteId);
+        }
+
         public async Task<bool> UpdateUserClimbingRoute(UserClimbingRoutes userClimbingRoute)
         {
             return await _repository.UpdateUserClimbingRoute(userClimbingRoute);

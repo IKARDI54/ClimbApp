@@ -1,13 +1,23 @@
 ﻿@page "/"
 @inject NavigationManager NavigationManager
 <style>
+    .chart-container {
+        position: relative; /* Asegura que los elementos dentro se posicionen en relación al contenedor */
+        z-index: 2; /* Puede ajustar este valor según sea necesario */
+    }
+
     .left-section {
         caret-color: transparent;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh; 
-
+        height: 100vh;
+        position: absolute; /* Coloca el logo en una posición absoluta para superponerlo */
+        top: 8%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1; /* Establece un valor menor de z-index para el logo para que quede detrás de los gráficos */
     }
 
         .left-section img {
@@ -15,13 +25,36 @@
             width: auto;
             max-width: 100%;
             max-height: 100%;
-            border-radius: 50%; /* Hace que la imagen sea redonda */
-            opacity: 0.2; /* Establece la opacidad al valor deseado */
+            border-radius: 50%;
+            opacity: 0.2;
         }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        height: 100vh;
+        position: relative;
+        z-index: 2;
+    }
 </style>
 
 <div class="left-section" @onclick="NavigateToRegister">
     <img src="images/logoClimb.png" alt="Imagen de fondo" />
+</div>
+<div class="grid-container">
+    <div class="chart-container section">
+        <ChartRoutes></ChartRoutes>
+    </div>
+    <div class="section">
+        <ChartUsuarios/>
+    </div>
+    <div class="section">
+        <!-- Contenido de la sección 3 -->
+    </div>
+    <div class="section">
+        <!-- Contenido de la sección 4 -->
+    </div>
 </div>
 
 @code {

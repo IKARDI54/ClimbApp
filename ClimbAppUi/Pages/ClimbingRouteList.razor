@@ -2,6 +2,9 @@
 @using BlazorBootstrap;
 @using Model
 @using Interfaces
+@using BlazorCLIMB.UI.Services
+@inject IRouteRatingService RouteRatingService
+
 @inject IClimbingRouteService ClimbingRouteService
 @inject NavigationManager NavigationManager
 
@@ -83,13 +86,23 @@
         <Columns>
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="Name" Title="Nombre" />
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="Grade" Title="Grado" Filterable="true" />
-            <RadzenDataGridColumn TItem="ClimbingRoute" Property="ClimbingSector" Title="Sector" Filterable="true" />
+            @* <RadzenDataGridColumn TItem="ClimbingRoute" Property="ClimbingSector" Title="Sector" Filterable="true" /> *@
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="ClimbingSchoolId" Title="Escuela">
                 <Template Context="route">
                     @GetSchoolName(route.ClimbingSchoolId)
                 </Template>
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="Description" Title="Descripción" />
+            <RadzenDataGridColumn Title="Valoración Promedio" TItem="ClimbingRoute">
+                <Template Context="route">
+                    @route.AverageRating
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn Title="Número de Valoraciones" TItem="ClimbingRoute">
+                <Template Context="route">
+                    @route.NumberOfRatings
+                </Template>
+            </RadzenDataGridColumn>
             <RadzenDataGridColumn Title="Acciones" TItem="ClimbingRoute">
                 <Template Context="route">
                     <RadzenButton Variant="Variant.Outlined" Click="() => EditClimbingRoute(route.Id)" Icon="edit" ButtonStyle="ButtonStyle.Primary" />
@@ -150,6 +163,8 @@
     private IEnumerable<ClimbingRoute> climbingRoutes;
     private string loadingError;
     private ClimbingRoute selectedRoute = new ClimbingRoute();
+    private double averageRating;
+    private int numberOfRatings;
 
     protected override async Task OnInitializedAsync()
     {
@@ -158,6 +173,7 @@
         try
         {
             climbingRoutes = await ClimbingRouteService.GetAllClimbingRoutes();
+            CalculateAverageRatingAndNumberOfRatingsForEachRoute();
         }
         catch (Exception ex)
         {
@@ -259,5 +275,22 @@
             }
             return Task.CompletedTask;
         }
-    
+    private async Task CalculateAverageRatingAndNumberOfRatingsForEachRoute()
+    {
+        foreach (var route in climbingRoutes)
+        {
+            // Calcula la valoración promedio y el número de valoraciones para cada vía escalada individualmente
+            double totalRating = 0.0;
+            int totalRatings = 0;
+
+            // Llama a GetAverageRating para obtener el promedio de calificaciones para esta vía
+            route.AverageRating = await RouteRatingService.GetAverageRating(route.Id);
+
+            // Obtén el número de valoraciones para esta vía
+            totalRatings = await RouteRatingService.GetNumberOfRatings(route.Id);
+
+            // Asigna el número de valoraciones a la propiedad de la vía escalada actual
+            route.NumberOfRatings = totalRatings;
+        }
+    }
 }

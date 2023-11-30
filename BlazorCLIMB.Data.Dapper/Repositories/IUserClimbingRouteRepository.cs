@@ -14,6 +14,7 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
         Task<bool> CreateUserClimbingRoute(UserClimbingRoutes userClimbingRoute);
         Task<bool> UpdateUserClimbingRoute(UserClimbingRoutes userClimbingRoute);
         Task<bool> DeleteUserClimbingRoute(int userId, int climbingRouteId);
+        Task<double?> GetRatingForClimbingRoute(int climbingRouteId);
     }
 
 }

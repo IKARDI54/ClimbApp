@@ -75,6 +75,18 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
             }
         }
 
+        public async Task<double?> GetRatingForClimbingRoute(int climbingRouteId)
+        {
+            using (var db = dbConnection())
+            {
+                await db.OpenAsync();
+
+                var sql = "SELECT Rating FROM RouteRating WHERE ClimbingRouteId = @ClimbingRouteId";
+                var rating = await db.ExecuteScalarAsync<double?>(sql, new { ClimbingRouteId = climbingRouteId });
+
+                return rating;
+            }
+        }
 
         public async Task<bool> UpdateUserClimbingRoute(UserClimbingRoutes userClimbingRoute)
         {
