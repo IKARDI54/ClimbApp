@@ -3,6 +3,12 @@
 @using BlazorCLIMB.UI.Services;
 @inject IClimbingRouteService ClimbingRouteService
 <style>
+    .page{
+        color:white;
+    }
+    .rz-scheme-pastel .rz-series-0 {
+        fill: red ;
+    }
     text.rz-tick-text {
         fill: white;
         font-size: 5px !important;
@@ -29,7 +35,7 @@
 </style>
 <div class="rz-p-0 rz-p-md-12">
     <RadzenChart>
-        <RadzenColumnSeries Data="@topClimbingRoutes" CategoryProperty="RouteName" ValueProperty="AverageRating">
+        <RadzenColumnSeries Data="@topClimbingRoutes" CategoryProperty="RouteName" ValueProperty="AverageRating" Title="Mejores vías">
             <TooltipTemplate Context="data">
                 <div>
                     Vía: <strong>@data.RouteName</strong><br />

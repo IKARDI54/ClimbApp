@@ -1,10 +1,11 @@
 ﻿@page "/climbingRouteList"
 @using BlazorBootstrap;
+@using BlazorCLIMB.Model.BlazorCRUD.Model;
 @using Model
 @using Interfaces
 @using BlazorCLIMB.UI.Services
 @inject IRouteRatingService RouteRatingService
-
+@inject IAuthService AuthService
 @inject IClimbingRouteService ClimbingRouteService
 @inject NavigationManager NavigationManager
 
@@ -105,8 +106,12 @@
             </RadzenDataGridColumn>
             <RadzenDataGridColumn Title="Acciones" TItem="ClimbingRoute">
                 <Template Context="route">
-                    <RadzenButton Variant="Variant.Outlined" Click="() => EditClimbingRoute(route.Id)" Icon="edit" ButtonStyle="ButtonStyle.Primary" />
-                    <RadzenButton Variant="Variant.Outlined" Click="() => DeleteClimbingRoute(route.Id)" Icon="delete" ButtonStyle="ButtonStyle.Dark" />
+                    
+                   @if (user?.Role == "SuperUser")
+                    { 
+                        <RadzenButton Variant="Variant.Outlined" Click="() => DeleteClimbingRoute(route.Id)" Icon="delete" ButtonStyle="ButtonStyle.Dark" />
+                        <RadzenButton Variant="Variant.Outlined" Click="() => EditClimbingRoute(route.Id)" Icon="edit" ButtonStyle="ButtonStyle.Primary" />
+                    }
                     <RadzenButton Variant="Variant.Outlined" Click="() => AnotarViaEscalada(route.Id)" Icon="check" ButtonStyle="ButtonStyle.Success" />
 
                 </Template>
@@ -165,10 +170,16 @@
     private ClimbingRoute selectedRoute = new ClimbingRoute();
     private double averageRating;
     private int numberOfRatings;
+    private User user;
+    
 
     protected override async Task OnInitializedAsync()
     {
-       
+        int userId = UserSession.UserId; 
+        if (userId != 0)
+        {
+        user = await AuthService.GetUserById(userId);
+        }
 
         try
         {

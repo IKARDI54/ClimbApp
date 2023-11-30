@@ -39,7 +39,7 @@
     }
 </style>
 
-<div class="left-section" @onclick="NavigateToRegister">
+<div class="left-section">
     <img src="images/logoClimb.png" alt="Imagen de fondo" />
 </div>
 <div class="grid-container">
@@ -47,10 +47,10 @@
         <ChartRoutes></ChartRoutes>
     </div>
     <div class="section">
-        <ChartUsuarios/>
+        <ChartUsers />
     </div>
     <div class="section">
-        <!-- Contenido de la sección 3 -->
+        <ChartUsuarios />
     </div>
     <div class="section">
         <!-- Contenido de la sección 4 -->
@@ -59,8 +59,5 @@
 
 @code {
 
-    private void NavigateToRegister()
-    {
-        NavigationManager.NavigateTo("/register");
-    }
+   
 }
