@@ -1,6 +1,9 @@
 ﻿@page "/"
 @inject NavigationManager NavigationManager
 <style>
+    *{
+        caret-color: transparent;
+    }
     .chart-container {
         position: relative; /* Asegura que los elementos dentro se posicionen en relación al contenedor */
         z-index: 2; /* Puede ajustar este valor según sea necesario */
@@ -30,10 +33,20 @@
         }
 
     .grid-container {
+        margin-top:30px;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, 1fr);
-        height: 100vh;
+        grid-template-rows: repeat(1, 1fr);
+        height: 65vh;
+        position: relative;
+        z-index: 2;
+    }
+
+    .grid-container2{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: repeat(1, 1fr);
+        height: 45vh;
         position: relative;
         z-index: 2;
     }
@@ -49,13 +62,13 @@
     <div class="section">
         <ChartUsers />
     </div>
+</div>
+<div class="grid-container2">
     <div class="section">
-        <ChartUsuarios />
-    </div>
-    <div class="section">
-        <!-- Contenido de la sección 4 -->
+        <ChartSchool/>
     </div>
 </div>
+
 
 @code {
 

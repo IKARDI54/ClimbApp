@@ -291,7 +291,7 @@
             </div>
             <div class="toast-message">@message</div>
         </div>
-
+        ShowToast(message);
     }
 </div>
 @if (user?.Role == "SuperUser")
@@ -349,7 +349,6 @@
         </table>
     
     </div>
-
   
 }
 
@@ -359,7 +358,6 @@
     private string toastMessage = "";
     private User user;
     private User editedUser;
-    
     private bool editMode = false;
     private List<User> users;
     private byte[] base64Image;

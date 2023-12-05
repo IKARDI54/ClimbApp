@@ -206,12 +206,11 @@
     .txt {
         text-align: left; /* Alinea el texto a la izquierda */
         font-weight: bold;
-        font-size: 18px;
+        font-size: 16px;
         font-family: 'Roboto', sans-serif;
         padding: 0 10px;
         display: flex;
         flex-direction: column;
-        justify-content: center; /* Centra verticalmente */
         height: 100%;
         margin-bottom: 20px;
     }
@@ -227,7 +226,6 @@
          <TitleTemplate>
                 <RadzenIcon Icon="map" IconColor="@Colors.Info" />  &nbsp &nbsp Croquis de las escuelas (Mapas)
          </TitleTemplate>
-
         <Content>
             <div class="form-group text-center">
                 <!-- Agregada la clase text-center -->
@@ -239,11 +237,14 @@
             <div class="pdf-thumbnails">
                 @foreach (var file in Files)
                 {
-                    <div class="pdf-item">
+                    <div class="pdf-item"  style="background: transparent; border: none; box-shadow: none;">
+                        
                         <div class="txt">@file</div>
                         <img src="@pdfIconUrl" alt="PDF Icon" />
                         <div class="btn-container">
-                            <button class="btn btn-primary" @onclick="() => GetFileUrl(file)"> <RadzenIcon Icon="assignment_returned" IconColor="@Colors.White" /> </button>
+                             <a class="btn btn-primary" href="/pdf/@file" download> 
+                            <RadzenIcon Icon="assignment_returned" IconColor="@Colors.White" /> 
+                            </a>
                             <button class="btn btn-danger" @onclick="() => RemovePdf(file)"> <RadzenIcon Icon="delete" IconColor="@Colors.White" /></button>
                         </div>
                     </div>
@@ -267,7 +268,7 @@
                     {
                         <div class="gallery-item"><img src="@imageUrl" alt="Imagen Temporal" /></div>
                     }
-                    <!-- Tus imágenes existentes aquí -->
+                   
                 </div>
                 <div id="image-gallery">
                     <div class="gallery-item large"><img src="/images/7.jpg" alt="Escalada 1" /></div>
@@ -288,10 +289,7 @@
                 </div>
             </Content>
         </AccordionItem>
-  
 </BlazorBootstrap.Accordion>
-
-
 
 @code {
     private List<string> temporaryImages = new List<string>();
@@ -299,6 +297,7 @@
     private IBrowserFile selectedPdf;
     private string pdfUploadStatus;
     private string pdfIconUrl = "/images/des.jpg";
+    private string selectedPdfPath;
 
 
     protected override void OnInitialized()
@@ -345,8 +344,8 @@
     {
         if (selectedPdf != null)
         {
-            long maxAllowedSize = 1024L * 1024L * 100L; // 100 MB (puedes ajustar este valor según tus necesidades)
-
+            long maxAllowedSize = 1024L * 1024L * 100L; 
+         
             if (selectedPdf.Size > maxAllowedSize)
             {
                 pdfUploadStatus = $"El archivo PDF seleccionado supera el límite de tamaño permitido de {maxAllowedSize / (1024 * 1024)} MB.";
@@ -369,7 +368,7 @@
                     }
                 }
             }
-
+            selectedPdfPath = path;
             pdfUploadStatus = $"Archivo PDF '{selectedPdf.Name}' subido y comprimido con éxito.";
             StateHasChanged();
         }

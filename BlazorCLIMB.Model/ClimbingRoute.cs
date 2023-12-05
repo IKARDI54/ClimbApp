@@ -17,6 +17,7 @@ namespace BlazorCLIMB.Model
 
         public double AverageRating { get; set; }
         public int NumberOfRatings { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }
 

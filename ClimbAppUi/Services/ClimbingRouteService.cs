@@ -4,6 +4,7 @@ using BlazorCLIMB.UI.Data;
 using BlazorCLIMB.UI.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static BlazorCLIMB.Data.Dapper.Repositories.ClimbingRouteRepository;
 
 namespace BlazorCLIMB.UI.Services
 {
@@ -45,6 +46,22 @@ namespace BlazorCLIMB.UI.Services
     {
         return await _climbingRouteRepository.CalculateAverageRating(climbingRouteId);
     }
-}
+
+        public async Task<IEnumerable<SchoolRoutesCount>> GetRoutesCountBySchool()
+        {
+            return await _climbingRouteRepository.GetRoutesCountBySchool();
+        }
+
+        public async Task<IEnumerable<SchoolAverageRating>> GetAverageRatingBySchool()
+        {
+            return await _climbingRouteRepository.GetAverageRatingBySchool();
+        }
+
+        public async Task<IEnumerable<SchoolAverageGrade>> GetAverageGradeBySchool()
+        {
+            return await _climbingRouteRepository.GetAverageGradeBySchool();
+        }
+        
+    }
 }
 

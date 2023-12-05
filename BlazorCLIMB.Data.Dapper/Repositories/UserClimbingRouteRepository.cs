@@ -108,7 +108,16 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
                 return result > 0;
             
         }
+        //public async Task<IEnumerable<int>> GetUserIdsByClimbingRouteId(int climbingRouteId)
+        //{
+        //    using (var db = dbConnection())
+        //    {
+        //        await db.OpenAsync();
+        //        var sql = "SELECT UserId FROM UserClimbingRoutes WHERE ClimbingRouteId = @ClimbingRouteId";
+        //        return await db.QueryAsync<int>(sql, new { ClimbingRouteId = climbingRouteId });
+        //    }
+        //}
 
-       
+
     }
 }

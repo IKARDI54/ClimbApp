@@ -10,7 +10,7 @@
 <style>
     * {
         cursor: auto !important;
-        caret-color: transparent;
+       
     }
 
   .page{
@@ -28,13 +28,13 @@
     }
     .central-column {
         background-color: black;
-        /* Agregar más estilos si es necesario */
+       
     }
 
     .avatar-menu {
         position: absolute;
-        top: 50px; /* Ajusta la posición vertical según tus necesidades */
-        right: 10px; /* Ajusta la posición horizontal según tus necesidades */
+        top: 50px; 
+        right: 10px; 
         width: 200px;
         max-height: 200px;
         background-color: white;
@@ -48,7 +48,7 @@
     }
 
         .avatar-menu button {
-            margin: 5px; /* Espacio entre los botones */
+            margin: 5px; 
         }
 
 </style>
@@ -71,16 +71,8 @@
 
 @code {
 
-
-    private List<RouteInfo> Routes { get; set; } = new List<RouteInfo>();
-
     private bool ShowNavMenu => !NavManager.Uri.EndsWith("/Login", StringComparison.OrdinalIgnoreCase)
                              && !NavManager.Uri.EndsWith("/register", StringComparison.OrdinalIgnoreCase);
-
-
-                        
-    // && !NavManager.Uri.EndsWith("/climbingRouteList", StringComparison.OrdinalIgnoreCase);
-
 
     private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
     {
@@ -91,6 +83,5 @@
     {
         NavManager.LocationChanged -= HandleLocationChanged;
     }
-
 
 }

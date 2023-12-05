@@ -1,0 +1,187 @@
+﻿@using System.Globalization
+@using BlazorCLIMB.Data.Dapper.Repositories;
+@using BlazorCLIMB.UI.Interfaces;
+@using BlazorCLIMB.UI.Services;
+@using static BlazorCLIMB.Data.Dapper.Repositories.ClimbingRouteRepository;
+@inject IClimbingRouteService ClimbingRouteService
+@inject IClimbingRouteRepository ClimbingRouteRepository
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <RadzenChart ColorScheme="@colorScheme">
+                <RadzenColumnSeries Data="@chartData" CategoryProperty="SchoolName" Title="Número de Rutas" ValueProperty="NumberOfRoutes" />
+                <RadzenColumnSeries Data="@chartData" CategoryProperty="SchoolName" Title="Valoración Media" ValueProperty="AverageRating" />
+                <RadzenColumnSeries Data="@chartData" CategoryProperty="SchoolName" Title="Grado Medio" ValueProperty="AverageGrade" />
+                <RadzenCategoryAxis>
+                    <RadzenGridLines Visible="true" Stroke="#ccc" LineType="LineType.Dashed" />
+                </RadzenCategoryAxis>
+                <RadzenValueAxis>
+                    <RadzenGridLines Visible="true" />
+                </RadzenValueAxis>
+                <RadzenLegend Visible="true" />
+                <RadzenChartTooltipOptions Style="border: 1px solid #000; background: #eee; color: #333;" />
+            </RadzenChart>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <RadzenChart ColorScheme="@colorScheme">
+                <RadzenPieSeries Data="@chartData" Title="Porcentaje de Rutas" CategoryProperty="SchoolName" ValueProperty="PercentageOfRoutes" />
+                <RadzenLegend Visible="true" />
+            </RadzenChart>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <RadzenChart ColorScheme="@colorScheme">
+                <RadzenAreaSeries Data="@chartData" CategoryProperty="SchoolName" ValueProperty="NumberOfRatings" Stroke="rgb(100,149,237)" StrokeWidth="2" Fill="rgba(100,149,237,.5)">
+                    <ChildContent>
+                        <RadzenMarkers MarkerType="MarkerType.Circle" Fill="#fff" Stroke="rgb(100,149,237)" StrokeWidth="2" Size="8" />
+                    </ChildContent>
+                    <TooltipTemplate Context="data">
+                        Valoraciones para <span>@data.SchoolName</span>: <strong>@data.NumberOfRatings</strong>
+                    </TooltipTemplate>
+                </RadzenAreaSeries>
+                <RadzenCategoryAxis>
+                    <RadzenGridLines Visible="true" Stroke="#ccc" LineType="LineType.Dashed" />
+                </RadzenCategoryAxis>
+                <RadzenValueAxis>
+                    <RadzenGridLines Visible="true" />
+                </RadzenValueAxis>
+                <RadzenChartTooltipOptions Style="border: 1px solid #000; background: #eee; color: #333;" />
+                <RadzenLegend Visible="false" />
+            </RadzenChart>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+
+    private IEnumerable<SchoolRoutesCount> routesCountBySchool;
+
+    private IEnumerable<SchoolAverageRating> averageRatingBySchool;
+    private List<DataItem> chartData;
+    ColorScheme colorScheme = ColorScheme.Palette;
+    private int totalRoutes; 
+    private int numeroTotaldePuntuaciones;
+
+    protected override async Task OnInitializedAsync()
+    {
+        routesCountBySchool = await ClimbingRouteService.GetRoutesCountBySchool();
+        averageRatingBySchool = await ClimbingRouteService.GetAverageRatingBySchool();
+
+
+        totalRoutes = routesCountBySchool.Sum(item => item.NumberOfRoutes);
+
+        chartData = await TransformDataForChart();
+
+
+    }
+
+
+    // Define una clase para mapear los datos a tus gráficos
+    public class DataItem
+    {
+        public string SchoolName { get; set; }
+        public string SchoolId { get; set; }
+        public int    NumberOfRoutes { get; set; }
+        public double AverageRating { get; set; }
+        public double AverageGrade { get; set; } 
+        public double PercentageOfRoutes { get; set; } 
+        public int    NumberOfRatings { get; set; } 
+    }
+    private string GetSchoolNameById(int schoolId)
+    {
+        switch (schoolId)
+        {
+            case 1: return "Cuenca";
+            case 2: return "Entrepeñas";
+            case 3: return "Fin Del Mundo";
+            case 4: return "Patones";
+            default: return "Desconocida"; 
+        }
+    }
+
+    private async Task<List<DataItem>> TransformDataForChart()
+    {
+        var chartData = new List<DataItem>();
+        var averageGrades = await ClimbingRouteService.GetAverageGradeBySchool();
+        
+
+        foreach (var item in routesCountBySchool)
+        {
+            var schoolName = GetSchoolNameById(item.ClimbingSchoolId);
+            var averageRating = averageRatingBySchool.FirstOrDefault(s => s.ClimbingSchoolId == item.ClimbingSchoolId)?.AverageRating ?? 0;
+            var numberOfRatings = averageRatingBySchool.FirstOrDefault(s => s.ClimbingSchoolId == item.ClimbingSchoolId)?.NumberOfRatings ?? 0;
+            var averageGradeNumeric = Math.Round(averageGrades.FirstOrDefault(ag => ag.ClimbingSchoolId == item.ClimbingSchoolId)?.AverageGrade ?? 0, 1);
+           
+
+            chartData.Add(new DataItem
+                {
+                    SchoolName = schoolName,
+                    NumberOfRoutes = item.NumberOfRoutes,
+                    AverageRating = averageRating,
+                    AverageGrade = averageGradeNumeric,
+                    PercentageOfRoutes = totalRoutes > 0 ? (double)item.NumberOfRoutes * 100 / totalRoutes : 0,
+                    NumberOfRatings = numberOfRatings
+                });
+        }
+
+        
+        return chartData;
+    }
+
+
+    private Dictionary<double, string> GradeValuesReverse = new Dictionary<double, string>
+{
+    { 5.0, "5" },
+    { 5.1, "5" },
+    { 5.2, "5" },
+    { 5.3, "5" },
+    { 5.4, "5" },
+    { 5.5, "5+" },
+    { 5.6, "5+" },
+    { 5.7, "5+" },
+    { 5.8, "5+" },
+    { 5.9, "6a" },
+    { 6.0, "6a" },
+    { 6.1, "6a+" },
+    { 6.2, "6a+" },
+    { 6.3, "6b" },
+    { 6.4, "6b" },
+    { 6.5, "6b+" },
+    { 6.6, "6b+" },
+    { 6.7, "6c" },
+    { 6.8, "6c+" },
+    { 6.9, "6c+" },
+    { 7.0, "7a" },
+    { 7.1, "7a+" },
+    { 7.2, "7a+" },
+    { 7.3, "7b" },
+    { 7.4, "7b" },
+    { 7.5, "7b+" },
+    { 7.6, "7b+" },
+    { 7.7, "7c" },
+    { 7.8, "7c+" },
+    { 7.9, "7c+" },
+    { 8.0, "8a" },
+    { 8.1, "8a" },
+    { 8.2, "8b" },
+    { 8.3, "8b" },
+    { 8.4, "8b+" },
+    { 8.5, "8c+" },
+    { 8.6, "8c+" },
+    { 8.7, "8c+" },
+    { 8.8, "8c+" },
+    { 8.9, "8c+" },
+};
+
+    private string ConvertNumericToGrade(double numericValue)
+    {
+        if (GradeValuesReverse.TryGetValue(numericValue, out var grade))
+        {
+            return grade;
+        }
+
+        return "Desconocido"; // Maneja el caso en que no encuentres el grado correspondiente
+    }
+}

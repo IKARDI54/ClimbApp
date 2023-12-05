@@ -1,5 +1,5 @@
 ﻿@page "/Register"
-
+@using BlazorCLIMB.UI.Pages.Shared
 @using BlazorCLIMB.Model;
 @using BlazorCLIMB.UI.Interfaces
 @using System.ComponentModel.DataAnnotations
@@ -32,18 +32,18 @@
     }
 
     .card {
-        width: 50rem; /* Ancho ajustado */
-        height: auto; /* Altura automática para mantener la proporción */
+        width: 50rem;
+        height: auto;
         margin: 0 auto;
         background: linear-gradient(0deg, rgba(128, 128, 128, 0.3), rgba(0, 0, 0, 0));
-        padding: 2rem; /* Ajustado para proporcionar más espacio */
+        padding: 2rem; 
         border-radius: 0.5rem;
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Opcional: sombra para la tarjeta */
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); 
     }
 
     .card-title {
         text-align: center;
-        font-size: 2rem; /* Ajustado para tamaños en rem */
+        font-size: 2rem; 
         color: #FFF;
     }
 
@@ -62,26 +62,27 @@
     }
 
     .form-control {
-        width: 80%; /* Disminuir el ancho a 90% del contenedor */
-        height: 2rem; /* Aumentar la altura del input */
-        padding: 0.5rem 0.5rem 0.5rem 3rem; /* Padding izquierdo para el icono */
+        cursor: auto !important;
+        width: 80%; 
+        height: 2rem; 
+        padding: 0.5rem 0.5rem 0.5rem 3rem; 
         font-size: 1rem;
         border-radius: 0.25rem;
         border: 1px solid #ccc;
-        margin: 10px auto; /* Centro el input con margen automático */
+        margin: 10px auto;
         background-color: transparent;
         color: black;
     }
 
-        /* Aplicar estilos al placeholder */
+        
         .form-control::placeholder {
-            padding-left: 10%; /* Esto no moverá el texto, solo cambiará el padding interno */
+            padding-left: 10%; 
             color: white;
             font-size: bold;
         }
 
     .login-button {
-        width: 50%; /* Ajustado para ocupar todo el ancho disponible */
+        width: 50%; 
         padding: 0.5rem;
         margin: 20px auto;
         display: block;
@@ -108,47 +109,74 @@
     .card-header {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Esto distribuirá el espacio uniformemente entre los elementos */
+    justify-content: space-between;
     padding: 1rem;
-    border-bottom: 1px solid #ccc; /* Línea que separa el header del body */
+    border-bottom: 1px solid #ccc; 
 }
 .user-icons-container {
-    flex-grow: 1; /* Permite que el contenedor de íconos crezca y llene el espacio */
+    flex-grow: 1; 
     display: flex;
-    justify-content: center; /* Centra los íconos horizontalmente */
-    gap: 1rem; /* Añade un espacio entre los íconos */
+    justify-content: center; 
+    gap: 1rem; 
 }
         .card-header .user-icon {
-            /* Hacer el icono más grande */
-            color: #fff; /* Color blanco para la silueta */
+            
+            color: #fff;
             margin-bottom: 0.5rem;
         }
       
 
 .card-header img {
-    height: 4rem; /* Ajusta según sea necesario */
-    /* No es necesario vertical-align en flexbox */
+    height: 4rem;
+    
 }
     .custom-file-input {
-        display: block; /* Asegúrate de que el input se comporte como un bloque */
-        width: 70%; /* O cualquier ancho que desees para el input */
+        display: block; 
+        width: 70%; 
         margin: 20px auto;
-        border-radius: 0.5rem; /* Esquinas redondeadas */
-        padding: 0.5rem; /* Algo de padding para que el botón sea más grande */
-        border: 1px solid #ccc; /* Un borde ligero */
-        background-color: rgba(255, 255, 255, 0.7); /* Fondo blanco o cualquier color que prefieras */
-        color: black; /* Color del texto */
-        font-size: 1rem; /* Tamaño del texto */
+        border-radius: 0.5rem; 
+        padding: 0.5rem;
+        border: 1px solid #ccc; 
+        background-color: rgba(255, 255, 255, 0.7);
+        color: black
+        font-size: 1rem; 
       
     }
 
         .custom-file-input::file-selector-button {
-            border-radius: 0.25rem; /* Esquinas redondeadas para el botón */
-            margin-right: 0.5rem; /* Margen entre el botón y el nombre del archivo */
-            padding: 0.5rem; /* Algo de padding */
-            background-color: #7c7277; /* Color de fondo del botón */
-            color: white; /* Color del texto del botón */
-            border: 1px solid black; /* Eliminar el borde del botón */
+            border-radius: 0.25rem; 
+            margin-right: 0.5rem; 
+            padding: 0.5rem;
+            background-color: #7c7277; 
+            color: white; 
+            border: 1px solid black; 
+        }
+          .toast {
+        position: fixed; 
+        bottom: 20px; 
+        right: 20px;
+        background-color: #333; 
+        color: #fff; 
+        border-radius: 5px; 
+        padding: 10px 20px; 
+        z-index: 9999; 
+       
+    }
+
+    
+        .toast .toast-icon {
+            float: left;
+            margin-right: 10px; 
+        }
+
+      
+        .toast .message {
+            font-size: 16px;
+        }
+
+        
+        .toast #icon {
+            font-size: 24px;
         }
 </style>
 
@@ -156,13 +184,13 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-    <img src="images/logoClimb.png"  style="height: 5rem; border-radius:50%;" alt="ClimbApp Logo" />
+            <img src="images/logoClimb.png"  style="height: 5rem; border-radius:50%;" alt="ClimbApp Logo" />
             <div class="user-icons-container" style="margin-left:-25%;"> 
                 <i class="fa-solid fa-book-skull user-icon" style="font-size: 2rem;"></i>
                 <i class="fa fa-pencil-alt user-icon" style="font-size: 2rem; margin-top:4px;"></i>
                  <h2 style="color:white;">Create Account</h2>
             </div>
-</div
+        </div
         <div class="card-body">
             <form @onsubmit="@HandleValidSubmit">
                 <div class="form-group input-icon">
@@ -185,16 +213,28 @@
                     <InputFile class="custom-file-input" style="margin-top:35px; margin-bottom:35px;" id="avatar" accept="image/*" OnChange="OnAvatarChange" />
                 </div>
                <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="Radzen.FlexWrap.Wrap">
-                    <div style="flex-grow: 1;"></div> <!-- Espacio flexible para centrar los botones -->
+                    <div style="flex-grow: 1;"></div>
                     <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Text="Register" ButtonStyle="ButtonStyle.Dark" Size="ButtonSize.Medium" fon  />
                     <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Click="Cancelar" Text="Return" ButtonStyle="ButtonStyle.Dark" Size="ButtonSize.Medium" />
-                    <div style="flex-grow: 1;"></div> <!-- Espacio flexible para centrar los botones -->
+                    <div style="flex-grow: 1;"></div> 
                 </RadzenStack>
             </form>
-            <p class="message">@message</p> <!-- Mensaje de registro -->
+          
         </div>
+        
     </div>
+      @if (showToast)
+    {
+        <div class="toast" style="display: block;">
+            <div class="toast-icon">
+                <RadzenIcon Icon="account_box" IconColor="@Colors.Info" />
+            </div>
+            <div class="toast-message">@message</div>
+        </div>
+        
+    }
 </div>
+
 
 @code {
     AuthModel model = new AuthModel();
@@ -202,25 +242,30 @@
     string message = "";
     string role = "User";
     string avatarUrl;
+    private bool showToast = false;
+    private string toastMessage = "";
 
     private async Task HandleValidSubmit()
     {
         if (model.Password != confirmPassword)
         {
-            message = "Passwords do not match. Please try again.";
+            message = "Los Passwords no coinciden. Por favor intentalo de nuevo.";
+            ShowToast(message);
         }
         else
         {
             if (model.Img == null)
             {
-                message = "Please select an avatar image.";
+                message = "Por favor selecciona una imagen de avatar.";
+                ShowToast(message);
                 return;
             }
 
             bool isCreated = await AuthService.CreateUser(model);
-            message = isCreated ? "User Created" : "Failed to create user";
+            message = isCreated ? "Usuario Creado" : "El Usuario ya existe... ";
+            ShowToast(message);
             StateHasChanged();
-            await Task.Delay(1500);
+            await Task.Delay(3500);
             NavigationManager.NavigateTo("/Login");
         }
     }
@@ -245,5 +290,18 @@
         {
             message = "Please select an avatar image.";
         }
-    }   
+    }  
+      private void ShowToast(string message)
+    {
+        toastMessage = message;
+        showToast = true;
+        StateHasChanged(); 
+
+      
+        Task.Delay(3000).ContinueWith(t =>
+        {
+            showToast = false;
+           
+        });
+    }
 }

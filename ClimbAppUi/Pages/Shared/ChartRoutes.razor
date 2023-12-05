@@ -2,6 +2,7 @@
 @using BlazorCLIMB.UI.Interfaces;
 @using BlazorCLIMB.UI.Services;
 @inject IClimbingRouteService ClimbingRouteService
+@inject IRouteRatingService RouteRatingService
 <style>
     .page{
         color:white;
@@ -32,19 +33,22 @@
         text-anchor: middle;
         fill: white;
     }
+
+ 
 </style>
 <div class="rz-p-0 rz-p-md-12">
     <RadzenChart>
-        <RadzenColumnSeries Data="@topClimbingRoutes" CategoryProperty="RouteName" ValueProperty="AverageRating" Title="Mejores vías">
+        <RadzenColumnSeries Data="@topClimbingRoutes" CategoryProperty="NombreVia" ValueProperty="PuntuacionMedia" Title="Mejores vías">
             <TooltipTemplate Context="data">
-                <div>
-                    Vía: <strong>@data.RouteName</strong><br />
-                    Escuela: <strong>@data.SchoolName</strong><br />
-                    Puntuación Media: <strong>@data.AverageRating</strong>
+                <div class="div-info-via">
+                    Vía: <strong>@data.NombreVia</strong><br />
+                    Escuela: <strong>@data.NombreEscuela</strong><br />
+                    Puntuación Media: <strong>@data.PuntuacionMedia</strong><br />
+                    Numero de Puntuaciones: <strong>@data.NumeroPuntuaciones</strong>
                 </div>
             </TooltipTemplate>
         </RadzenColumnSeries>
-        <RadzenValueAxis>
+        <RadzenValueAxis Min="0" Max="10">
             <RadzenAxisTitle Text="Puntuación media" />
         </RadzenValueAxis>
         <RadzenCategoryAxis>
@@ -63,7 +67,6 @@
 
         var tasks = new List<Task<DataItem>>();
 
-
         foreach (var route in routes)
         {
             tasks.Add(GetDataItemAsync(route));
@@ -71,21 +74,26 @@
 
         var results = await Task.WhenAll(tasks);
 
-        topClimbingRoutes = results.OrderByDescending(item => item.AverageRating).Take(5).ToList();
+        topClimbingRoutes = results.OrderByDescending(item => item.PuntuacionMedia).Take(4).ToList();
     }
 
     private async Task<DataItem> GetDataItemAsync(BlazorCLIMB.Model.ClimbingRoute route)
     {
-        var averageRating = await ClimbingRouteService.CalculateAverageRating(route.Id);
+        var averageRating = await RouteRatingService.GetAverageRating(route.Id);
+        var roundedAverageRating = Math.Round(averageRating, 1);
         var schoolName = GetSchoolNameById(route.ClimbingSchoolId);
+
+      
+        var numberOfRatings = await RouteRatingService.GetNumberOfRatings(route.Id);
+
         return new DataItem
             {
-                RouteName = route.Name,
-                SchoolName = schoolName, // Usa el nombre de la escuela en lugar del ID
-                AverageRating = averageRating
+                NombreVia = route.Name,
+                NombreEscuela = schoolName, // Usa el nombre de la escuela en lugar del ID
+                PuntuacionMedia = roundedAverageRating,
+                NumeroPuntuaciones = numberOfRatings
             };
     }
-
     private string GetSchoolNameById(int schoolId)
     {
         switch (schoolId)
@@ -106,8 +114,9 @@
 
     public class DataItem
     {
-        public string RouteName { get; set; }
-        public string SchoolName { get; set; } // Asegúrate de que esta propiedad esté presente
-        public double AverageRating { get; set; }
+        public string NombreVia { get; set; }
+        public string NombreEscuela { get; set; } // Asegúrate de que esta propiedad esté presente
+        public double PuntuacionMedia { get; set; }
+        public int NumeroPuntuaciones { get; set; }
     }
 }

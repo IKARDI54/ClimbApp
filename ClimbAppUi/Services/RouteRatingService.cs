@@ -43,6 +43,10 @@ namespace BlazorCLIMB.UI.Services
                             "INSERT INTO RouteRating (UserId, ClimbingRouteId, Rating) VALUES (@UserId, @ClimbingRouteId, @Rating)",
                             new { UserId = userId, ClimbingRouteId = climbingRouteId, Rating = rating });
                     }
+                    // Actualizar el número de valoraciones para esta vía
+                    await connection.ExecuteAsync(
+                        "UPDATE ClimbingRoute SET NumberOfRatings = (SELECT COUNT(*) FROM RouteRating WHERE ClimbingRouteId = @ClimbingRouteId) WHERE Id = @ClimbingRouteId",
+                        new { ClimbingRouteId = climbingRouteId });
 
                     return true;
                 }

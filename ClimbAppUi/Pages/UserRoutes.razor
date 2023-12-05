@@ -47,6 +47,17 @@
 
             <button class="btn btn-primary" @onclick="() => GuardarAnotacion(userClimbingRoute)">Guardar Anotación</button>
         </form>
+            @if (showToast)
+            {
+                <div class="toast" style="display: block; position: fixed; bottom: 20px; right: 20px; background-color: #333; color: #fff; border-radius: 5px; padding: 10px 20px; z-index: 9999;">
+                    <div class="toast-icon" style="float: left; margin-right: 10px;">
+                        <RadzenIcon Icon="account_box" IconColor="@Colors.Info" />
+                    </div>
+                    <div class="toast-message" style="font-size: 16px;">
+                        &#x1F604 @message
+                    </div>
+                </div>
+            }
     </div>
 }
 
@@ -63,8 +74,9 @@
                     <th>Comentarios</th>
                     <th>Pegs</th>
                     <th>Cintas</th>
-                    <th>Valoración</th> <!-- Agregar esta columna -->
+                    <th>Valoración</th> 
                     <th>Fecha</th>
+                    <th>Número de Valoraciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,8 +94,10 @@
                         <td>@(anotacion.Comments ?? "N/A")</td>
                         <td>@(anotacion.Pegs.HasValue ? anotacion.Pegs.ToString() : "N/A")</td>
                         <td>@(anotacion.Cintas.HasValue ? anotacion.Cintas.ToString() : "N/A")</td>
-                         <td>@(rating.HasValue ? rating.Value.ToString() : "N/A")</td> 
+                        <td>@(anotacion.Rating.HasValue ? anotacion.Rating.ToString() : "N/A")</td> 
                         <td>@(anotacion.Date.HasValue ? anotacion.Date.ToString() : "N/A")</td>
+                        <td>@(anotacion.ClimbingRoute != null ? anotacion.ClimbingRoute.NumberOfRatings.ToString() : "N/A")</td>
+
                     </tr>
                 }
             </tbody>
@@ -103,6 +117,8 @@ else
     private ClimbingRoute climbingRoute;
     private UserClimbingRoutes userClimbingRoute = new UserClimbingRoutes();
     private IEnumerable<UserClimbingRoutes> userClimbingRouteList = Enumerable.Empty<UserClimbingRoutes>();
+    private string message = "";
+    private bool showToast = false;
 
     [Parameter]
     public string RouteId
@@ -140,15 +156,20 @@ else
         // Asignar las valoraciones a las anotaciones
         foreach (var anotacion in userClimbingRouteList)
         {
-            anotacion.Rating = ratingDictionary.ContainsKey(anotacion.ClimbingRouteId) ? Convert.ToInt32(ratingDictionary[anotacion.ClimbingRouteId]) : 0;
-
+            
+            
+                var climbingRouteId = anotacion.ClimbingRouteId;
+                var numberOfRatings = await RouteRatingService.GetNumberOfRatings(climbingRouteId); 
+                anotacion.Rating = ratingDictionary.ContainsKey(climbingRouteId) ? Convert.ToInt32(ratingDictionary[climbingRouteId]) : 0;
+                anotacion.ClimbingRoute.NumberOfRatings = numberOfRatings; 
+            
         }
 
         userClimbingRoute.UserId = userId;
         userClimbingRoute.ClimbingRouteId = routeId;
         ratingTask = await RouteRatingService.GetAverageRating(routeId);
 
-        // Después
+        
         var averageRating = await RouteRatingService.GetAverageRating(routeId);
         ratingTask = averageRating;
     }
@@ -163,6 +184,10 @@ else
         if (resultado)
         {
             routeCreated = true;
+            message = "Felicidades por su escalada!!! ClimbApp le da la Enhorabuena!!, ";
+            StateHasChanged();
+            ShowToast(message);
+            await Task.Delay(3000);
         };
 
       
@@ -173,6 +198,17 @@ else
     private void LoginGo()
     {
         NavigationManager.NavigateTo("/climbingRouteList");
+    }
+    private void ShowToast(string message)
+    {
+        this.message = message;
+        showToast = true;
+        StateHasChanged();
+
+        Task.Delay(3000).ContinueWith(t =>
+        {
+            showToast = false;
+        });
     }
 }
  

@@ -19,7 +19,6 @@
     }
 
     body {
-      
         background: radial-gradient(circle, rgba(178,180,188,1) 21%, rgba(98,82,85,1) 100%);
         background-size: cover;
         background-repeat: no-repeat;
@@ -30,18 +29,18 @@
     }
 
     .card {
-        width: 50rem; /* Ancho ajustado */
-        height: auto; /* Altura automática para mantener la proporción */
+        width: 50rem;
+        height: auto;
         margin: 0 auto;
         background: linear-gradient(0deg, rgba(128, 128, 128, 0), rgba(0, 0, 0, 0));
-        padding: 2rem; /* Ajustado para proporcionar más espacio */
+        padding: 2rem;
         border-radius: 0.5rem;
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Opcional: sombra para la tarjeta */
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     }
 
     .card-title {
         text-align: center;
-        font-size: 2rem; /* Ajustado para tamaños en rem */
+        font-size: 2rem;
         color: #FFF;
     }
 
@@ -60,26 +59,25 @@
     }
 
     .form-control {
-        width: 80%; /* Disminuir el ancho a 90% del contenedor */
-        height: 2rem; /* Aumentar la altura del input */
-        padding: 0.5rem 0.5rem 0.5rem 3rem; /* Padding izquierdo para el icono */
+        width: 80%;
+        height: 2rem;
+        padding: 0.5rem 0.5rem 0.5rem 3rem;
         font-size: 1rem;
         border-radius: 0.25rem;
         border: 1px solid #ccc;
-        margin: 10px auto; /* Centro el input con margen automático */
+        margin: 10px auto;
         background-color: transparent;
         color: black;
     }
 
-        /* Aplicar estilos al placeholder */
         .form-control::placeholder {
-            padding-left: 10%; /* Esto no moverá el texto, solo cambiará el padding interno */
+            padding-left: 10%;
             color: white;
             font-size: bold;
         }
 
     .login-button {
-        width: 50%; /* Ajustado para ocupar todo el ancho disponible */
+        width: 50%;
         padding: 0.5rem;
         margin: 20px auto;
         display: block;
@@ -88,48 +86,9 @@
         background-color: rgba(255, 255, 255, 0.7);
         border: none;
     }
-
-    .input-icon .icon {
-    position: absolute;
-    left: -0.70rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #fff;
-    font-size: 1.2rem;
-}
-
-.form-control {
-    width: 80%; /* Disminuir el ancho a 90% del contenedor */
-    height: 2rem; /* Aumentar la altura del input */
-    padding: 0.5rem 0.5rem 0.5rem 3rem; /* Padding izquierdo para el icono */
-    font-size: 1rem;
-    border-radius: 0.25rem;
-    border: 1px solid #ccc;
-    margin: 10px auto; /* Centro el input con margen automático */
-    background-color: transparent;
-    color: black;
-}
-
-/* Aplicar estilos al placeholder */
-.form-control::placeholder {
-    padding-left: 10%; /* Esto no moverá el texto, solo cambiará el padding interno */
-    color: #fff;
-    font-size:bold;
-}
 
     .card-header img {
-        height: 4rem; /* Ajusta según sea necesario */
-        /* No es necesario vertical-align en flexbox */
-    }
-    .login-button {
-        width: 50%; /* Ajustado para ocupar todo el ancho disponible */
-        padding: 0.5rem;
-        margin: 20px auto;
-        display: block;
-        border-radius: 10px;
-        color: #000;
-        background-color: rgba(255, 255, 255, 0.7);
-        border: none;
+        height: 4rem;
     }
 
     .register-link,
@@ -146,26 +105,43 @@
             text-decoration: none;
         }
 
-        .card-header {
-    position: relative;
-    text-align: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid #ccc; /* Línea que separa el header del body */
-}
-
-    img {
-        transition: transform 0.3s ease; /* Agregar una transición suave */
+    .card-header {
+        position: relative;
+        text-align: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid #ccc;
     }
 
-    img {
-        transform: translateY(10px); /* Mover el logo hacia abajo en el hover */
+        .card-header .user-icon {
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #333;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px 20px;
+        z-index: 9999;
     }
 
-.card-header .user-icon {
-    font-size: 2rem; /* Hacer el icono más grande */
-    color: #fff; /* Color blanco para la silueta */
-    margin-bottom: 0.5rem;
-}
+        .toast .toast-icon {
+            float: left;
+            margin-right: 10px;
+        }
+
+        .toast .message {
+            font-size: 16px;
+        }
+
+        .toast #icon {
+            font-size: 24px;
+        }
+
 </style>
 
 
@@ -174,7 +150,7 @@
     <div class="card">
         <div class="card-header">
            
-            <i class="far fa-user user-icon" ></i> <!-- Icono de usuario (silueta) -->
+            <i class="far fa-user user-icon" ></i> 
             <h1 style="color:white; margin:10px">Login</h1>
         </div>
 
@@ -190,10 +166,10 @@
                     <input type="password" class="form-control" placeholder="Password" @bind="model.Password" required />
                 </div>
                 <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem" Wrap="Radzen.FlexWrap.Wrap">
-                    <div style="flex-grow: 1;"></div> <!-- Espacio flexible para centrar los botones -->
+                    <div style="flex-grow: 1;"></div> 
                     <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Text="Login" ButtonStyle="ButtonStyle.Primary" Size="ButtonSize.Medium" style="margin: 20px; font-weight: bold;" />
                     <RadzenButton Type="submit" Variant="Variant.Outlined" Shade="Shade.Darker" Click="Cancelar" Text="Return" ButtonStyle="ButtonStyle.Info" Size="ButtonSize.Medium" style="margin: 20px; font-weight: bold;" />
-                    <div style="flex-grow: 1;"></div> <!-- Espacio flexible para centrar los botones -->
+                    <div style="flex-grow: 1;"></div>
                 </RadzenStack>
 
 
@@ -201,8 +177,18 @@
                     <p>¿No estás registrado? <a href="/register">Regístrate</a></p>
                 </div>
             </form>
-            <p class="message">@message</p>
+            
         </div>
+    @if (showToast)
+    {
+        <div class="toast" style="display: block;">
+            <div class="toast-icon">
+                <RadzenIcon Icon="account_box" IconColor="@Colors.Info" />
+            </div>
+            <div class="toast-message"> &#x1F604 @message</div>
+        </div>
+
+    }
     </div>
 
 
@@ -210,34 +196,38 @@
 @code {
     private AuthModel model = new AuthModel();
     private string message = "";
-    private int userId = 0;// Mensaje de autenticación
+    private int userId = 0;
     private string token = "";
     private string NameUser = "";
     private User userData = new User();
+    private bool showToast = false;
+    private string toastMessage = "";
 
     private async Task HandleValidSubmit()
     {
-        var authenticationResult = await AuthService.VerifyPassword(model.Email, model.Password);
+        var resultadoAutenticacion = await AuthService.VerifyPassword(model.Email, model.Password);
 
-        if (authenticationResult.IsSuccess)
+        if (resultadoAutenticacion.IsSuccess)
         {
-            UserSession.SetToken(authenticationResult.Token); // Aquí capturamos el token
+            UserSession.SetToken(resultadoAutenticacion.Token);
             userData = await AuthService.GetUserByEmail(model.Email);
             NameUser = userData.Name;
-            token = authenticationResult.Token;
+            token = resultadoAutenticacion.Token;
             userId = UserSession.ExtractUserIdFromToken(token);
-            message = "Authentication has been successful, Wellcome to ClimbApp "+NameUser;
+            message = "La autenticación se ha realizado con éxito. Bienvenido a ClimbApp, " + NameUser;
             StateHasChanged();
+            ShowToast(message);
             await Task.Delay(3000);
             NavigationManager.NavigateTo("/");
         }
         else
         {
-            // Mostrar un mensaje en inglés en caso de fallo
-            message = "Authentication failed. Please check your credentials.";
+            message = "La autenticación falló. Por favor, verifica tus credenciales.";
+            ShowToast(message);
             StateHasChanged();
         }
     }
+
     private async Task Cancelar()
     {
         NavigationManager.NavigateTo("/");
@@ -245,12 +235,24 @@
 
     public class AuthModel
     {
-        [Required(ErrorMessage = "Email is required")]
+        [Required(ErrorMessage = "El correo electrónico es obligatorio")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Password is required")]
+        [Required(ErrorMessage = "La contraseña es obligatoria")]
         public string Password { get; set; }
     }
-  
+
+    private void ShowToast(string message)
+    {
+        toastMessage = message;
+        showToast = true;
+        StateHasChanged();
+
+        Task.Delay(3000).ContinueWith(t =>
+        {
+            showToast = false;
+        });
+    }
+
 }
 

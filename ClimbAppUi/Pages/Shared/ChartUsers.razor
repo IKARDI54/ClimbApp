@@ -1,6 +1,9 @@
-﻿@using System.Globalization
+﻿@page "/listar-vias-escaladas"
+
+@using System.Globalization
 @using BlazorCLIMB.Data.Dapper.Repositories;
 @using BlazorCLIMB.Model;
+@using BlazorCLIMB.Model.BlazorCRUD.Model;
 @using BlazorCLIMB.UI.Interfaces;
 @using BlazorCLIMB.UI.Services;
 @inject IClimbingRouteService ClimbingRouteService
@@ -35,18 +38,22 @@
         fill: white;
     }
 </style>
+
+
+
 <div class="rz-p-0 rz-p-md-12">
     <RadzenChart>
-        <RadzenColumnSeries Data="@topUsers" CategoryProperty="UserName" ValueProperty="AverageGrade" Title="Mejores escaladores">
+        <RadzenColumnSeries Data="@topUsers" CategoryProperty="UserName" ValueProperty="TotalScore" Title="Mejores escaladores">
             <TooltipTemplate Context="data">
                 <div>
                     Usuario: <strong>@data.UserName</strong><br />
-                    Grado Medio: <strong>@data.AverageGrade</strong>
+                    Grado Medio: <strong>@data.TotalScore</strong>
                 </div>
             </TooltipTemplate>
         </RadzenColumnSeries>
+
         <RadzenValueAxis>
-            <RadzenAxisTitle Text="Grado Medio" />
+            <RadzenAxisTitle Text="Puntuación Total" />
         </RadzenValueAxis>
         <RadzenCategoryAxis>
             <RadzenAxisTitle Text="Nombre de Usuario" />
@@ -54,62 +61,80 @@
     </RadzenChart>
 </div>
 
+
 @code {
     IList<UserDataItem> topUsers = new List<UserDataItem>();
+    Dictionary<int, List<ClimbingRoute>> userRoutes = new Dictionary<int, List<ClimbingRoute>>(); 
+    List<User> users = new List <User>();
 
     protected override async Task OnInitializedAsync()
     {
-        // Obtén la lista de usuarios de tu servicio AuthService
-        var users = await AuthService.GetAllUsers();
-        var userRoutes = new List<UserClimbingRoutes>();
+        users = (await AuthService.GetAllUsers()).ToList();
 
+        
+        var userScores = new Dictionary<string, double>();
+
+        var gradeScores = new Dictionary<string, double>
+{
+    { "6a", 30 },
+    { "6a+", 60 },
+    { "6b", 90 },
+    { "6b+", 120 },
+    { "6c", 150 },
+    { "6c+", 180 },
+    { "7a", 210 },
+    { "7a+", 240 },
+    { "7b", 270 },
+    { "7b+", 300 },
+    { "7c", 330 },
+    { "7c+", 360 },
+    { "8a", 390 },
+    { "8a+", 420 },
+    { "8b", 450 },
+    { "8b+", 480 },
+    { "8c", 510 },
+    { "8c+", 540 },
+    { "9a", 570 },
+    { "9a+", 600 },
+    { "9b", 630 },
+    { "9b+", 660 },
+    { "9c", 690 }
+};
 
         foreach (var user in users)
         {
-            // Obtén las rutas escaladas por el usuario utilizando un método en tu servicio UserClimbingRouteService
-            var routes = await UserClimbingRouteService.GetUserClimbingRoutes(user.Id);
-            userRoutes.AddRange(routes);
-        }
+            var userRoutesList = await UserClimbingRouteService.GetUserClimbingRoutes(user.Id);
+            userRoutes[user.Id] = userRoutesList.Select(ur => ur.ClimbingRoute).ToList();
 
-        var userGrades = new Dictionary<string, double>();
-        // Calcular el grado medio para cada usuario
-        foreach (var user in users)
-        {
-            var userRoutesList = userRoutes.Where(route => route.UserId == user.Id).ToList();
             if (userRoutesList.Any())
             {
-                var totalRating = 0.0;
-                var totalRatings = 0;
+                var totalScore = 0.0;
 
                 foreach (var route in userRoutesList)
                 {
-                    // Obtén la calificación para la ruta utilizando un método en tu servicio RouteRatingService
-                    var rating = await RouteRatingService.GetAverageRating(route.ClimbingRouteId);
-                    if (!double.IsNaN(rating))
+                    // Obtén el grado de la ruta
+                    var climbingRoute = await ClimbingRouteService.GetClimbingRouteDetails(route.ClimbingRouteId);
+                    var routeGrade = climbingRoute.Grade;
+
+                    // Si el grado de la ruta está en el diccionario, suma la puntuación correspondiente
+                    if (gradeScores.ContainsKey(routeGrade))
                     {
-                        totalRating += rating;
-                        totalRatings++;
+                        totalScore += gradeScores[routeGrade];
                     }
                 }
 
-                if (totalRatings > 0)
-                {
-                    var averageGrade = totalRating / totalRatings;
-                    userGrades.Add(user.Name, averageGrade);
-                }
+                userScores.Add(user.Name, totalScore);
             }
         }
 
         // Crear la lista de objetos UserDataItem
-        topUsers = userGrades.Select(kv => new UserDataItem { UserName = kv.Key, AverageGrade = kv.Value }).ToList();
-
-        // Ordenar la lista por el grado medio y tomar los 5 usuarios con el grado más alto
-        topUsers = topUsers.OrderByDescending(item => item.AverageGrade).Take(5).ToList();
+        topUsers = userScores.Select(kv => new UserDataItem { UserName = kv.Key, TotalScore = kv.Value }).ToList();
+        topUsers = topUsers.OrderByDescending(item => item.TotalScore).Take(5).ToList();
     }
 
     public class UserDataItem
     {
         public string UserName { get; set; }
-        public double AverageGrade { get; set; }
+        public double TotalScore { get; set; }
     }
 }

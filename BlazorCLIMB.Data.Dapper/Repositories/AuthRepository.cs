@@ -3,6 +3,7 @@ using BlazorCLIMB.Model;
 using BlazorCLIMB.Model.BlazorCRUD.Model;
 using Dapper;
 using System.Data;
+using System.Data.SqlClient;
 using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System.Text;
@@ -25,6 +26,12 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
 
         public async Task<bool> CreateUser(UserDto userDto)
         {
+            var existingUser = await GetUserByEmail(userDto.Email);
+            if (existingUser != null)
+            {
+                
+                return false;
+            }
             var hashedPassword = HashPassword(userDto.PasswordHash);
             var sql = @"INSERT INTO Users (Email, PasswordHash, Role, Name, Img) 
                 VALUES (@Email, @PasswordHash, @Role, @Name, @Img)";
@@ -40,21 +47,29 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
         }
 
 
-        public async Task<User?> GetUserByEmail(string email) 
+        public async Task<User?> GetUserByEmail(string email)
         {
-            var sql = "SELECT * FROM Users WHERE Email = @Email";
-            return await _dbConnection.QueryFirstOrDefaultAsync<User>(sql, new { Email = email });
+            using (var connection = new SqlConnection(_dbConnection.ConnectionString))
+            {
+                await connection.OpenAsync();
+                var sql = "SELECT * FROM Users WHERE Email = @Email";
+                return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Email = email });
+            }
         }
+
         public async Task<User?> GetUserById(int id)
         {
             try
             {
-                var sql = "SELECT * FROM Users WHERE Id = @Id";
-                return await _dbConnection.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
+                using (var connection = new SqlConnection(_dbConnection.ConnectionString))
+                {
+                    await connection.OpenAsync();
+                    var sql = "SELECT * FROM Users WHERE Id = @Id";
+                    return await connection.QueryFirstOrDefaultAsync<User>(sql, new { Id = id });
+                }
             }
             catch (Exception ex)
             {
-                
                 Console.WriteLine($"Error al obtener el usuario por ID: {ex.Message}");
                 return new User { Id = 41 };
             }

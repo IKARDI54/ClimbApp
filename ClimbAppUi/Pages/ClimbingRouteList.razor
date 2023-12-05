@@ -5,6 +5,7 @@
 @using Interfaces
 @using BlazorCLIMB.UI.Services
 @inject IRouteRatingService RouteRatingService
+@inject IUserClimbingRouteService UserClimbingRouteService
 @inject IAuthService AuthService
 @inject IClimbingRouteService ClimbingRouteService
 @inject NavigationManager NavigationManager
@@ -19,7 +20,7 @@
         padding: 0;
     }
     .RadzenDataGrid {
-        background-color: transparent; /* O el mismo color del contenedor si es necesario */
+        background-color: transparent;
     }
 
     .search-container {
@@ -51,24 +52,47 @@
 
         .search-button i {
             color: white;
-            font-size: 16px; /* Puedes ajustar el tamaño del icono aquí */
-        }
+            font-size: 16px; 
 
         .search-button:hover {
             background-color: #4cae4c;
         }
 
     .grilla-personalizada {
-        background-color: #f2f2f2; /* Cambia este valor al color que desees */
+        background-color: #f2f2f2; /
     }
  
 
     .grilla-container {
-        padding: 30px; /* Ajusta el valor de padding según tus preferencias */
+        padding: 30px; 
         margin-right: -20px;
         margin-top: -40px;
     }
 
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #333;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px 20px;
+        z-index: 9999;
+    }
+
+
+        .toast .toast-icon {
+            float: left;
+            margin-right: 10px;
+        }
+
+        .toast .message {
+            font-size: 16px;
+        }
+
+        .toast #icon {
+            font-size: 24px;
+        }
 </style>
 
     <div class="d-flex align-items-center justify-content-between mb-0">
@@ -83,11 +107,22 @@
         </RadzenStack>
     </div>
   <div class="grilla-container">
+    @if (showToast)
+    {
+        <div class="toast" style="display: block; position: fixed; bottom: 20px; right: 20px; background-color: #333; color: #fff; border-radius: 5px; padding: 10px 20px; z-index: 9999;">
+            <div class="toast-icon" style="float: left; margin-right: 10px;">
+                <RadzenIcon Icon="account_box" IconColor="@Colors.Info" />
+            </div>
+            <div class="toast-message" style="font-size: 16px;">
+                &#x1F604 @message
+            </div>
+        </div>
+    }
+
     <RadzenDataGrid AllowGrouping="true" AllowFiltering="true" AllowColumnResize="true" FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="5" AllowPaging="true" PagerPosition="PagerPosition.Bottom" AllowPagerText="true" Data="@climbingRoutes">
         <Columns>
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="Name" Title="Nombre" />
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="Grade" Title="Grado" Filterable="true" />
-            @* <RadzenDataGridColumn TItem="ClimbingRoute" Property="ClimbingSector" Title="Sector" Filterable="true" /> *@
             <RadzenDataGridColumn TItem="ClimbingRoute" Property="ClimbingSchoolId" Title="Escuela">
                 <Template Context="route">
                     @GetSchoolName(route.ClimbingSchoolId)
@@ -118,15 +153,10 @@
             </RadzenDataGridColumn>
         </Columns>
     </RadzenDataGrid>
+    
 </div>
-    @if (!string.IsNullOrEmpty(loadingError))
-    {
-        <p>@loadingError</p>
-    }
+  
 
-
-
-<!-- Modal para Editar/Agregar Rutas -->
 <BlazorBootstrap.Modal @ref="modal" Title="Editar Ruta" Style="background-color:#e5e8ed;">
     <BodyTemplate>
         <div class="mb-3">
@@ -171,6 +201,8 @@
     private double averageRating;
     private int numberOfRatings;
     private User user;
+    private string message = "";
+    private bool showToast = false;
     
 
     protected override async Task OnInitializedAsync()
@@ -188,8 +220,9 @@
         }
         catch (Exception ex)
         {
-            loadingError = "An error occurred while loading the routes: " + ex.Message;
+            loadingError = "Ha ocurrido un error al cargar las rutas: " + ex.Message;
             climbingRoutes = Enumerable.Empty<ClimbingRoute>();
+            ShowToast(loadingError);
         }
     }
     private void OnRender(DataGridRenderEventArgs<ClimbingRoute> args)
@@ -201,9 +234,20 @@
         }
     }
 
-    private void AnotarViaEscalada(int routeId)
+    private async void AnotarViaEscalada(int routeId)
     {
+        if (user != null) 
+        {
+        message = "Felicidades por su encadene!!! ClimbApp le da la Enhorabuena!!, " + user.Name;
+        StateHasChanged();
+        ShowToast(message);
+        await Task.Delay(3000);
         NavigationManager.NavigateTo($"/userRoutes/{routeId}");
+        
+        }
+        else
+        {
+        }
     }
     private string GetSchoolName(int climbingSchoolId)
     {
@@ -222,17 +266,33 @@
         }
     }
 
-    private void EditClimbingRoute(int routeId)
+    private async void EditClimbingRoute(int routeId)
     {
-        selectedRoute = climbingRoutes.FirstOrDefault(r => r.Id == routeId);
-        modal.ShowAsync();
+        try
+        {
+            selectedRoute = climbingRoutes.FirstOrDefault(r => r.Id == routeId);
+            modal.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            ShowToast("Ha ocurrido un error al editar la ruta de escalada: " + ex.Message);
+        }
     }
 
-    private void AddClimbingRoute()
+
+    private async void AddClimbingRoute()
     {
-        selectedRoute = new ClimbingRoute();
-        modal.ShowAsync();
+        try
+        {
+            selectedRoute = new ClimbingRoute();
+            modal.ShowAsync();
+        }
+        catch (Exception ex)
+        {
+            ShowToast("Ha ocurrido un error al agregar una nueva ruta de escalada: " + ex.Message);
+        }
     }
+
     private void LoginGo()
     {
         NavigationManager.NavigateTo("/");
@@ -243,16 +303,20 @@
         try
         {
             await ClimbingRouteService.DeleteClimbingRoute(routeId);
-            climbingRoutes = await ClimbingRouteService.GetAllClimbingRoutes();
+            StateHasChanged();
+            ShowToast("Se ha borrado la ruta");
         }
         catch (Exception ex)
         {
-            loadingError = "An error occurred while deleting the route: " + ex.Message;
+            loadingError = "Ha ocurrido un error al agregar una nueva ruta de escalada: " + ex.Message;
+            ShowToast(loadingError);
         }
     }
 
     private async Task SaveClimbingRoute()
     {
+        try
+        {
         if (selectedRoute.Id != 0)
         {
             await ClimbingRouteService.UpdateClimbingRoute(selectedRoute);
@@ -264,7 +328,16 @@
 
         modal.HideAsync();
         climbingRoutes = await ClimbingRouteService.GetAllClimbingRoutes();
-    }
+        ShowToast("La ruta se ha guardado con éxito.");
+
+        }
+         catch (Exception ex)
+        {
+                loadingError = "Ha ocurrido un error al guardar la ruta: " + ex.Message;
+                ShowToast(loadingError);
+            }
+
+        }
 
     private void OnHideModalClick()
     {
@@ -273,35 +346,30 @@
  
         private string searchTerm = string.Empty;
 
-        private void ApplySearch()
-        {
-            // Implementa la lógica de búsqueda aquí
-        }
-
-        private Task SearchKeyPress(KeyboardEventArgs args)
-        {
-            if (args.Key == "Enter")
-            {
-                ApplySearch();
-            }
-            return Task.CompletedTask;
-        }
+     
     private async Task CalculateAverageRatingAndNumberOfRatingsForEachRoute()
     {
         foreach (var route in climbingRoutes)
         {
-            // Calcula la valoración promedio y el número de valoraciones para cada vía escalada individualmente
             double totalRating = 0.0;
             int totalRatings = 0;
 
-            // Llama a GetAverageRating para obtener el promedio de calificaciones para esta vía
             route.AverageRating = await RouteRatingService.GetAverageRating(route.Id);
 
-            // Obtén el número de valoraciones para esta vía
             totalRatings = await RouteRatingService.GetNumberOfRatings(route.Id);
-
-            // Asigna el número de valoraciones a la propiedad de la vía escalada actual
+            
             route.NumberOfRatings = totalRatings;
         }
+    }
+    private void ShowToast(string message)
+    {
+        this.message = message;
+        showToast = true;
+        StateHasChanged();
+
+        Task.Delay(3000).ContinueWith(t =>
+        {
+            showToast = false;
+        });
     }
 }

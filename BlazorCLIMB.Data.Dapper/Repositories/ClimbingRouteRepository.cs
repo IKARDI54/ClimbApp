@@ -128,6 +128,66 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
 
             return averageRating ?? 0.0;
         }
+        public async Task<IEnumerable<SchoolRoutesCount>> GetRoutesCountBySchool()
+        {
+            var db = dbConnection();
+
+            var sql = @"
+        SELECT CR.ClimbingSchoolId, COUNT(CR.Id) AS NumberOfRoutes
+        FROM ClimbingRoute CR
+        GROUP BY CR.ClimbingSchoolId";
+
+            return await db.QueryAsync<SchoolRoutesCount>(sql);
+        }
+
+        public async Task<IEnumerable<SchoolAverageRating>> GetAverageRatingBySchool()
+        {
+            var db = dbConnection();
+
+            var sql = @"
+        SELECT CR.ClimbingSchoolId, COALESCE(AVG(RR.Rating), 0.0) AS AverageRating, COUNT(RR.Rating) AS NumberOfRatings
+        FROM ClimbingRoute CR
+        LEFT JOIN RouteRating RR ON CR.Id = RR.ClimbingRouteId
+        GROUP BY CR.ClimbingSchoolId";
+
+            return await db.QueryAsync<SchoolAverageRating>(sql);
+        }
+
+        public async Task<IEnumerable<SchoolAverageGrade>> GetAverageGradeBySchool()
+        {
+            var db = dbConnection();
+
+            // Actualiza la consulta para usar la nueva columna NumericGrade
+            var sql = @"
+            SELECT CR.ClimbingSchoolId, AVG(CR.NumericGrade) AS AverageGrade
+            FROM ClimbingRoute CR
+            GROUP BY CR.ClimbingSchoolId";
+
+            // Ejecuta la consulta y obtén los resultados directamente
+            var averageGrades = await db.QueryAsync<SchoolAverageGrade>(sql);
+
+            return averageGrades;
+        }
+
+        public class SchoolAverageGrade
+        {
+            public int ClimbingSchoolId { get; set; }
+            public double AverageGrade { get; set; }
+        }
+
+        public class SchoolAverageRating
+        {
+            public int ClimbingSchoolId { get; set; }
+
+            public int NumberOfRatings { get; set; }
+            public double AverageRating { get; set; }
+        }
+
+        public class SchoolRoutesCount
+        {
+            public int ClimbingSchoolId { get; set; }
+            public int NumberOfRoutes { get; set; }
+        }
 
     }
 }
