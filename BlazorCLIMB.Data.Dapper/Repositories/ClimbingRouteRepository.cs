@@ -35,21 +35,29 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
 
         public async Task<IEnumerable<ClimbingRoute>> GetAllClimbingRoutes()
         {
-            var db = dbConnection();
+            try
+            {
+                var db = dbConnection();
 
-            var sql = @"
+                var sql = @"
         SELECT CR.Id, CR.Name, CR.Grade, CR.Description, CR.ClimbingSector, CR.ClimbingSchoolId,
                COALESCE(AVG(RR.Rating), 0.0) AS AverageRating,
                COUNT(RR.Id) AS NumberOfRatings
         FROM ClimbingRoute CR
         LEFT JOIN RouteRating RR ON CR.Id = RR.ClimbingRouteId
-        GROUP BY CR.Id, CR.Name, CR.Grade, CR.Description, CR.ClimbingSector, CR.ClimbingSchoolId
-    ";
+        GROUP BY CR.Id, CR.Name, CR.Grade, CR.Description, CR.ClimbingSector, CR.ClimbingSchoolId";
 
             var result = await db.QueryAsync<ClimbingRoute>(sql);
 
             return result;
-        }
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Error en GetClimbingRouteDetails: {ex.Message}");
+                throw;
+            }
+            }
 
         public async Task<ClimbingRoute> GetClimbingRouteDetails(int id)
         {
