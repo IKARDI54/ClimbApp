@@ -10,10 +10,13 @@
 @using BlazorCLIMB.UI.Services
 @inject IRouteRatingService RouteRatingService
 
+<div class="d-flex justify-content-center mb-0" style="align-items: center; width: 100%;">
+    <img src="images/logoClimb.png" alt="ClimbApp Logo" style="margin: 10px; height: 4.75rem; border-radius: 50%;" class="logo" />
+    <h1 style="color: white; margin-left: 10px; margin-right: 10px;">Detalles de la Vía Escalada</h1>
+    <RadzenButton Click="LoginGo" Variant="Variant.Outlined" Text="Volver" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:5px; border:solid 1px white" />
+</div>
 <div class="container" style="color:white; font-weight:600">
-    <h1 style="color:white; font-weight:600">Detalles de la Vía Escalada</h1>
-    <RadzenButton Click="LoginGo" Variant="Variant.Outlined" Text="Volver" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:75%;" />
-@if (climbingRoute != null)
+    @if (climbingRoute != null)
 {
     <div>
             <h2 style="color:white; font-weight:600">@climbingRoute.Name</h2>
@@ -61,7 +64,6 @@
     </div>
 }
 
-    <h3 style="color:white; font-weight:600">Cuaderno de bitácora (La lista de vias esclaladas por tí)</h3>
     @if (userClimbingRouteList != null && userClimbingRouteList.Any())
     {
         <table class="table" style="color:white; font-weight:600">
@@ -111,10 +113,10 @@ else
 @code {
     double? ratingTask = 0;
     int userId = UserSession.UserId;
-    private User user;
+    private User? user;
     private int routeId;
     private bool routeCreated;
-    private ClimbingRoute climbingRoute;
+    private ClimbingRoute? climbingRoute;
     private UserClimbingRoutes userClimbingRoute = new UserClimbingRoutes();
     private IEnumerable<UserClimbingRoutes> userClimbingRouteList = Enumerable.Empty<UserClimbingRoutes>();
     private string message = "";

@@ -26,16 +26,26 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
 
         public async Task<bool> CreateUser(UserDto userDto)
         {
+            if (string.IsNullOrWhiteSpace(userDto.Email) || string.IsNullOrWhiteSpace(userDto.PasswordHash))
+            {
+                throw new ArgumentException("El correo electrónico y la contraseña son obligatorios.");
+            }
+
             var existingUser = await GetUserByEmail(userDto.Email);
             if (existingUser != null)
             {
                 
                 return false;
             }
-            var hashedPassword = HashPassword(userDto.PasswordHash);
+
+            using (var connection = new SqlConnection(_dbConnection.ConnectionString))
+            {
+                await connection.OpenAsync();
+
+                var hashedPassword = HashPassword(userDto.PasswordHash);
             var sql = @"INSERT INTO Users (Email, PasswordHash, Role, Name, Img) 
                 VALUES (@Email, @PasswordHash, @Role, @Name, @Img)";
-            var result = await _dbConnection.ExecuteAsync(sql, new
+            var result = await connection.ExecuteAsync(sql, new
             {
                 Email = userDto.Email,
                 PasswordHash = hashedPassword,
@@ -44,6 +54,7 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
                 Img = userDto.Img
             });
             return result > 0;
+            }
         }
 
 
@@ -78,18 +89,21 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
         public async Task<AuthenticationResult> VerifyPassword(string email, string password)
         {
             var user = await GetUserByEmail(email);
-            if (user != null)
+            if (user == null || user.PasswordHash == null)
             {
-                bool isVerified = VerifyHashedPassword(user.PasswordHash, password);
-                if (isVerified)
-                {
-                    // Aquí generas el token para el usuario, podría ser con JWT o como lo manejes
-                    string token = GenerateTokenForUser(user);
-                    return new AuthenticationResult { IsSuccess = true, Token = token };
-                }
+                return new AuthenticationResult { IsSuccess = false };
             }
-            return new AuthenticationResult { IsSuccess = false };
+
+            if (!VerifyHashedPassword(user.PasswordHash, password))
+            {
+                return new AuthenticationResult { IsSuccess = false };
+            }
+
+            string token = GenerateTokenForUser(user);
+            return new AuthenticationResult { IsSuccess = true, Token = token };
         }
+
+
 
 
         public async Task<bool> AssignRoleToUser(string email, string role)

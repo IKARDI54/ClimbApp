@@ -11,6 +11,14 @@
 @inject NavigationManager NavigationManager
 
 <style>
+    .rz-colorpicker, .rz-lookup-search input, .rz-spinner, .rz-calendar .rz-inputtext, .rz-multiselect, .rz-dropdown, .mask, .rz-textarea, .rz-textbox, .rz-group-header, .rz-paginator-last, .rz-paginator-next, .rz-paginator-first, .rz-paginator-prev, .rz-datatable-thead th .rz-column-title, .rz-grid-table thead th .rz-column-title, .rz-paginator-page, .rz-paginator, .rz-datatable-data td .rz-cell-data, .rz-grid-table td .rz-cell-data {
+        color: white !important;
+    }
+
+    .rz-grid-table-striped tbody > tr:not(.rz-expanded-row-content):nth-child(odd) > td, .rz-grid-table-striped tbody > tr:not(.rz-expanded-row-content):nth-child(even) > td, .rz-group-header, .rz-form-field-content, .rz-colorpicker, .rz-lookup-search input, .rz-spinner, .rz-calendar .rz-inputtext, .rz-multiselect, .rz-dropdown, .mask, .rz-textarea, .rz-textbox, .rz-cell-filter, .rz-datatable-thead th, .rz-grid-table thead th, .rz-paginator, .rz-datatable-data td .rz-cell-data, .rz-grid-table td .rz-cell-data {
+        background-color: #365664 !important;
+    }
+
 
     .container.full-background {
         height: 100%;
@@ -59,13 +67,13 @@
         }
 
     .grilla-personalizada {
-        background-color: #f2f2f2; /
+        background-color: #f2f2f2; 
     }
  
 
     .grilla-container {
         padding: 30px; 
-        margin-right: -20px;
+        margin-right: -50px;
         margin-top: -40px;
     }
 
@@ -95,17 +103,15 @@
         }
 </style>
 
-    <div class="d-flex align-items-center justify-content-between mb-0">
-        <h1 style=" color:white; margin-left:33%" >Listado de Vías Escaladas</h1>
-        <img src="images/logoClimb.png" alt="ClimbApp Logo" style="margin:10px; height: 4.75rem; border-radius: 50%;" class="logo" />
-    </div>
-<div class="mb-4 d-flex justify-content-center">
-        <RadzenStack Orientation="Radzen.Orientation.Horizontal" AlignItems="AlignItems.Center" Wrap="Radzen.FlexWrap.Wrap">
-        <RadzenButton Click="AddClimbingRoute" Variant="Variant.Outlined" Text="Añadir una Vía" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:5px;  border:solid 1px white" />
-            <RadzenButton Click="LoginGo" Variant="Variant.Outlined" Text="Volver" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:5px; border:solid 1px white" />
-            
-        </RadzenStack>
-    </div>
+<div class="d-flex justify-content-center mb-0" style="align-items: center; width: 100%;">
+    <img src="images/logoClimb.png" alt="ClimbApp Logo" style="margin: 10px; height: 4.75rem; border-radius: 50%;" class="logo" />
+    <h1 style="color: white;">Listado de Vías Escaladas</h1>
+    <RadzenButton Click="LoginGo" Variant="Variant.Outlined" Text="Volver" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:15px; border:solid 1px white" />
+    <RadzenButton Click="AddClimbingRoute" Variant="Variant.Outlined" Text="Añadir una Vía" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:15px;  border:solid 1px white" />
+
+</div>
+
+
   <div class="grilla-container">
     @if (showToast)
     {
@@ -118,6 +124,8 @@
             </div>
         </div>
     }
+    <div style="display: flex; justify-content: center; padding: 20px;">
+    <div style="width: 100%; max-width: 1200px;"> 
 
     <RadzenDataGrid AllowGrouping="true" AllowFiltering="true" AllowColumnResize="true" FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="5" AllowPaging="true" PagerPosition="PagerPosition.Bottom" AllowPagerText="true" Data="@climbingRoutes">
         <Columns>
@@ -143,17 +151,19 @@
                 <Template Context="route">
                     
                    @if (user?.Role == "SuperUser")
-                    { 
-                        <RadzenButton Variant="Variant.Outlined" Click="() => DeleteClimbingRoute(route.Id)" Icon="delete" ButtonStyle="ButtonStyle.Dark" />
-                        <RadzenButton Variant="Variant.Outlined" Click="() => EditClimbingRoute(route.Id)" Icon="edit" ButtonStyle="ButtonStyle.Primary" />
+                    {
+                                <RadzenButton Variant="Variant.Outlined" Click="() => DeleteClimbingRoute(route.Id)" Icon="delete" ButtonStyle="ButtonStyle.Light" />
+                        <RadzenButton Variant="Variant.Outlined" Click="() => EditClimbingRoute(route.Id)" Icon="edit" ButtonStyle="ButtonStyle.Light" />
                     }
-                    <RadzenButton Variant="Variant.Outlined" Click="() => AnotarViaEscalada(route.Id)" Icon="check" ButtonStyle="ButtonStyle.Success" />
+                            <RadzenButton Variant="Variant.Outlined" Click="() => AnotarViaEscalada(route.Id)" Icon="check" ButtonStyle="ButtonStyle.Light" />
 
                 </Template>
             </RadzenDataGridColumn>
         </Columns>
     </RadzenDataGrid>
     
+</div>
+</div>
 </div>
   
 
@@ -198,8 +208,7 @@
     private IEnumerable<ClimbingRoute> climbingRoutes;
     private string loadingError;
     private ClimbingRoute selectedRoute = new ClimbingRoute();
-    private double averageRating;
-    private int numberOfRatings;
+    // private double averageRating;
     private User user;
     private string message = "";
     private bool showToast = false;
@@ -216,7 +225,7 @@
         try
         {
             climbingRoutes = await ClimbingRouteService.GetAllClimbingRoutes();
-            CalculateAverageRatingAndNumberOfRatingsForEachRoute();
+            await CalculateAverageRatingAndNumberOfRatingsForEachRoute();
         }
         catch (Exception ex)
         {
@@ -266,12 +275,12 @@
         }
     }
 
-    private async void EditClimbingRoute(int routeId)
+    private async Task EditClimbingRoute(int routeId)
     {
         try
         {
             selectedRoute = climbingRoutes.FirstOrDefault(r => r.Id == routeId);
-            modal.ShowAsync();
+            await modal.ShowAsync();
         }
         catch (Exception ex)
         {
@@ -285,7 +294,7 @@
         try
         {
             selectedRoute = new ClimbingRoute();
-            modal.ShowAsync();
+            await modal.ShowAsync();
         }
         catch (Exception ex)
         {
@@ -317,27 +326,25 @@
     {
         try
         {
-        if (selectedRoute.Id != 0)
-        {
-            await ClimbingRouteService.UpdateClimbingRoute(selectedRoute);
-        }
-        else
-        {
-            await ClimbingRouteService.InsertClimbingRoute(selectedRoute);
-        }
-
-        modal.HideAsync();
-        climbingRoutes = await ClimbingRouteService.GetAllClimbingRoutes();
-        ShowToast("La ruta se ha guardado con éxito.");
-
-        }
-         catch (Exception ex)
-        {
-                loadingError = "Ha ocurrido un error al guardar la ruta: " + ex.Message;
-                ShowToast(loadingError);
+            if (selectedRoute.Id != 0)
+            {
+                await ClimbingRouteService.UpdateClimbingRoute(selectedRoute);
+            }
+            else
+            {
+                await ClimbingRouteService.InsertClimbingRoute(selectedRoute);
             }
 
+            await modal.HideAsync(); // Asegúrate de usar 'await' aquí
+            climbingRoutes = await ClimbingRouteService.GetAllClimbingRoutes();
+            ShowToast("La ruta se ha guardado con éxito.");
         }
+        catch (Exception ex)
+        {
+            loadingError = "Ha ocurrido un error al guardar la ruta: " + ex.Message;
+            ShowToast(loadingError);
+        }
+    }
 
     private void OnHideModalClick()
     {
@@ -351,7 +358,7 @@
     {
         foreach (var route in climbingRoutes)
         {
-            double totalRating = 0.0;
+            
             int totalRatings = 0;
 
             route.AverageRating = await RouteRatingService.GetAverageRating(route.Id);

@@ -62,7 +62,7 @@
     private List<DataItem> chartData;
     ColorScheme colorScheme = ColorScheme.Palette;
     private int totalRoutes; 
-    private int numeroTotaldePuntuaciones;
+    // private int numeroTotaldePuntuaciones;
 
     protected override async Task OnInitializedAsync()
     {
@@ -81,8 +81,8 @@
     // Define una clase para mapear los datos a tus gráficos
     public class DataItem
     {
-        public string SchoolName { get; set; }
-        public string SchoolId { get; set; }
+        public string? SchoolName { get; set; }
+        public string? SchoolId { get; set; }
         public int    NumberOfRoutes { get; set; }
         public double AverageRating { get; set; }
         public double AverageGrade { get; set; } 

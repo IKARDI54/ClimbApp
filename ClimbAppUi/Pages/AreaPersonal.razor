@@ -317,8 +317,6 @@
             <tbody>
                 @if (users != null)
                 {
-
-
        
                 @foreach (var userItem in users)
                 {
@@ -332,18 +330,18 @@
                       
                        
                         </td>
-                        </tr>
+                    </tr>
                     }
 
                 }
                 else
                 {
-                    <div class="d-flex align-items-center">
-                        <div class="spinner-border text-success" role="status">
+                 <tr> class="d-flex align-items-center">
+                        <td class="spinner-border text-success" role="status">
                             <span class="sr-only">Loading...</span>
-                        </div>
-                        <span class="ml-2">Loading...</span>
-                    </div>
+                        </td>
+                        <td class="ml-2">Loading...</td>
+                 </tr>
                 }
             </tbody>
         </table>
@@ -356,15 +354,14 @@
 @code {
     private bool showToast = false;
     private string toastMessage = "";
-    private User user;
-    private User editedUser;
+    private User? user;
+    private User? editedUser;
     private bool editMode = false;
-    private List<User> users;
-    private byte[] base64Image;
+    private List<User>? users;
+    private byte[]? base64Image;
     AuthModel model = new AuthModel();
     string message = "";
-    string role = "User";
-    string avatarUrl;
+    string? avatarUrl;
     private bool showModal = false;
 
     private void OpenModal()
@@ -393,7 +390,7 @@
 
     }
 
-    private async Task ToggleEditMode()
+    private void ToggleEditMode()
     {
         editMode = !editMode;
     }
@@ -409,7 +406,7 @@
             {
                 message = "Profile updated successfully.";
                 ShowToast(message);
-              
+
                 avatarUrl = $"data:image/png;base64,{Convert.ToBase64String(editedUser.Img)}"; // Actualiza avatarUrl
                 StateHasChanged();
 
@@ -418,14 +415,14 @@
             {
                 message = "Failed to update profile.";
                 ShowToast(message);
-               
+
             }
         }
         catch (Exception ex)
         {
             message = $"Error updating profile: {ex.Message}";
             ShowToast(message);
-           
+
         }
         finally
         {
@@ -436,7 +433,10 @@
     private async Task DeleteUser(int id)
     {
         await AuthService.DeleteUser(id); 
-        users.Remove(users.Single(u => u.Id == id)); // Actualiza la lista después de eliminar
+        if (users != null)
+        {
+            users.Remove(users.Single(u => u.Id == id)); 
+        }
     }
     private string GetImageAsBase64()
     {
@@ -458,8 +458,12 @@
             using (var memoryStream = new MemoryStream())
             {
                 await imageFile.OpenReadStream().CopyToAsync(memoryStream);
-                editedUser.Img = memoryStream.ToArray(); 
-                avatarUrl = $"data:{imageFile.ContentType};base64,{Convert.ToBase64String(editedUser.Img)}";
+                if (editedUser != null)
+                {
+                    editedUser.Img = memoryStream.ToArray();
+                    avatarUrl = $"data:{imageFile.ContentType};base64,{Convert.ToBase64String(editedUser.Img)}";
+                }
+               
             }
             message = "Avatar Seleccionado.";
             ShowToast(message);
@@ -475,9 +479,9 @@
     {
         toastMessage = message;
         showToast = true;
-        StateHasChanged(); // Notifica a Blazor que actualice la UI
+        StateHasChanged(); 
 
-        // Opcional: Ocultar toast después de un tiempo
+        
         Task.Delay(3000).ContinueWith(t =>
         {
             showToast = false;
@@ -490,8 +494,8 @@
         public DateTime? SomeDateTimeProperty { get; set; }
         public int SomeIntegerProperty { get; set; }
         public decimal SomeDecimalProperty { get; set; }
-        public string SomeStringProperty { get; set; }
-        public string SomeMultiLineStringProperty { get; set; }
+        public string? SomeStringProperty { get; set; }
+        public string? SomeMultiLineStringProperty { get; set; }
         public SomeStateEnum SomeSelectProperty { get; set; } = SomeStateEnum.Active;
     }
 

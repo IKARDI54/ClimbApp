@@ -78,7 +78,7 @@
         .form-control::placeholder {
             padding-left: 10%; 
             color: white;
-            font-size: bold;
+          
         }
 
     .login-button {
@@ -139,7 +139,7 @@
         border: 1px solid #ccc; 
         background-color: rgba(255, 255, 255, 0.7);
         color: black
-        font-size: 1rem; 
+        
       
     }
 
@@ -190,7 +190,7 @@
                 <i class="fa fa-pencil-alt user-icon" style="font-size: 2rem; margin-top:4px;"></i>
                  <h2 style="color:white;">Create Account</h2>
             </div>
-        </div
+        </div>
         <div class="card-body">
             <form @onsubmit="@HandleValidSubmit">
                 <div class="form-group input-icon">
@@ -240,7 +240,6 @@
     AuthModel model = new AuthModel();
     string confirmPassword = "";
     string message = "";
-    string role = "User";
     string avatarUrl;
     private bool showToast = false;
     private string toastMessage = "";
@@ -269,7 +268,7 @@
             NavigationManager.NavigateTo("/Login");
         }
     }
-     private async Task Cancelar()
+     private void Cancelar()
     {
         NavigationManager.NavigateTo("/");
     }

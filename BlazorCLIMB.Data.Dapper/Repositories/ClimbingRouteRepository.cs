@@ -63,21 +63,32 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
         {
             try
             {
-                var db = dbConnection();
+                using var db = dbConnection(); // Utiliza 'using' para manejar automáticamente la conexión
+
+                if (db == null)
+                {
+                    throw new InvalidOperationException("La conexión a la base de datos no pudo ser establecida.");
+                }
 
                 var sql = @"SELECT Id, Name, Grade, Description, ClimbingSchoolId, ClimbingSector  
-                    FROM ClimbingRoute
-                    WHERE Id = @id";
+            FROM ClimbingRoute
+            WHERE Id = @id";
 
-                return await db.QueryFirstOrDefaultAsync<ClimbingRoute>(sql.ToString(), new { id });
+                var result = await db.QueryFirstOrDefaultAsync<ClimbingRoute>(sql, new { id });
+                if (result == null)
+                {
+                    throw new KeyNotFoundException($"No se encontró una ruta de escalada con el ID: {id}");
+                }
+
+                return result;
             }
             catch (Exception ex)
             {
-                
                 Console.WriteLine($"Error en GetClimbingRouteDetails: {ex.Message}");
-                throw; 
+                throw; // Vuelve a lanzar la excepción para manejarla en un nivel superior si es necesario
             }
         }
+
 
         public async Task<bool> InsertClimbingRoute(ClimbingRoute climbingRoute)
         {
