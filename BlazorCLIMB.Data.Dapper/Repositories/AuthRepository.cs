@@ -8,6 +8,7 @@ using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
+using BCrypt.Net;
 
 
 
@@ -143,17 +144,17 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
             var sql = "SELECT * FROM Users";
             return await _dbConnection.QueryAsync<User>(sql);
         }
-       
+
 
 
         private string HashPassword(string password)
         {
-            return password; 
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
         private bool VerifyHashedPassword(string storedPassword, string passwordToVerify)
         {
-            return storedPassword == passwordToVerify; 
+            return BCrypt.Net.BCrypt.Verify(passwordToVerify, storedPassword);
         }
 
 
