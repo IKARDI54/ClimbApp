@@ -87,26 +87,6 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
             }
         }
 
-        public async Task<AuthenticationResult> VerifyPassword(string email, string password)
-        {
-            var user = await GetUserByEmail(email);
-            if (user == null || user.PasswordHash == null)
-            {
-                return new AuthenticationResult { IsSuccess = false };
-            }
-
-            if (!VerifyHashedPassword(user.PasswordHash, password))
-            {
-                return new AuthenticationResult { IsSuccess = false };
-            }
-
-            string token = GenerateTokenForUser(user);
-            return new AuthenticationResult { IsSuccess = true, Token = token };
-        }
-
-
-
-
         public async Task<bool> AssignRoleToUser(string email, string role)
         {
             var user = await GetUserByEmail(email);
@@ -145,19 +125,62 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
             return await _dbConnection.QueryAsync<User>(sql);
         }
 
-
-
         private string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
-
-        private bool VerifyHashedPassword(string storedPassword, string passwordToVerify)
+        public async Task<AuthenticationResult> VerifyPassword(string email, string password)
         {
-            return BCrypt.Net.BCrypt.Verify(passwordToVerify, storedPassword);
+            var user = await GetUserByEmail(email);
+            if (user == null)
+            {
+                return new AuthenticationResult { IsSuccess = false };
+            }
+
+            // Comprobación para usuarios con contraseñas en formato antiguo
+            if (IsPasswordInOldFormat(user.PasswordHash))
+            {
+                if (VerifyOldPassword(user.PasswordHash, password))
+                {
+                    user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
+                    await UpdateUser(user);  // Asegúrate de que este método actualice correctamente en la DB.
+                    return new AuthenticationResult { IsSuccess = true, Token = GenerateTokenForUser(user) };
+                }
+                else
+                {
+                    return new AuthenticationResult { IsSuccess = false };
+                }
+            }
+            else
+            {
+                // Para contraseñas en el formato encriptado con BCrypt (manejo anterior)
+                if (!VerifyHashedPassword(user.PasswordHash, password))
+                {
+                    return new AuthenticationResult { IsSuccess = false };
+                }
+
+                return new AuthenticationResult { IsSuccess = true, Token = GenerateTokenForUser(user) };
+            }
         }
 
 
+        private bool IsPasswordInOldFormat(string passwordHash)
+        {
+            
+            return passwordHash != null && passwordHash.Length < 60;
+        }
+
+        private bool VerifyOldPassword(string storedPassword, string passwordToVerify)
+        {
+         
+            return storedPassword == passwordToVerify;
+        }
+
+        private bool VerifyHashedPassword(string storedPasswordHash, string passwordToVerify)
+        {
+            // Retorna true si la contraseña proporcionada, una vez hasheada, coincide con el hash almacenado
+            return BCrypt.Net.BCrypt.Verify(passwordToVerify, storedPasswordHash);
+        }
         private string GenerateTokenForUser(User user)
         {
             

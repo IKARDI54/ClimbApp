@@ -39,6 +39,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="aspnet.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Blazicons" Version="1.2.20" />
     <PackageReference Include="Blazor.Bootstrap" Version="1.10.4" />

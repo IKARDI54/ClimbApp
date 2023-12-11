@@ -207,6 +207,7 @@
 
     private async Task HandleValidSubmit()
     {
+
         var resultadoAutenticacion = await AuthService.VerifyPassword(model.Email, model.Password);
 
         if (resultadoAutenticacion.IsSuccess)
@@ -216,7 +217,7 @@
             NameUser = userData.Name;
             token = resultadoAutenticacion.Token;
             userId = UserSession.ExtractUserIdFromToken(token);
-            message = "La autenticación se ha realizado con éxito. Bienvenido a ClimbApp, " + NameUser;
+            message = $"Bienvenido a ClimbApp, {NameUser}. Para tu seguridad, te recomendamos actualizar tu contraseña a nuestro nuevo sistema de encriptación más seguro. ¡Tu seguridad es nuestra prioridad!";
             StateHasChanged();
             ShowToast(message);
             await Task.Delay(3000);

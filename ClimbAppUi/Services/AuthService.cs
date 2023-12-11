@@ -46,7 +46,12 @@ namespace BlazorCLIMB.UI.Services
         }
 
         public async Task<AuthenticationResult> VerifyPassword(string email, string password)
+
         {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            {
+                throw new ArgumentException("Email and password cannot be null or empty.");
+            }
             return await _authRepository.VerifyPassword(email, password);
         }
 
