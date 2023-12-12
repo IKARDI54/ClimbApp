@@ -11,8 +11,7 @@ using Blazored.LocalStorage;
 using VimeoDotNet;
 
 var builder = WebApplication.CreateBuilder(args);
-var port = Environment.GetEnvironmentVariable("PORT") ?? "5168";
-builder.WebHost.UseUrls($"http://*:{port}");
+
 
 // Configuración de la base de datos
 var configuration = builder.Configuration;
