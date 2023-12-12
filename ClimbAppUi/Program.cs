@@ -11,16 +11,7 @@ using Blazored.LocalStorage;
 using VimeoDotNet;
 
 var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-else
-{
-    app.UseExceptionHandler("/Error");
-}
 
 // Configuración de la base de datos
 var configuration = builder.Configuration;
@@ -81,6 +72,15 @@ builder.Logging.AddConsole();
 
 // Crear y configurar la aplicación web
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler("/Error");
+}
 
 // Configuración del pipeline HTTP
 if (!app.Environment.IsDevelopment())
