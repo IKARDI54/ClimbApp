@@ -137,13 +137,13 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
                 return new AuthenticationResult { IsSuccess = false };
             }
 
-            // Comprobación para usuarios con contraseñas en formato antiguo
+          
             if (IsPasswordInOldFormat(user.PasswordHash))
             {
                 if (VerifyOldPassword(user.PasswordHash, password))
                 {
                     user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
-                    await UpdateUser(user);  // Asegúrate de que este método actualice correctamente en la DB.
+                    await UpdateUser(user); 
                     return new AuthenticationResult { IsSuccess = true, Token = GenerateTokenForUser(user) };
                 }
                 else
@@ -153,7 +153,7 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
             }
             else
             {
-                // Para contraseñas en el formato encriptado con BCrypt (manejo anterior)
+             
                 if (!VerifyHashedPassword(user.PasswordHash, password))
                 {
                     return new AuthenticationResult { IsSuccess = false };

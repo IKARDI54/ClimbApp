@@ -10,11 +10,20 @@
 @using BlazorCLIMB.UI.Services
 @inject IRouteRatingService RouteRatingService
 
+
+
+<br />
+<br />
+<br />
+<br />
+
 <div class="d-flex justify-content-center mb-0" style="align-items: center; width: 100%;">
     <img src="images/logoClimb.png" alt="ClimbApp Logo" style="margin: 10px; height: 4.75rem; border-radius: 50%;" class="logo" />
     <h1 style="color: white; margin-left: 10px; margin-right: 10px;">Detalles de la Vía Escalada</h1>
-    <RadzenButton Click="LoginGo" Variant="Variant.Outlined" Text="Volver" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:5px; border:solid 1px white" />
+    <RadzenButton Click="LoginGo" Variant="Variant.Outlined" Text="Volver" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:45px; border:solid 1px white" />
 </div>
+<br />
+
 <div class="container" style="color:white; font-weight:600">
     @if (climbingRoute != null)
 {
@@ -96,8 +105,8 @@
                         <td>@(anotacion.Comments ?? "N/A")</td>
                         <td>@(anotacion.Pegs.HasValue ? anotacion.Pegs.ToString() : "N/A")</td>
                         <td>@(anotacion.Cintas.HasValue ? anotacion.Cintas.ToString() : "N/A")</td>
-                        <td>@(anotacion.Rating.HasValue ? anotacion.Rating.ToString() : "N/A")</td> 
-                        <td>@(anotacion.Date.HasValue ? anotacion.Date.ToString() : "N/A")</td>
+                        <td>@(anotacion.Rating.HasValue ? anotacion.Rating.ToString() : "N/A")</td>
+                        <td>@(anotacion.Date.HasValue ? anotacion.Date.Value.ToString("dd/MM/yyyy") : "N/A")</td>
                         <td>@(anotacion.ClimbingRoute != null ? anotacion.ClimbingRoute.NumberOfRatings.ToString() : "N/A")</td>
 
                     </tr>
@@ -110,6 +119,13 @@ else
     <p>No tienes anotaciones de esta vía.</p>
 }
 </div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 @code {
     double? ratingTask = 0;
     int userId = UserSession.UserId;

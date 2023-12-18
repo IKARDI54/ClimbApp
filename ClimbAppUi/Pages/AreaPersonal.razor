@@ -81,38 +81,37 @@
     }
     .form-group {
     display: flex;
-    align-items: start; /* Alinea verticalmente los elementos del form-group */
+    align-items: start; 
     margin-top: 10px;
 }
 
 .form-group label {
     font-size: 14px;
     font-weight: bold;
-    margin-bottom: 0; /* Elimina el margen inferior */
+    margin-bottom: 0;
    
 }
 
 .form-control {
-    width: auto; /* Cambia de 100% a auto para que el input no ocupe todo el ancho */
-    max-width: none; /* Elimina el max-width */
+    width: auto; 
+    max-width: none; 
 }
     
     .tabla.usuarios {
         margin: 0 auto;
-        max-width: 800px; /* Define un ancho máximo para la tabla */
-        border-collapse: collapse; /* Colapsa los bordes de la tabla */
-       /* Color de fondo */
-        border: 2px solid #ddd; /* Borde con estilo */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        max-width: 800px; 
+        border-collapse: collapse; 
+        border: 2px solid #ddd; 
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
     }
 
-    /* Estilos para el encabezado de la tabla */
+    
     .tabla h3 {
-        text-align: center; /* Centra el texto */
-        background-color: #333; /* Color de fondo del encabezado */
-        color: #fff; /* Color del texto del encabezado */
-        padding: 10px; /* Espaciado interno */
-        margin-top: 0; /* Elimina el margen superior predeterminado */
+        text-align: center;
+        background-color: #333;
+        color: #fff; 
+        padding: 10px; 
+        margin-top: 0;
     }
 
 
@@ -134,7 +133,7 @@
         border-radius: 50%;
         overflow: hidden;
     }
-    /* Estilo para el campo de carga de avatar */
+   
     .custom-file-input {
         display: none; 
     }
@@ -145,25 +144,25 @@
    
     .custom-file-label {
         background-color: #007bff;
-        color: white; /* Color del texto del botón */
-        padding: 5px 10px; /* Espaciado interno del botón */
-        border-radius: 5px; /* Borde redondeado del botón */
+        color: white; 
+        padding: 5px 10px; 
+        border-radius: 5px; 
         cursor: pointer; 
         width:200px;
     }
 
-        /* Estilo para el botón cuando se pasa el ratón por encima */
+        
         .custom-file-label:hover {
-            background-color: #0056b3; /* Cambia el color de fondo cuando se pasa el ratón */
+            background-color: #0056b3; 
         }
 
     .admin-button-container {
-        display: flex; /* Utiliza flexbox para expandir el botón */
-        justify-content: flex-end; /* Alinea el botón al extremo derecho */
-        margin-top: 10px; /* Margen superior */
+        display: flex; 
+        justify-content: flex-end;
+        margin-top: 10px; 
     }
 
-    /* Estilo para el botón de "Administrar Usuarios" */
+    
     .admin-button {
         flex: 1; 
         margin-left: 10px; 
@@ -176,52 +175,52 @@
     }
 
         .form-group label {
-            display: inline-block; /* Esto asegura que el label tiene un ancho */
-            width: 100px; /* Un ancho fijo para todos los labels */
-            text-align: center; /* Alinea el texto del label a la derecha */
-            /* Espacio entre el label y el input */
+            display: inline-block; 
+            width: 100px; 
+            text-align: center; 
+           
         }
 
     .form-control, .custom-file-label {
         flex-grow: 1; 
     }
 
-    /* Alinea el contenedor del formulario en el centro */
+    
     .formulario {
         display: flex;
         flex-direction: column;
-        align-items: center; /* Esto centrará los .form-group en el contenedor .formulario */
-        width: 100%; /* Opcional: ajusta el ancho según necesites */
+        align-items: center;
+        width: 100%;
     }
 
 
 
     .toast {
-        position: fixed; /* Posición fija en la pantalla */
-        bottom: 20px; /* Distancia desde la parte inferior */
-        right: 20px; /* Distancia desde la derecha */
-        background-color: #333; /* Color de fondo */
-        color: #fff; /* Color del texto */
-        border-radius: 5px; /* Bordes redondeados */
-        padding: 10px 20px; /* Espaciado interno */
-        z-index: 9999; /* Índice z alto para estar sobre otros elementos */
+        position: fixed; 
+        bottom: 20px; 
+        right: 20px; 
+        background-color: #333; 
+        color: #fff; 
+        border-radius: 5px; 
+        padding: 10px 20px; 
+        z-index: 9999;
        
     }
 
-        /* Estilos para el icono dentro del toast */
+       
         .toast .toast-icon {
-            float: left; /* Alineación a la izquierda */
-            margin-right: 10px; /* Margen a la derecha del icono */
+            float: left; 
+            margin-right: 10px;
         }
 
-        /* Estilos para el mensaje dentro del toast */
+       
         .toast .message {
-            font-size: 16px; /* Tamaño de fuente */
+            font-size: 16px; 
         }
 
         
         .toast #icon {
-            font-size: 24px; /* Tamaño de fuente del ícono */
+            font-size: 24px;
         }
 </style>
 
@@ -230,7 +229,6 @@
         <div class="profile-card">
             <div class="item">
                 <div class="imagen-perfil">
-                    <!-- Coloca aquí tu código de imagen -->
                     <img src="@(avatarUrl != null ? avatarUrl : (user?.Img != null && user.Img.Length > 0 ? $"data:image/jpg;base64,{Convert.ToBase64String(user.Img)}" : "images/schu.jpg"))" alt="User Avatar" />
                 </div>
              
@@ -256,11 +254,12 @@
                         <InputText id="email" class="form-control" @bind-Value="editedUser.Email" InputMode="email" />
                     </div>
 
-       
+
                     <div class="form-group">
                         <label for="password">Password:</label>
-                        <InputText id="password" class="form-control" @bind-Value="editedUser.PasswordHash" />
+                        <InputText id="password" class="form-control" type="password" @bind-Value="editedUser.PasswordHash" />
                     </div>
+
 
                     <div class="form-group">
                         <label for="avatar">Avatar:</label>
@@ -345,9 +344,15 @@
                 }
             </tbody>
         </table>
-    
+      
     </div>
-  
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
 }
 
 
@@ -387,6 +392,8 @@
         StateHasChanged();
 
         users = (await AuthService.GetAllUsers()).ToList();
+
+        
 
     }
 
@@ -488,21 +495,5 @@
            
         });
     }
-    class SomeModel
-    {
-        public bool SomeBooleanProperty { get; set; }
-        public DateTime? SomeDateTimeProperty { get; set; }
-        public int SomeIntegerProperty { get; set; }
-        public decimal SomeDecimalProperty { get; set; }
-        public string? SomeStringProperty { get; set; }
-        public string? SomeMultiLineStringProperty { get; set; }
-        public SomeStateEnum SomeSelectProperty { get; set; } = SomeStateEnum.Active;
-    }
-
-    public enum SomeStateEnum
-    {
-        Pending,
-        Active,
-        Suspended
-    }
+  
 }

@@ -101,16 +101,20 @@
         .toast #icon {
             font-size: 24px;
         }
+
+    input {
+        color: white;
+    }
 </style>
 
 <div class="d-flex justify-content-center mb-0" style="align-items: center; width: 100%;">
     <img src="images/logoClimb.png" alt="ClimbApp Logo" style="margin: 10px; height: 4.75rem; border-radius: 50%;" class="logo" />
-    <h1 style="color: white;">Listado de Vías Escaladas</h1>
-    <RadzenButton Click="LoginGo" Variant="Variant.Outlined" Text="Volver" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:15px; border:solid 1px white" />
-    <RadzenButton Click="AddClimbingRoute" Variant="Variant.Outlined" Text="Añadir una Vía" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:15px;  border:solid 1px white" />
-
+    <h1 style="color: white;">Buscador de Vías de Escalada</h1>
+    <RadzenButton Click="LoginGo" Variant="Variant.Outlined" Text="Volver" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:15px; border:solid 1px white; text-align: center " />
+    <RadzenButton Click="AddClimbingRoute" Variant="Variant.Outlined" Text="Añadir" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:15px;  border:solid 1px white" />
+   
 </div>
-
+<h4 style="text-align: center; color:white;">Actualmente, solo tenemos en la base de datos vías de las escuelas de Cuenca, Entrepeñas, Fin del Mundo y Patones con indice del 1-4 en el .</h4>
 
   <div class="grilla-container">
     @if (showToast)
@@ -124,8 +128,8 @@
             </div>
         </div>
     }
-    <div style="display: flex; justify-content: center; padding: 20px;">
-    <div style="width: 100%; max-width: 1200px;"> 
+   <div style="display: flex; justify-content: center; padding: 20px;">
+   <div style="width: 100%; max-width: 1200px;"> 
 
     <RadzenDataGrid AllowGrouping="true" AllowFiltering="true" AllowColumnResize="true" FilterMode="FilterMode.Simple" AllowSorting="true" PageSize="5" AllowPaging="true" PagerPosition="PagerPosition.Bottom" AllowPagerText="true" Data="@climbingRoutes">
         <Columns>
@@ -201,14 +205,19 @@
 
     </FooterTemplate>
 </BlazorBootstrap.Modal>
-
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 @code {
 
     private BlazorBootstrap.Modal modal;
     private IEnumerable<ClimbingRoute> climbingRoutes;
     private string loadingError;
     private ClimbingRoute selectedRoute = new ClimbingRoute();
-    // private double averageRating;
     private User user;
     private string message = "";
     private bool showToast = false;
@@ -351,8 +360,6 @@
         modal.HideAsync();
     }
  
-        private string searchTerm = string.Empty;
-
      
     private async Task CalculateAverageRatingAndNumberOfRatingsForEachRoute()
     {
