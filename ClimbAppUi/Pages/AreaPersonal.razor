@@ -194,34 +194,33 @@
     }
 
 
-
     .toast {
-        position: fixed; 
-        bottom: 20px; 
-        right: 20px; 
-        background-color: #333; 
-        color: #fff; 
-        border-radius: 5px; 
-        padding: 10px 20px; 
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #333;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px 20px;
         z-index: 9999;
-       
     }
 
-       
+
         .toast .toast-icon {
-            float: left; 
+            float: left;
             margin-right: 10px;
         }
 
-       
+
         .toast .message {
-            font-size: 16px; 
+            font-size: 16px;
         }
 
-        
+
         .toast #icon {
             font-size: 24px;
         }
+   
 </style>
 
 
@@ -234,8 +233,6 @@
              
             </div>
         </div>
-
-
 
      @if (editedUser != null)
     {  
@@ -268,10 +265,20 @@
                     </div>
                     <RadzenButton Click="SaveProfile" Variant="Variant.Outlined" Icon="backup" Size="ButtonSize.Large" ButtonStyle="ButtonStyle.Dark" Shade="Shade.Darker" style="font-weight: bold; margin-left:5px; width:400px; border:solid 2px white" />
 
-          
+                    @if (showToast)
+                    { 
+                        <div class="toast" style="display: block;">
+                            <div class="toast-icon">
+                                <RadzenIcon Icon="account_box" IconColor="@Colors.Info" />
+                            </div>
+                            <div class="toast-message">@message</div>
+                        </div>
+                      
+                     } 
                 </div>
             </EditForm>
         </div>
+    
     }
     else
     {
@@ -282,16 +289,7 @@
             <span class="ml-2">Loading...</span>
         </div>
     }
-    @if (showToast)
-    {
-        <div class="toast" style="display: block;">
-            <div class="toast-icon">
-                <RadzenIcon Icon="account_box" IconColor="@Colors.Info" />
-            </div>
-            <div class="toast-message">@message</div>
-        </div>
-        ShowToast(message);
-    }
+   
 </div>
 @if (user?.Role == "SuperUser")
 {
@@ -384,6 +382,11 @@
             editedUser = await AuthService.GetUserById(userId);
             user = await AuthService.GetUserById(userId);
             base64Image = user.Img;
+            if (user?.Role == "SuperUser")
+            {
+                message = "Tienes el rol de Super User y puedes administrar usuarios.";
+                ShowToast(message);
+            }
         }
         else
         {
@@ -415,7 +418,8 @@
                 ShowToast(message);
 
                 avatarUrl = $"data:image/png;base64,{Convert.ToBase64String(editedUser.Img)}"; // Actualiza avatarUrl
-                StateHasChanged();
+                await Task.Delay(3000);
+                await ReloadPageAsync();
 
             }
             else
@@ -453,7 +457,7 @@
         }
         else
         {
-            return "_content/ClimbAppUi/images/ondra.jpg";
+            return "_content/ClimbAppUi/wwwroot/images/ondra.jpg";
         }
     }
     private async Task OnAvatarChange(InputFileChangeEventArgs e)
@@ -482,18 +486,24 @@
 
         }
     }
+
+    private async Task ReloadPageAsync()
+    {
+        await JS.InvokeVoidAsync("location.reload");
+    }
+
     private void ShowToast(string message)
     {
         toastMessage = message;
         showToast = true;
-        StateHasChanged(); 
+        StateHasChanged();
 
-        
-        Task.Delay(3000).ContinueWith(t =>
+        Task.Delay(3000).ContinueWith(async _ =>
         {
             showToast = false;
-           
+            await InvokeAsync(StateHasChanged);
         });
     }
+
   
 }

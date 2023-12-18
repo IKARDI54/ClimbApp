@@ -1,7 +1,7 @@
 ﻿@page "/userRoutes/{routeId}"
 @using BlazorCLIMB.Model
 @using BlazorBootstrap;
-
+@inject IJSRuntime JS
 @using BlazorCLIMB.Model.BlazorCRUD.Model;
 @using Interfaces
 @inject IClimbingRouteService ClimbingRouteService
@@ -211,7 +211,7 @@ else
       
         int? rating = (int?)userClimbingRoute.Rating ?? 0;
         bool puntuacion = await RouteRatingService.RateClimbingRoute(userClimbingRoute.UserId, userClimbingRoute.ClimbingRouteId, rating ?? 0);
-
+        await ReloadPageAsync();
     }
     private void LoginGo()
     {
@@ -227,6 +227,10 @@ else
         {
             showToast = false;
         });
+    }
+    private async Task ReloadPageAsync()
+    {
+        await JS.InvokeVoidAsync("location.reload");
     }
 }
  

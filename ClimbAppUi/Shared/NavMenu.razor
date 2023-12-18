@@ -147,7 +147,7 @@
          <p style="font-size: 11px; margin-bottom: 10px; font-weight: bold; color: white !important;">Nombre: @user.Name</p>
          <p style="font-size: 11px; margin-bottom: 10px; font-weight: bold; color: white !important;">Email: @user.Email</p>
          <p style="font-size: 11px; margin-bottom: 10px; font-weight: bold; color: white !important;">Role de Usuario: @user.Role</p>
-                    <RadzenButton  Size="ButtonSize.Small" Click="AddClimbingRoute" Text="Área Personal" ButtonStyle="ButtonStyle.Dark" />
+                    <RadzenButton Size="ButtonSize.Small" Click=" GoToPersonalArea" Text="Área Personal" ButtonStyle="ButtonStyle.Dark" />
                     <RadzenButton Size="ButtonSize.Small" Click="LoginGo" Text="LogOut" ButtonStyle="ButtonStyle.Dark" />
 
      </div>
@@ -203,7 +203,7 @@
         NavigationManager.NavigateTo("/Login");
     }
 
-    private void AddClimbingRoute()
+    private void GoToPersonalArea()
     {
         NavigationManager.NavigateTo("/personalArea");
     }

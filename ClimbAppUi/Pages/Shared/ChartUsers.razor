@@ -103,7 +103,10 @@
 
         foreach (var user in users)
         {
+            // Obtiene las rutas de escalada asociadas a cada usuario.
             var userRoutesList = await UserClimbingRouteService.GetUserClimbingRoutes(user.Id);
+            
+            // Almacena las rutas en el diccionario 'userRoutes'.
             userRoutes[user.Id] = userRoutesList.Select(ur => ur.ClimbingRoute).ToList();
 
             if (userRoutesList.Any())
@@ -122,13 +125,15 @@
                         totalScore += gradeScores[routeGrade];
                     }
                 }
-
+                // Agregamos el puntaje total del usuario al diccionario 'userScores'.
                 userScores.Add(user.Name, totalScore);
             }
         }
 
-        // Crear la lista de objetos UserDataItem
+        // Crear la lista de objetos UserDataItem a partir de los nombres de usuario y los puntajes totales.
         topUsers = userScores.Select(kv => new UserDataItem { UserName = kv.Key, TotalScore = kv.Value }).ToList();
+
+        // Ordenar la lista por puntaje descendente y tomar los 5 mejores puntajes.
         topUsers = topUsers.OrderByDescending(item => item.TotalScore).Take(5).ToList();
     }
 

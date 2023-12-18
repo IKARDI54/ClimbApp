@@ -54,30 +54,28 @@
 
 
 @code {
-
-
     private IEnumerable<SchoolRoutesCount> routesCountBySchool;
-
     private IEnumerable<SchoolAverageRating> averageRatingBySchool;
     private List<DataItem> chartData;
     ColorScheme colorScheme = ColorScheme.Palette;
     private int totalRoutes; 
-    // private int numeroTotaldePuntuaciones;
+    
 
     protected override async Task OnInitializedAsync()
     {
+        // Obtener el número de rutas por escuela de escalada.
         routesCountBySchool = await ClimbingRouteService.GetRoutesCountBySchool();
+
+        // Obtener la media de calificación por escuela de escalada.
         averageRatingBySchool = await ClimbingRouteService.GetAverageRatingBySchool();
 
-
+        // Calcular el total de rutas sumando el número de rutas de cada escuela.
         totalRoutes = routesCountBySchool.Sum(item => item.NumberOfRoutes);
 
+        // Transformar los datos para su posterior representación en un gráfico.
         chartData = await TransformDataForChart();
 
-
     }
-
-
     // Define una clase para mapear los datos a tus gráficos
     public class DataItem
     {
@@ -103,18 +101,26 @@
 
     private async Task<List<DataItem>> TransformDataForChart()
     {
+        // Crear una lista para almacenar los datos transformados
         var chartData = new List<DataItem>();
-        var averageGrades = await ClimbingRouteService.GetAverageGradeBySchool();
-        
 
+        // Obtener el promedio de calificaciones por escuela de escalada
+        var averageGrades = await ClimbingRouteService.GetAverageGradeBySchool();
+
+        // Iterar a través de las rutas por escuela
         foreach (var item in routesCountBySchool)
         {
+            // Obtener el nombre de la escuela de escalada
             var schoolName = GetSchoolNameById(item.ClimbingSchoolId);
+
+            // Buscar la calificación promedio y el número de valoraciones correspondientes a la escuela actual
             var averageRating = averageRatingBySchool.FirstOrDefault(s => s.ClimbingSchoolId == item.ClimbingSchoolId)?.AverageRating ?? 0;
             var numberOfRatings = averageRatingBySchool.FirstOrDefault(s => s.ClimbingSchoolId == item.ClimbingSchoolId)?.NumberOfRatings ?? 0;
-            var averageGradeNumeric = Math.Round(averageGrades.FirstOrDefault(ag => ag.ClimbingSchoolId == item.ClimbingSchoolId)?.AverageGrade ?? 0, 1);
-           
 
+            // Calcular el promedio de grado numérico para la escuela actual
+            var averageGradeNumeric = Math.Round(averageGrades.FirstOrDefault(ag => ag.ClimbingSchoolId == item.ClimbingSchoolId)?.AverageGrade ?? 0, 1);
+
+            // Crear un nuevo objeto DataItem con la información obtenida y agregarlo a la lista
             chartData.Add(new DataItem
                 {
                     SchoolName = schoolName,
@@ -126,62 +132,9 @@
                 });
         }
 
-        
+        // Devolver la lista de datos transformados
         return chartData;
     }
 
 
-    private Dictionary<double, string> GradeValuesReverse = new Dictionary<double, string>
-{
-    { 5.0, "5" },
-    { 5.1, "5" },
-    { 5.2, "5" },
-    { 5.3, "5" },
-    { 5.4, "5" },
-    { 5.5, "5+" },
-    { 5.6, "5+" },
-    { 5.7, "5+" },
-    { 5.8, "5+" },
-    { 5.9, "6a" },
-    { 6.0, "6a" },
-    { 6.1, "6a+" },
-    { 6.2, "6a+" },
-    { 6.3, "6b" },
-    { 6.4, "6b" },
-    { 6.5, "6b+" },
-    { 6.6, "6b+" },
-    { 6.7, "6c" },
-    { 6.8, "6c+" },
-    { 6.9, "6c+" },
-    { 7.0, "7a" },
-    { 7.1, "7a+" },
-    { 7.2, "7a+" },
-    { 7.3, "7b" },
-    { 7.4, "7b" },
-    { 7.5, "7b+" },
-    { 7.6, "7b+" },
-    { 7.7, "7c" },
-    { 7.8, "7c+" },
-    { 7.9, "7c+" },
-    { 8.0, "8a" },
-    { 8.1, "8a" },
-    { 8.2, "8b" },
-    { 8.3, "8b" },
-    { 8.4, "8b+" },
-    { 8.5, "8c+" },
-    { 8.6, "8c+" },
-    { 8.7, "8c+" },
-    { 8.8, "8c+" },
-    { 8.9, "8c+" },
-};
-
-    private string ConvertNumericToGrade(double numericValue)
-    {
-        if (GradeValuesReverse.TryGetValue(numericValue, out var grade))
-        {
-            return grade;
-        }
-
-        return "Desconocido"; 
-    }
 }
