@@ -1,7 +1,9 @@
 ﻿@page "/userRoutes/{routeId}"
 @using BlazorCLIMB.Model
 @using BlazorBootstrap;
+
 @inject IJSRuntime JS
+
 @using BlazorCLIMB.Model.BlazorCRUD.Model;
 @using Interfaces
 @inject IClimbingRouteService ClimbingRouteService
@@ -162,7 +164,7 @@ else
 
         userClimbingRouteList = await UserClimbingRouteService.GetUserClimbingRoutes(userId);
 
-        // Obtener las valoraciones de las vías escaladas antes del bucle
+        // Obtenemos las valoraciones de las vías escaladas antes del bucle
         var ratingDictionary = new Dictionary<int, double>();
         foreach (var anotacion in userClimbingRouteList)
         {
@@ -171,7 +173,7 @@ else
             ratingDictionary[anotacion.ClimbingRouteId] = rating ?? 0;
         }
 
-        // Asignar las valoraciones a las anotaciones
+        // Asignamos las valoraciones a las anotaciones
         foreach (var anotacion in userClimbingRouteList)
         {
             
@@ -196,7 +198,7 @@ else
     {
 
 
-        // Llamar al servicio para crear la anotación de vía escalada
+        // Llamamos al servicio para crear la anotación de vía escalada
         bool resultado = await UserClimbingRouteService.CreateUserClimbingRoute(userClimbingRoute);
 
         if (resultado)

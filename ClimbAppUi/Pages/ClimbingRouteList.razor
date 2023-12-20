@@ -315,8 +315,20 @@
         NavigationManager.NavigateTo("/");
     }
 
+
+// Inicialmente, las funcionalidades CRUD permitían a todos los usuarios eliminar rutas, 
+// lo que suponía un riesgo de integridad de los datos.Se restringió esta capacidad a usuarios 
+// con roles especiales, pero luego surgió la necesidad de recuperar la funcionalidad de eliminación 
+// para estos usuarios privilegiados.Al intentar implementarla, se encontró que la restricción de clave
+// foránea en la tabla de rutas escaladas impedía la eliminación de rutas que ya habían sido asociadas a usuarios.
+// Solución:
+// Se modificaron los permisos en la base de datos para permitir la opción "ON DELETE CASCADE" en las relaciones 
+// de clave foránea, lo que permitió que, al borrar una ruta, se eliminasen también las entradas relacionadas de rutas escaladas por los usuarios.
+
+
     private async Task DeleteClimbingRoute(int routeId)
     {
+
         try
         {
             await ClimbingRouteService.DeleteClimbingRoute(routeId);
@@ -343,7 +355,7 @@
                 await ClimbingRouteService.InsertClimbingRoute(selectedRoute);
             }
 
-            await modal.HideAsync(); // Asegúrate de usar 'await' aquí
+            await modal.HideAsync(); 
             climbingRoutes = await ClimbingRouteService.GetAllClimbingRoutes();
             ShowToast("La ruta se ha guardado con éxito.");
         }

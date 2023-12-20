@@ -240,7 +240,7 @@
     AuthModel model = new AuthModel();
     string confirmPassword = "";
     string message = "";
-    string avatarUrl;
+    string EncryptPhoto;
     private bool showToast = false;
     private string toastMessage = "";
 
@@ -259,8 +259,9 @@
                 ShowToast(message);
                 return;
             }
-
+            //Aqui insertamos al usuario en base de datos
             bool isCreated = await AuthService.CreateUser(model);
+
             message = isCreated ? "Usuario Creado" : "El Usuario ya existe... ";
             ShowToast(message);
             StateHasChanged();
@@ -276,20 +277,39 @@
     {
         var imageFile = e.File;
 
+        // ¿Traes una foto? Perfecto, vamos a hacer que persista.
         if (imageFile != null)
         {
+            // Inicializamos un MemoryStream para manejar los datos de la imagen en la memoria del servidor.
             using (var memoryStream = new MemoryStream())
             {
+                
+                // almacena en la memoria del servidor como una secuencia de bytes.
                 await imageFile.OpenReadStream().CopyToAsync(memoryStream);
+
+                // Convertimos la secuencia de bytes almacenada en el MemoryStream
+                //  al array de bytes del modelo. Este paso transforma la imagen en
+                //  un formato binario que puede ser manejado y almacenado por la aplicación.
                 model.Img = memoryStream.ToArray();
-                avatarUrl = $"data:{imageFile.ContentType};base64,{Convert.ToBase64String(model.Img)}";
+
+                // Finalmente, codificamos el array de bytes en Base64 y lo concatenamos 
+                // con el tipo de contenido y el prefijo 'data' para formar una Data URL. 
+                // Esta URL representa la imagen en un formato que puede ser directamente
+                //  incrustado e interpretado por los navegadores web.
+                EncryptPhoto = $"data:{imageFile.ContentType};base64,{Convert.ToBase64String(model.Img)}";
             }
+
+            // Nota Técnica: Este enfoque tiene la ventaja de integrar completamente la imagen en la aplicación, 
+            // eliminando la necesidad de rutas de archivo o almacenamiento externo. Sin embargo, debe considerarse
+            //  el impacto en el uso de la memoria y el potencial impacto en el rendimiento, especialmente con imágenes de gran tamaño.
+
         }
         else
         {
+            // Si no nos pasas una foto, te pediremos amablemente que elijas una.
             message = "Please select an avatar image.";
         }
-    }  
+    }
       private void ShowToast(string message)
     {
         toastMessage = message;

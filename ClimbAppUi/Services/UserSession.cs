@@ -12,7 +12,10 @@ public static class UserSession
         Token = token;
         UserId = ExtractUserIdFromToken(token);
     }
-
+    // La función `ExtractUserIdFromToken` toma una cadena `token` como entrada y realiza lo siguiente:
+    // - Divide la cadena en partes usando el carácter '_' como separador.
+    // - Verifica si la primera parte es un número (representando el `UserId`).
+    // - Si es un número válido, lo devuelve; de lo contrario, devuelve 0.
     public static int ExtractUserIdFromToken(string token)
     {
         var parts = token.Split('_');
@@ -23,7 +26,7 @@ public static class UserSession
                 return userId;
             }
         }
-        return 0; // R
+        return 0; 
     }
 
    

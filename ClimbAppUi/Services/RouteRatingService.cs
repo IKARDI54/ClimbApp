@@ -24,7 +24,7 @@ namespace BlazorCLIMB.UI.Services
                 {
                     await connection.OpenAsync();
 
-                    // Verificar si el usuario ya ha calificado esta vía
+                    // Verifica si el usuario ya ha calificado esta vía
                     var existingRating = await connection.ExecuteScalarAsync<int?>(
                         "SELECT Rating FROM RouteRating WHERE UserId = @UserId AND ClimbingRouteId = @ClimbingRouteId",
                         new { UserId = userId, ClimbingRouteId = climbingRouteId });
@@ -43,7 +43,7 @@ namespace BlazorCLIMB.UI.Services
                             "INSERT INTO RouteRating (UserId, ClimbingRouteId, Rating) VALUES (@UserId, @ClimbingRouteId, @Rating)",
                             new { UserId = userId, ClimbingRouteId = climbingRouteId, Rating = rating });
                     }
-                    // Actualizar el número de valoraciones para esta vía
+                    // Actualizamos el número de valoraciones para esta vía
                     await connection.ExecuteAsync(
                         "UPDATE ClimbingRoute SET NumberOfRatings = (SELECT COUNT(*) FROM RouteRating WHERE ClimbingRouteId = @ClimbingRouteId) WHERE Id = @ClimbingRouteId",
                         new { ClimbingRouteId = climbingRouteId });
@@ -53,7 +53,7 @@ namespace BlazorCLIMB.UI.Services
             }
             catch (Exception ex)
             {
-                // Manejo de excepciones aquí
+                // Manejamos excepciones 
                 Console.WriteLine($"Error al calificar la vía de escalada: {ex.Message}");
                 return false;
             }
@@ -67,7 +67,7 @@ namespace BlazorCLIMB.UI.Services
                 {
                     await connection.OpenAsync();
 
-                    // Calcular el promedio de calificaciones para la vía de escalada específica
+                    // Calculamos el promedio de calificaciones para la vía de escalada específica
                     var averageRating = await connection.ExecuteScalarAsync<double?>(
                         "SELECT AVG(Rating) FROM RouteRating WHERE ClimbingRouteId = @ClimbingRouteId",
                         new { ClimbingRouteId = climbingRouteId });
@@ -77,7 +77,7 @@ namespace BlazorCLIMB.UI.Services
             }
             catch (Exception ex)
             {
-                // Manejo de excepciones aquí
+            
                 Console.WriteLine($"Error al obtener el promedio de calificaciones: {ex.Message}");
                 return 0.0;
             }
@@ -92,7 +92,7 @@ namespace BlazorCLIMB.UI.Services
                 {
                     await connection.OpenAsync();
 
-                    // Obtener el número de valoraciones para la vía de escalada específica
+                    // Obtenemos el número de valoraciones para la vía de escalada específica
                     var numberOfRatings = await connection.ExecuteScalarAsync<int>(
                         "SELECT COUNT(*) FROM RouteRating WHERE ClimbingRouteId = @ClimbingRouteId",
                         new { ClimbingRouteId = climbingRouteId });
@@ -102,7 +102,7 @@ namespace BlazorCLIMB.UI.Services
             }
             catch (Exception ex)
             {
-                // Manejo de excepciones aquí
+           
                 Console.WriteLine($"Error al obtener el número de valoraciones: {ex.Message}");
                 return 0;
             }

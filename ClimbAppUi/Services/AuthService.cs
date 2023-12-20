@@ -30,7 +30,7 @@ namespace BlazorCLIMB.UI.Services
                 Name = model.Name,
                 Email = model.Email,
                 PasswordHash = model.Password,
-                Role = "User",  // Puedes cambiar esto según tus necesidades
+                Role = "User",  // Rol por defecto
                 Img = model.Img
             };
             return await _authRepository.CreateUser(userDto);

@@ -133,7 +133,7 @@
         // Crear la lista de objetos UserDataItem a partir de los nombres de usuario y los puntajes totales.
         topUsers = userScores.Select(kv => new UserDataItem { UserName = kv.Key, TotalScore = kv.Value }).ToList();
 
-        // Ordenar la lista por puntaje descendente y tomar los 5 mejores puntajes.
+        // Ordenamos la lista por puntaje descendente y tomar los 5 mejores puntajes.
         topUsers = topUsers.OrderByDescending(item => item.TotalScore).Take(5).ToList();
     }
 

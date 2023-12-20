@@ -125,43 +125,54 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
             return await _dbConnection.QueryAsync<User>(sql);
         }
 
+        // Método para cifrar la contraseña utilizando BCrypt, una biblioteca de hashing segura.
         private string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
+
+        // Método para verificar la contraseña del usuario durante el proceso de autenticación.
         public async Task<AuthenticationResult> VerifyPassword(string email, string password)
         {
+            // Intentamos recuperar el usuario por su email.
             var user = await GetUserByEmail(email);
+
+            // Si no encontramos el usuario, retornamos un resultado de autenticación fallido.
             if (user == null)
             {
                 return new AuthenticationResult { IsSuccess = false };
             }
 
-          
+            // Verificamos si la contraseña está en un formato antiguo (por ejemplo, menos seguro o no cifrado).
             if (IsPasswordInOldFormat(user.PasswordHash))
             {
+                // Si la contraseña antigua es válida, la actualizamos al nuevo formato de hashing y guardamos el usuario.
                 if (VerifyOldPassword(user.PasswordHash, password))
                 {
                     user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
-                    await UpdateUser(user); 
+                    await UpdateUser(user);
                     return new AuthenticationResult { IsSuccess = true, Token = GenerateTokenForUser(user) };
                 }
                 else
                 {
+                    // Si la contraseña antigua no es válida, retornamos un resultado de autenticación fallido.
                     return new AuthenticationResult { IsSuccess = false };
                 }
             }
             else
             {
-             
+                // Si la contraseña no está en formato antiguo, verificamos la contraseña cifrada con el hash almacenado.
                 if (!VerifyHashedPassword(user.PasswordHash, password))
                 {
+                    // Si no coincide, retornamos un resultado de autenticación fallido.
                     return new AuthenticationResult { IsSuccess = false };
                 }
 
+                // Si todo es correcto, retornamos un resultado de autenticación exitoso con un token generado.
                 return new AuthenticationResult { IsSuccess = true, Token = GenerateTokenForUser(user) };
             }
         }
+
 
 
         private bool IsPasswordInOldFormat(string passwordHash)

@@ -63,20 +63,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // Obtener el número de rutas por escuela de escalada.
+        // Obtenemos el número de rutas por escuela de escalada.
         routesCountBySchool = await ClimbingRouteService.GetRoutesCountBySchool();
 
-        // Obtener la media de calificación por escuela de escalada.
+        // Obtenemos la media de calificación por escuela de escalada.
         averageRatingBySchool = await ClimbingRouteService.GetAverageRatingBySchool();
 
-        // Calcular el total de rutas sumando el número de rutas de cada escuela.
+        // Calculamos el total de rutas sumando el número de rutas de cada escuela.
         totalRoutes = routesCountBySchool.Sum(item => item.NumberOfRoutes);
 
-        // Transformar los datos para su posterior representación en un gráfico.
+        // Transformamos los datos para su posterior representación en un gráfico.
         chartData = await TransformDataForChart();
 
     }
-    // Define una clase para mapear los datos a tus gráficos
+    // Definimos una clase para mapear los datos a tus gráficos
     public class DataItem
     {
         public string? SchoolName { get; set; }
@@ -101,26 +101,26 @@
 
     private async Task<List<DataItem>> TransformDataForChart()
     {
-        // Crear una lista para almacenar los datos transformados
+        // Creamos una lista para almacenar los datos transformados
         var chartData = new List<DataItem>();
 
-        // Obtener el promedio de calificaciones por escuela de escalada
+        // Obtenemos el promedio de calificaciones por escuela de escalada
         var averageGrades = await ClimbingRouteService.GetAverageGradeBySchool();
 
-        // Iterar a través de las rutas por escuela
+        // Iteramos a través de las rutas por escuela
         foreach (var item in routesCountBySchool)
         {
-            // Obtener el nombre de la escuela de escalada
+            // Obtenemos el nombre de la escuela de escalada
             var schoolName = GetSchoolNameById(item.ClimbingSchoolId);
 
-            // Buscar la calificación promedio y el número de valoraciones correspondientes a la escuela actual
+            // Buscamos la calificación promedio y el número de valoraciones correspondientes a la escuela actual
             var averageRating = averageRatingBySchool.FirstOrDefault(s => s.ClimbingSchoolId == item.ClimbingSchoolId)?.AverageRating ?? 0;
             var numberOfRatings = averageRatingBySchool.FirstOrDefault(s => s.ClimbingSchoolId == item.ClimbingSchoolId)?.NumberOfRatings ?? 0;
 
-            // Calcular el promedio de grado numérico para la escuela actual
+            // Calculamos el promedio de grado numérico para la escuela actual
             var averageGradeNumeric = Math.Round(averageGrades.FirstOrDefault(ag => ag.ClimbingSchoolId == item.ClimbingSchoolId)?.AverageGrade ?? 0, 1);
 
-            // Crear un nuevo objeto DataItem con la información obtenida y agregarlo a la lista
+            // Creamos un nuevo objeto DataItem con la información obtenida y agregarlo a la lista
             chartData.Add(new DataItem
                 {
                     SchoolName = schoolName,
@@ -132,7 +132,7 @@
                 });
         }
 
-        // Devolver la lista de datos transformados
+        // Devolvemos la lista de datos transformados
         return chartData;
     }
 

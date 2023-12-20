@@ -85,7 +85,7 @@ namespace BlazorCLIMB.Data.Dapper.Repositories
             catch (Exception ex)
             {
                 Console.WriteLine($"Error en GetClimbingRouteDetails: {ex.Message}");
-                throw; // Vuelve a lanzar la excepción para manejarla en un nivel superior si es necesario
+                throw; // Vuelve a lanzar la excepción para manejar error
             }
         }
 

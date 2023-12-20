@@ -4,8 +4,8 @@
     using System.Linq;
     using System.Threading.Tasks;
     using BlazorCLIMB.Model;
-    using BlazorCLIMB.Data.Dapper.Repositories; // Asegúrate de tener acceso a tu repositorio de rutas de escalada de usuario
-    using BlazorCLIMB.UI.Interfaces;
+    using BlazorCLIMB.Data.Dapper.Repositories; // Dapper mapeo objeto-relacional (ORM)
+using BlazorCLIMB.UI.Interfaces;
 
 namespace BlazorCLIMB.UI.Services
 {
